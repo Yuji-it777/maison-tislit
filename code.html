@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>L'Atelier et Contact | Maison Atlas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=EB+Garamond:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        .zellige-divider {
+            position: relative;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b4a180 50%, transparent);
+            width: 100%;
+        }
+        .zellige-divider::after {
+            content: '◆';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #b4a180;
+            background: #131313;
+            padding: 0 10px;
+            font-size: 10px;
+        }
+        .input-gold-focus:focus {
+            outline: none;
+            border-bottom-color: #d8c4a1;
+            box-shadow: 0 1px 0 0 #d8c4a1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#393939",
+                        "secondary-fixed": "#ffdada",
+                        "primary-container": "#b4a180",
+                        "inverse-on-surface": "#303030",
+                        "tertiary-fixed": "#e7e2da",
+                        "primary": "#d8c4a1",
+                        "on-tertiary-fixed": "#1d1c17",
+                        "outline": "#989084",
+                        "on-secondary": "#452829",
+                        "on-background": "#e4e2e1",
+                        "inverse-primary": "#6c5c40",
+                        "tertiary-container": "#a7a39c",
+                        "on-secondary-container": "#d6aaab",
+                        "on-primary-container": "#45381e",
+                        "surface-container-low": "#1b1c1c",
+                        "on-secondary-fixed-variant": "#5f3e3f",
+                        "on-primary": "#3b2f16",
+                        "surface-container-highest": "#353535",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary-fixed-dim": "#e9bcbc",
+                        "outline-variant": "#4c463c",
+                        "on-surface": "#e4e2e1",
+                        "on-tertiary-container": "#3b3a34",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#251a04",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#cfc5b9",
+                        "inverse-surface": "#e4e2e1",
+                        "primary-fixed-dim": "#d8c4a1",
+                        "tertiary-fixed-dim": "#cac6be",
+                        "on-primary-fixed-variant": "#53452a",
+                        "on-tertiary": "#32302b",
+                        "on-secondary-fixed": "#2d1415",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#e9bcbc",
+                        "surface-variant": "#353535",
+                        "on-error": "#690005",
+                        "tertiary": "#cac6be",
+                        "surface": "#131313",
+                        "background": "#131313",
+                        "surface-tint": "#d8c4a1",
+                        "surface-container": "#1f2020",
+                        "secondary-container": "#5f3e3f",
+                        "on-tertiary-fixed-variant": "#494741",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#f6e0bb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "32px",
+                        "unit-md": "16px",
+                        "margin-mobile": "20px",
+                        "unit-xs": "4px",
+                        "margin-desktop": "80px",
+                        "unit-sm": "8px",
+                        "unit-xl": "64px",
+                        "container-max": "1440px",
+                        "unit-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Cinzel"],
+                        "headline-md": ["Cinzel"],
+                        "body-md": ["EB Garamond"],
+                        "headline-lg": ["Cinzel"],
+                        "body-lg": ["EB Garamond"],
+                        "label-sm": ["EB Garamond"],
+                        "display-lg-mobile": ["Cinzel"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "0.03em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md border-b-[0.5px] border-primary/30 transition-all duration-500 ease-in-out">
+<div class="max-w-container-max mx-auto px-margin-desktop flex justify-between items-center h-24">
+<div class="flex-1 flex gap-gutter">
+<a class="font-headline-md text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Collections</a>
+<a class="font-headline-md text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Heritage</a>
+</div>
+<a class="font-display-lg text-headline-lg font-normal text-primary tracking-tighter shrink-0" href="/">Maison Atlas</a>
+<div class="flex-1 flex justify-end gap-gutter items-center">
+<a class="font-headline-md text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Artisans</a>
+<a class="font-headline-md text-label-sm uppercase tracking-widest text-primary border-b border-primary pb-1" href="#">Bespoke</a>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-80 transition-opacity" data-icon="shopping_bag">shopping_bag</span>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative h-[614px] flex items-center justify-center overflow-hidden bg-surface-container-lowest">
+<div class="absolute inset-0 opacity-10">
+<div class="w-full h-full" style="background-image: radial-gradient(#b4a180 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
+</div>
+<div class="relative z-10 text-center space-y-unit-md">
+<p class="font-label-sm text-label-sm uppercase tracking-[0.4em] text-primary">Service de Conciergerie</p>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary uppercase">L'Atelier et Contact</h1>
+<div class="zellige-divider max-w-xs mx-auto mt-unit-lg"></div>
+</div>
+</section>
+<!-- Main Content Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-unit-xl">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-unit-xl">
+<!-- Left Column: Visit the Atelier -->
+<div class="space-y-unit-lg">
+<div class="space-y-unit-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">Visit the Atelier</h2>
+<div class="w-12 h-[1px] bg-primary"></div>
+</div>
+<div class="space-y-unit-md font-body-lg text-body-lg text-on-surface-variant">
+<p class="italic">By appointment only.</p>
+<p class="mt-unit-md">
+                            42 Rue de la Bahia,<br/>
+                            Médina, Marrakech 40000<br/>
+                            Kingdom of Morocco
+                        </p>
+<div class="pt-unit-md">
+<h3 class="font-label-sm text-label-sm uppercase tracking-widest text-primary mb-unit-xs">Opening Hours</h3>
+<p class="font-body-md text-body-md">Monday — Friday: 10:00 - 18:00</p>
+<p class="font-body-md text-body-md">Saturday: 11:00 - 16:00</p>
+<p class="font-body-md text-body-md italic text-primary/60">Sunday: Closed</p>
+</div>
+</div>
+<div class="relative aspect-[4/5] overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A cinematic, high-fashion photograph of a sun-drenched riad courtyard in Marrakech. The scene features intricate carved cedar wood doors, hand-painted Zellige tiles in shades of terracotta and cream, and a tall, slender orange tree casting soft shadows. The lighting is warm and ethereal, capturing the luxury and heritage of a traditional Moroccan atelier. Sharp focus, editorial aesthetic, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrhlxPd87_IvgXq-7dsSiAksLjGDHPvrEWJx_QoJINfKyOObDiqqBER9MNAblzS96tuYSlYufTVQa_0EGY7rYIa9CmMxGMBd8OrohkRlMDp3ILDJRjblgXW_43wVfjmIkA4EmhxOFHaZ4UAXuOzyoPDUMfWIJV9pWqTx3VzU_5u8uqwQrtkMb9VM7mvOH8_cCRvOIrEA2cED_ggtqG7Mru2Vw6XVtcBNooBm1BSggCy05wSxZoJp-a"/>
+<div class="absolute inset-0 ring-1 ring-inset ring-primary/20"></div>
+</div>
+</div>
+<!-- Right Column: Contact Our Concierge -->
+<div class="bg-surface-container-low p-unit-lg md:p-unit-xl border border-primary/10">
+<div class="space-y-unit-md mb-unit-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary">Contact Our Concierge</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Inquire about bespoke commissions, shipping logistics, or private viewings at our Marrakech studio.</p>
+</div>
+<form class="space-y-unit-lg">
+<div class="relative group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-primary mb-unit-xs">Your Name</label>
+<input class="w-full bg-transparent border-b border-primary/30 py-unit-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors input-gold-focus" placeholder="Nom Complet" type="text"/>
+</div>
+<div class="relative group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-primary mb-unit-xs">Email Address</label>
+<input class="w-full bg-transparent border-b border-primary/30 py-unit-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors input-gold-focus" placeholder="email@maison.com" type="email"/>
+</div>
+<div class="relative group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-primary mb-unit-xs">Inquiry Type</label>
+<select class="w-full bg-transparent border-b border-primary/30 py-unit-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors appearance-none cursor-pointer">
+<option class="bg-background">General Inquiry</option>
+<option class="bg-background">Bespoke Commission</option>
+<option class="bg-background">Wholesale &amp; Hospitality</option>
+<option class="bg-background">Press Inquiry</option>
+</select>
+<span class="absolute right-0 bottom-2 material-symbols-outlined text-primary pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+<div class="relative group">
+<label class="block font-label-sm text-label-sm uppercase tracking-widest text-primary mb-unit-xs">Message</label>
+<textarea class="w-full bg-transparent border-b border-primary/30 py-unit-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors resize-none input-gold-focus" placeholder="How may we assist you?" rows="4"></textarea>
+</div>
+<button class="w-full py-unit-md bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-[0.2em] hover:bg-primary-container transition-all duration-300 transform active:scale-[0.98]" type="submit">
+                            Send Inquiry
+                        </button>
+</form>
+</div>
+</div>
+</section>
+<!-- Support Links Section -->
+<section class="bg-surface-container-lowest py-unit-xl border-y-[0.5px] border-primary/20">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-unit-xl text-center md:text-left">
+<!-- Wholesale -->
+<div class="space-y-unit-md group">
+<div class="flex items-center justify-center md:justify-start gap-unit-sm text-primary">
+<span class="material-symbols-outlined text-headline-md" data-icon="storefront">storefront</span>
+<h4 class="font-headline-md text-headline-md uppercase tracking-wide">Wholesale</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Global retail partners and boutique curators.</p>
+<a class="inline-block font-label-sm text-label-sm uppercase tracking-widest text-primary border-b border-transparent hover:border-primary transition-all" href="mailto:wholesale@maisonatlas.com">wholesale@maisonatlas.com</a>
+</div>
+<!-- Press -->
+<div class="space-y-unit-md group">
+<div class="flex items-center justify-center md:justify-start gap-unit-sm text-primary">
+<span class="material-symbols-outlined text-headline-md" data-icon="auto_stories">auto_stories</span>
+<h4 class="font-headline-md text-headline-md uppercase tracking-wide">Press &amp; Media</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Editorial inquiries and brand collaboration requests.</p>
+<a class="inline-block font-label-sm text-label-sm uppercase tracking-widest text-primary border-b border-transparent hover:border-primary transition-all" href="mailto:press@maisonatlas.com">press@maisonatlas.com</a>
+</div>
+<!-- Customer Care -->
+<div class="space-y-unit-md group">
+<div class="flex items-center justify-center md:justify-start gap-unit-sm text-primary">
+<span class="material-symbols-outlined text-headline-md" data-icon="support_agent">support_agent</span>
+<h4 class="font-headline-md text-headline-md uppercase tracking-wide">Concierge</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Order tracking, returns, and product care advice.</p>
+<a class="inline-block font-label-sm text-label-sm uppercase tracking-widest text-primary border-b border-transparent hover:border-primary transition-all" href="mailto:care@maisonatlas.com">care@maisonatlas.com</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-unit-xl mt-unit-xl bg-surface-container-lowest border-t-[0.5px] border-primary/20">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="max-w-md">
+<h2 class="font-display-lg text-display-lg text-primary mb-8 tracking-tighter">Maison Atlas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-unit-md leading-relaxed">Preserving the soul of Moroccan craftsmanship through architectural forms and heritage textiles for the modern global connoisseur.</p>
+<div class="flex gap-unit-md text-primary">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-80 transition-opacity" data-icon="language">language</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-80 transition-opacity" data-icon="location_on">location_on</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-80 transition-opacity" data-icon="mail">mail</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-unit-xl">
+<div class="space-y-unit-sm">
+<h5 class="font-label-sm text-label-sm uppercase tracking-widest text-primary">The House</h5>
+<ul class="space-y-2">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Sustainability</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Journal</a></li>
+</ul>
+</div>
+<div class="space-y-unit-sm">
+<h5 class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Services</h5>
+<ul class="space-y-2">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-unit-xl pt-unit-md border-t border-primary/10">
+<p class="font-body-md text-body-md text-on-surface-variant/50 text-center">© 2024 Maison Atlas. Crafted in Marrakech.</p>
+</div>
+</footer>
+<script>
+        // Subtle scroll effect for the header
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('h-20', 'bg-background');
+                nav.classList.remove('h-24', 'bg-background/90');
+            } else {
+                nav.classList.add('h-24', 'bg-background/90');
+                nav.classList.remove('h-20', 'bg-background');
+            }
+        });
+
+        // Form submission micro-interaction
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.textContent = 'Inquiry Received';
+                btn.classList.replace('bg-primary', 'bg-green-800/20');
+                btn.classList.add('text-green-500', 'border', 'border-green-500/50');
+                form.reset();
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('bg-green-800/20', 'text-green-500', 'border', 'border-green-500/50');
+                    btn.classList.add('bg-primary');
+                }, 3000);
+            }, 1500);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr" data-current-lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://js.stripe.com https://challenges.cloudflare.com; worker-src 'self' blob:; frame-src https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co https://api.stripe.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com https://res.cloudinary.com https://images.unsplash.com; media-src 'self' https://res.cloudinary.com">
+    <link rel="icon" type="image/png" href="/images/9oftan-logo-cropped.png" />
+    <title>Maison Tislit – Mode Marocaine Féminine</title>
+    <meta name="description" content="Maison Tislit célèbre le patrimoine marocain féminin à travers des djellabas, takchitas et gandouras artisanales. Découvrez notre collection 2025." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- All fonts deferred (non-blocking) via media=print trick -->
+    <!-- Critical above-fold fonts: Playfair Display + Raleway -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap"
+      media="print"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" />
+    </noscript>
+    <!-- Secondary fonts deferred -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@400;600&family=Marck+Script&family=Italiana&family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
+      media="print"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@400;600&family=Marck+Script&family=Italiana&family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" />
+    </noscript>
+  </head>
+  <body>
+    <!-- Static above-the-fold hero image: paints instantly (drives LCP) before JS hydrates.
+         Removed as soon as React mounts the real hero. -->
+    <div id="static-hero" aria-hidden="true"
+      style="position:fixed;inset:0;z-index:-1;background:#1c1917;">
+      <img src="/images/hero-bg.webp" alt="" fetchpriority="high"
+        style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maison Tislit - PFE Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@400;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Raleway', sans-serif; color: #1c1917; line-height: 1.7; padding: 40px; max-width: 900px; margin: 0 auto; }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: #1a1208; margin-top: 1.5em; margin-bottom: 0.5em; }
+  h1 { font-size: 28px; border-bottom: 2px solid #c9a84c; padding-bottom: 10px; margin-top: 1em; }
+  h2 { font-size: 22px; }
+  h3 { font-size: 18px; }
+  p { margin-bottom: 1em; text-align: justify; }
+  table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 14px; }
+  th, td { border: 1px solid #d6d3d1; padding: 8px 12px; text-align: left; }
+  th { background: #1a1208; color: #c9a84c; font-weight: 600; }
+  tr:nth-child(even) { background: #fafaf9; }
+  code { background: #f5f5f4; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1a1208; color: #e7e5e4; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 1em 0; }
+  pre code { background: none; padding: 0; color: inherit; }
+  ul, ol { margin-bottom: 1em; padding-left: 24px; }
+  li { margin-bottom: 0.3em; }
+  hr { margin: 2em 0; border: none; border-top: 1px solid #d6d3d1; }
+  .cover { text-align: center; padding: 120px 0 80px; }
+  .cover h1 { font-size: 42px; border: none; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 20px; color: #c9a84c; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+  .cover .info { font-size: 16px; color: #78716c; line-height: 2; }
+  @media print { body { padding: 20px; } }
+</style>
+</head>
+<body>
+  <div class="cover">
+    <h1>Maison Tislit</h1>
+    <div class="subtitle">E-Commerce Platform</div>
+    <div class="info">
+      <p>Projet de Fin d'Etudes</p>
+      <p>Full-Stack Web Development</p>
+      <p>2025</p>
+    </div>
+  </div>
+  <h1>General Introduction</h1>
+<p>The Moroccan traditional clothing industry, known for its rich heritage of djellabas, takchitas, and gandouras, has long been rooted in local craftsmanship and physical marketplaces. In recent years, however, the global shift toward e-commerce has created new opportunities for artisanal brands to reach a wider audience. Yet, many Moroccan clothing brands still lack a dedicated digital presence that reflects the elegance and cultural significance of their products.</p>
+<p>Maison Tislit was founded with the mission of celebrating Moroccan feminine clothing by blending traditional craftsmanship with contemporary design. To support this vision, we identified the need for a custom e-commerce platform — one that not only allows customers to browse and purchase products but also provides a seamless, multilingual, and culturally resonant shopping experience.</p>
+<p>This project focuses on the design and development of a full-stack e-commerce website for Maison Tislit. The platform includes user authentication, a product catalog with filtering and sorting, a shopping cart, secure payment processing via Stripe, order management, and an administrative dashboard for managing products, orders, and customer messages. The application is built using React with TypeScript for the frontend and Supabase — a backend-as-a-service platform — for the database, authentication, and API layer.</p>
+<p>This report is structured as follows: Chapter 1 presents a state-of-the-art analysis of the e-commerce landscape for traditional clothing and defines the problem statement. Chapter 2 covers the analysis and design phases, including functional requirements and system architecture. Chapter 3 details the technologies and tools selected for the project. Chapter 4 describes the implementation of each major feature. Chapter 5 discusses testing and validation. Finally, the conclusion summarizes the achievements and outlines future perspectives.</p>
+<hr>
+<h1>Chapter 1: State of the Art &amp; Problem Statement</h1>
+<h2>1.1 The Moroccan Traditional Clothing Market</h2>
+<p>Moroccan traditional clothing — including the djellaba, takchita, gandoura, and caftan — represents centuries of artisanal heritage. These garments are characterized by intricate embroidery, high-quality fabrics such as silk and velvet, and designs that vary by region. The city of Fez, where Maison Tislit is rooted, remains one of the most important centers for traditional textile craftsmanship.</p>
+<p>Despite this rich tradition, the market faces several challenges:</p>
+<ul>
+<li><strong>Limited online presence</strong>: Most traditional clothing sellers operate through physical stores or social media platforms like Instagram and WhatsApp, lacking a structured e-commerce experience.</li>
+<li><strong>Fragmented customer journey</strong>: Customers often interact across multiple channels (Instagram for discovery, WhatsApp for inquiries, bank transfers for payment) resulting in a disjointed experience.</li>
+<li><strong>Language barriers</strong>: Many existing platforms cater primarily to French or Arabic speakers, leaving English-speaking customers underserved.</li>
+</ul>
+<h2>1.2 Existing E-commerce Solutions</h2>
+<p>Several platforms exist in the Moroccan e-commerce space:</p>
+<table>
+<thead>
+<tr>
+<th>Solution</th>
+<th>Type</th>
+<th>Strengths</th>
+<th>Limitations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hespax</td>
+<td>General marketplace</td>
+<td>Large audience</td>
+<td>Not specialized for traditional clothing</td>
+</tr>
+<tr>
+<td>Avito.ma</td>
+<td>Classified ads</td>
+<td>High traffic</td>
+<td>No integrated payment or cart system</td>
+</tr>
+<tr>
+<td>Instagram/Facebook Shop</td>
+<td>Social commerce</td>
+<td>Easy setup</td>
+<td>Limited customization, no proper cart/checkout</td>
+</tr>
+<tr>
+<td>Shopify/WooCommerce</td>
+<td>DIY platform</td>
+<td>Feature-rich</td>
+<td>Generic templates, monthly fees, limited tailoring</td>
+</tr>
+</tbody></table>
+<p>None of these solutions offer a dedicated, culturally tailored experience for a Moroccan traditional clothing brand with built-in multilingual support, an integrated admin dashboard, and a modern UI.</p>
+<h2>1.3 Problem Statement</h2>
+<p>Maison Tislit requires a custom-built e-commerce platform that:</p>
+<ol>
+<li>Showcases traditional Moroccan clothing in a way that reflects its elegance and cultural value.</li>
+<li>Provides a seamless shopping experience across French, English, and Arabic.</li>
+<li>Integrates secure online payments via Stripe.</li>
+<li>Includes an administrative interface for managing products, orders, and customer communications.</li>
+<li>Supports user accounts with order history and favorites.</li>
+<li>Delivers all functionality without recurring platform fees or restrictive templates.</li>
+</ol>
+<h2>1.4 Objectives</h2>
+<h3>Primary Objectives</h3>
+<ul>
+<li>Design and develop a full-stack e-commerce website for Maison Tislit.</li>
+<li>Implement a responsive, modern UI that reflects the brand&#39;s identity.</li>
+<li>Build a secure authentication and user management system.</li>
+<li>Create a product catalog with categories, filtering, and sorting.</li>
+<li>Develop a shopping cart and checkout flow with Stripe payment integration.</li>
+<li>Build an admin dashboard for product and order management.</li>
+</ul>
+<h3>Secondary Objectives</h3>
+<ul>
+<li>Implement bilingual support (French and English) with Arabic-ready architecture.</li>
+<li>Add loyalty features such as favorites and order history.</li>
+<li>Ensure mobile responsiveness and accessibility.</li>
+<li>Deploy the application to a production environment.</li>
+</ul>
+<h2>1.5 Methodology</h2>
+<p>The project follows an iterative development approach:</p>
+<ol>
+<li><strong>Requirements gathering</strong>: Defining functional and non-functional requirements based on the brand&#39;s needs.</li>
+<li><strong>Design</strong>: System architecture, database schema, and UI/UX mockups.</li>
+<li><strong>Implementation</strong>: Building the frontend and backend components iteratively.</li>
+<li><strong>Testing</strong>: Verifying functionality, performance, and security.</li>
+<li><strong>Deployment</strong>: Deploying the application for production use.</li>
+</ol>
+<h2>1.6 Scope</h2>
+<p>The platform covers the following features:</p>
+<ul>
+<li><strong>Frontend</strong>: Landing page, shop page, product detail modal, shopping cart, checkout flow, user account page, login/registration pages, and admin panel.</li>
+<li><strong>Backend</strong>: PostgreSQL database, RESTful API via Supabase, authentication, and Stripe payment integration.</li>
+<li><strong>Admin</strong>: Product CRUD operations, order management, messaging system, and user management.</li>
+</ul>
+<p>Features explicitly out of scope for this version include: mobile native applications, AI-powered recommendations, and a reviews/ratings system.</p>
+<hr>
+<h1>Chapter 2: Analysis &amp; Design</h1>
+<h2>2.1 Functional Requirements</h2>
+<h3>2.1.1 User-Facing Features</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FR1</td>
+<td>Browse Products</td>
+<td>Users can view all products with category filtering and sorting</td>
+</tr>
+<tr>
+<td>FR2</td>
+<td>Product Details</td>
+<td>Users can view product images, descriptions, colors, sizes, and prices</td>
+</tr>
+<tr>
+<td>FR3</td>
+<td>User Registration</td>
+<td>New users can create an account with name, email, and password</td>
+</tr>
+<tr>
+<td>FR4</td>
+<td>User Login</td>
+<td>Registered users can log in securely</td>
+</tr>
+<tr>
+<td>FR5</td>
+<td>Shopping Cart</td>
+<td>Users can add/remove products and update quantities</td>
+</tr>
+<tr>
+<td>FR6</td>
+<td>Checkout</td>
+<td>Users can place orders with delivery information</td>
+</tr>
+<tr>
+<td>FR7</td>
+<td>Payment</td>
+<td>Users can pay via credit/debit card through Stripe</td>
+</tr>
+<tr>
+<td>FR8</td>
+<td>Order Confirmation</td>
+<td>Users receive an order confirmation with details</td>
+</tr>
+<tr>
+<td>FR9</td>
+<td>Account Management</td>
+<td>Users can view order history and account information</td>
+</tr>
+<tr>
+<td>FR10</td>
+<td>Multilingual</td>
+<td>The interface supports French and English</td>
+</tr>
+</tbody></table>
+<h3>2.1.2 Admin Features</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FR11</td>
+<td>Product Management</td>
+<td>Admin can add, edit, and delete products</td>
+</tr>
+<tr>
+<td>FR12</td>
+<td>Order Management</td>
+<td>Admin can view and update order statuses</td>
+</tr>
+<tr>
+<td>FR13</td>
+<td>Customer Messages</td>
+<td>Admin can view and reply to customer inquiries</td>
+</tr>
+<tr>
+<td>FR14</td>
+<td>User Management</td>
+<td>Admin can view registered users</td>
+</tr>
+<tr>
+<td>FR15</td>
+<td>Dashboard</td>
+<td>Admin sees overview statistics (products, orders, revenue)</td>
+</tr>
+</tbody></table>
+<h2>2.2 Non-Functional Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NFR1</td>
+<td>Security</td>
+<td>Passwords hashed, authentication via Supabase, admin-only routes</td>
+</tr>
+<tr>
+<td>NFR2</td>
+<td>Responsiveness</td>
+<td>Fully functional on desktop, tablet, and mobile</td>
+</tr>
+<tr>
+<td>NFR3</td>
+<td>Performance</td>
+<td>Fast page loads, optimized images, lazy loading</td>
+</tr>
+<tr>
+<td>NFR4</td>
+<td>Scalability</td>
+<td>Backend scales via Supabase managed infrastructure</td>
+</tr>
+<tr>
+<td>NFR5</td>
+<td>Maintainability</td>
+<td>Clean code structure, TypeScript for type safety</td>
+</tr>
+</tbody></table>
+<h2>2.3 System Architecture</h2>
+<p>The application follows a modern full-stack architecture:</p>
+<pre><code>┌─────────────────────────────────────────────────┐
+│                   Client (Browser)               │
+│  ┌─────────────────────────────────────────────┐ │
+│  │           React + Vite + TypeScript         │ │
+│  │  ┌──────┐  ┌──────┐  ┌──────┐  ┌────────┐ │ │
+│  │  │ Auth │  │ Shop │  │ Cart │  │ Admin  │ │ │
+│  │  └──────┘  └──────┘  └──────┘  └────────┘ │ │
+│  └─────────────────────────────────────────────┘ │
+└──────────────────┬──────────────────────────────┘
+                   │ HTTPS
+┌──────────────────▼──────────────────────────────┐
+│                 Backend (Supabase)               │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐ │
+│  │ PostgreSQL │  │ Auth (GoTrue) │  │ Storage   │ │
+│  └────────────┘  └────────────┘  └────────────┘ │
+└──────────────────┬──────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────┐
+│           Third-Party Services                   │
+│  ┌────────────────┐  ┌────────────────────────┐ │
+│  │  Stripe API    │  │  Supabase Edge Functions│ │
+│  └────────────────┘  └────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+</code></pre>
+<h3>2.3.1 Frontend Architecture</h3>
+<ul>
+<li><strong>Framework</strong>: React 18 with TypeScript</li>
+<li><strong>Build Tool</strong>: Vite for fast development and optimized builds</li>
+<li><strong>Styling</strong>: Tailwind CSS for utility-first responsive design</li>
+<li><strong>Routing</strong>: React Router v6 for client-side navigation</li>
+<li><strong>State Management</strong>: React Context API for global state (auth, cart, language)</li>
+<li><strong>Icons</strong>: Lucide React for consistent iconography</li>
+</ul>
+<h3>2.3.2 Backend Architecture</h3>
+<ul>
+<li><strong>Database</strong>: PostgreSQL (managed by Supabase)</li>
+<li><strong>Authentication</strong>: Supabase Auth (GoTrue) with JWT tokens</li>
+<li><strong>API</strong>: Direct Supabase client queries from the browser (Row Level Security)</li>
+<li><strong>Payments</strong>: Stripe via a Supabase Edge Function (create-payment-intent)</li>
+<li><strong>File Storage</strong>: Supabase Storage for product images (future use)</li>
+</ul>
+<h2>2.4 Database Schema</h2>
+<p>The database consists of the following tables:</p>
+<h3><code>profiles</code></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>UUID</td>
+<td>Primary key, references auth.users</td>
+</tr>
+<tr>
+<td>name</td>
+<td>TEXT</td>
+<td>User&#39;s full name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>TEXT</td>
+<td>User&#39;s email address</td>
+</tr>
+<tr>
+<td>is_admin</td>
+<td>BOOLEAN</td>
+<td>Admin flag</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>Account creation date</td>
+</tr>
+</tbody></table>
+<h3><code>products</code></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>BIGINT</td>
+<td>Primary key, auto-increment</td>
+</tr>
+<tr>
+<td>name</td>
+<td>TEXT</td>
+<td>Product name (French)</td>
+</tr>
+<tr>
+<td>name_en</td>
+<td>TEXT</td>
+<td>Product name (English)</td>
+</tr>
+<tr>
+<td>name_ar</td>
+<td>TEXT</td>
+<td>Product name (Arabic)</td>
+</tr>
+<tr>
+<td>category</td>
+<td>TEXT</td>
+<td>Category (djellaba, takchita, gandoura)</td>
+</tr>
+<tr>
+<td>price</td>
+<td>NUMERIC</td>
+<td>Current price</td>
+</tr>
+<tr>
+<td>original_price</td>
+<td>NUMERIC</td>
+<td>Original price (for discounts)</td>
+</tr>
+<tr>
+<td>image</td>
+<td>TEXT</td>
+<td>Image URL path</td>
+</tr>
+<tr>
+<td>description</td>
+<td>TEXT</td>
+<td>Description (French)</td>
+</tr>
+<tr>
+<td>description_en</td>
+<td>TEXT</td>
+<td>Description (English)</td>
+</tr>
+<tr>
+<td>sizes</td>
+<td>TEXT[]</td>
+<td>Available sizes</td>
+</tr>
+<tr>
+<td>colors</td>
+<td>TEXT[]</td>
+<td>Available colors</td>
+</tr>
+<tr>
+<td>badge</td>
+<td>TEXT</td>
+<td>Badge (Bestseller, Nouveau, etc.)</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>INTEGER</td>
+<td>Stock quantity</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>Product creation date</td>
+</tr>
+</tbody></table>
+<h3><code>orders</code></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>BIGINT</td>
+<td>Primary key, auto-increment</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>UUID</td>
+<td>References profiles.id</td>
+</tr>
+<tr>
+<td>status</td>
+<td>TEXT</td>
+<td>pending, shipped, delivered</td>
+</tr>
+<tr>
+<td>total</td>
+<td>NUMERIC</td>
+<td>Order total</td>
+</tr>
+<tr>
+<td>address</td>
+<td>TEXT</td>
+<td>Shipping address</td>
+</tr>
+<tr>
+<td>city</td>
+<td>TEXT</td>
+<td>Shipping city</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>TEXT</td>
+<td>Customer phone</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>Order date</td>
+</tr>
+</tbody></table>
+<h3><code>order_items</code></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>BIGINT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>BIGINT</td>
+<td>References orders.id</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>BIGINT</td>
+<td>References products.id</td>
+</tr>
+<tr>
+<td>product_name</td>
+<td>TEXT</td>
+<td>Snapshot of product name</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>INTEGER</td>
+<td>Quantity ordered</td>
+</tr>
+<tr>
+<td>price</td>
+<td>NUMERIC</td>
+<td>Price at time of order</td>
+</tr>
+<tr>
+<td>size</td>
+<td>TEXT</td>
+<td>Selected size</td>
+</tr>
+<tr>
+<td>color</td>
+<td>TEXT</td>
+<td>Selected color</td>
+</tr>
+</tbody></table>
+<h3><code>messages</code></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>BIGINT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td>name</td>
+<td>TEXT</td>
+<td>Sender name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>TEXT</td>
+<td>Sender email</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>TEXT</td>
+<td>Message subject</td>
+</tr>
+<tr>
+<td>body</td>
+<td>TEXT</td>
+<td>Message content</td>
+</tr>
+<tr>
+<td>is_read</td>
+<td>BOOLEAN</td>
+<td>Read status</td>
+</tr>
+<tr>
+<td>reply</td>
+<td>TEXT</td>
+<td>Admin reply</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>Message date</td>
+</tr>
+</tbody></table>
+<h2>2.5 Use Case Diagram</h2>
+<pre><code>                    ┌─────────────────────┐
+                    │     Visitor          │
+                    └────────┬────────────┘
+                             │
+            ┌────────────────┼────────────────┐
+            ▼                ▼                 ▼
+    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+    │ Browse       │ │ Register /   │ │ Contact      │
+    │ Products     │ │ Login        │ │ via Form     │
+    └──────────────┘ └──────────────┘ └──────────────┘
+            │                │
+            ▼                ▼
+    ┌──────────────┐ ┌──────────────┐
+    │ Add to Cart  │ │ View Account │
+    └──────────────┘ └──────────────┘
+            │
+            ▼
+    ┌──────────────┐ ┌──────────────┐
+    │ Checkout /   │ │ Order        │
+    │ Pay (Stripe) │ │ History      │
+    └──────────────┘ └──────────────┘
+
+    ┌─────────────────────┐
+    │     Admin            │
+    └────────┬────────────┘
+             │
+    ┌────────┼────────┬───────────┐
+    ▼        ▼        ▼           ▼
+ ┌──────┐ ┌──────┐ ┌──────┐ ┌────────┐
+ │Manage│ │Manage│ │Manage│ │View    │
+ │Prod. │ │Orders│ │Msgs  │ │Stats   │
+ └──────┘ └──────┘ └──────┘ └────────┘
+</code></pre>
+<h2>2.6 UI/UX Design</h2>
+<h3>2.6.1 Design System</h3>
+<ul>
+<li><p><strong>Color Palette</strong>:</p>
+<ul>
+<li>Primary: Stone (#1a1208, #44403c)</li>
+<li>Accent: Amber (#d97706, #c9a84c)</li>
+<li>Background: Stone-50 (#fafaf9), White (#ffffff)</li>
+<li>Text: Stone-900 (#1c1917), Stone-400 (#a8a29e)</li>
+</ul>
+</li>
+<li><p><strong>Typography</strong>:</p>
+<ul>
+<li>Headings: Playfair Display (serif, elegant)</li>
+<li>Body: Raleway (sans-serif, modern)</li>
+<li>Accent: Cormorant Garamond (serif, refined)</li>
+</ul>
+</li>
+<li><p><strong>Component Patterns</strong>: Rounded cards with subtle shadows, hover animations, clean grid layouts.</p>
+</li>
+</ul>
+<h3>2.6.2 Page Structure</h3>
+<ol>
+<li><strong>Home Page</strong>: Hero video, story section, category cards, featured products, brand values</li>
+<li><strong>Shop Page</strong>: Filter bar, product grid with cards, sort options</li>
+<li><strong>Cart Page</strong>: Item list, quantity controls, order summary</li>
+<li><strong>Checkout Page</strong>: Multi-step form (delivery → payment)</li>
+<li><strong>Account Page</strong>: Order history, account details</li>
+<li><strong>Admin Page</strong>: Sidebar navigation, tabbed sections (overview, stock, orders, messages, users)</li>
+</ol>
+<hr>
+<h1>Chapter 3: Technologies &amp; Tools</h1>
+<h2>3.1 Frontend Stack</h2>
+<h3>3.1.1 React</h3>
+<p>React is a JavaScript library for building user interfaces, developed by Meta. It was chosen for its component-based architecture, which promotes reusability and maintainability. React&#39;s virtual DOM ensures efficient rendering, making it suitable for a dynamic e-commerce interface.</p>
+<p><strong>Key advantages for this project:</strong></p>
+<ul>
+<li>Component reuse (ProductCard, Badge, Modal components)</li>
+<li>Efficient state management via Context API</li>
+<li>Large ecosystem and community support</li>
+</ul>
+<h3>3.1.2 TypeScript</h3>
+<p>TypeScript adds static type checking to JavaScript, catching errors at compile time rather than runtime. This is particularly valuable for an e-commerce application where data structures (products, orders, cart items) must be consistent across the application.</p>
+<p><strong>Key types defined:</strong></p>
+<ul>
+<li><code>Product</code>: name, price, category, sizes, colors, image</li>
+<li><code>CartItem</code>: extends Product with quantity, selectedSize, selectedColor</li>
+<li><code>User</code>: id, name, email</li>
+<li><code>Page</code>: union type for routing</li>
+</ul>
+<h3>3.1.3 Vite</h3>
+<p>Vite is a modern build tool that offers fast development server startup via native ES module serving and optimized production builds via Rollup. It was chosen over Create React App for its significantly faster hot module replacement (HMR) and smaller configuration overhead.</p>
+<h3>3.1.4 Tailwind CSS</h3>
+<p>Tailwind CSS is a utility-first CSS framework that enables rapid UI development through pre-built classes. It was selected for:</p>
+<ul>
+<li><strong>Consistency</strong>: Predefined design tokens for colors, spacing, typography.</li>
+<li><strong>Responsiveness</strong>: Built-in breakpoint prefixes (<code>sm:</code>, <code>md:</code>, <code>lg:</code>).</li>
+<li><strong>Customization</strong>: The <code>tailwind.config.js</code> allows extending the default theme.</li>
+<li><strong>Performance</strong>: Purges unused CSS in production builds.</li>
+</ul>
+<h2>3.2 Backend Stack</h2>
+<h3>3.2.1 Supabase</h3>
+<p>Supabase is an open-source backend-as-a-service (BaaS) that provides a PostgreSQL database, authentication, storage, and Edge Functions. It was chosen for several reasons:</p>
+<p><strong>PostgreSQL Database:</strong></p>
+<ul>
+<li>Full relational database with SQL queries, joins, and migrations.</li>
+<li>Row Level Security (RLS) for fine-grained access control.</li>
+<li>Real-time subscriptions (future scalability).</li>
+</ul>
+<p><strong>Authentication (GoTrue):</strong></p>
+<ul>
+<li>Built-in user management with email/password authentication.</li>
+<li>JWT-based session handling.</li>
+<li>Integration with React via <code>@supabase/supabase-js</code>.</li>
+</ul>
+<p><strong>Edge Functions:</strong></p>
+<ul>
+<li>Deno-based serverless functions for secure operations like Stripe payment intent creation.</li>
+<li>Deployed and managed through Supabase CLI.</li>
+</ul>
+<p><strong>Why Supabase over alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Supabase</th>
+<th>Firebase</th>
+<th>Custom Backend</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Database</td>
+<td>PostgreSQL (SQL)</td>
+<td>Firestore (NoSQL)</td>
+<td>Any</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Built-in</td>
+<td>Built-in</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Pricing</td>
+<td>Free tier generous</td>
+<td>Pay-as-you-go</td>
+<td>Server costs</td>
+</tr>
+<tr>
+<td>Open Source</td>
+<td>Yes</td>
+<td>No</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Manual</td>
+</tr>
+</tbody></table>
+<h3>3.2.2 Stripe</h3>
+<p>Stripe provides the payment processing infrastructure. The integration uses:</p>
+<ul>
+<li><strong>Stripe Elements</strong>: Secure payment form components.</li>
+<li><strong>Payment Intent API</strong>: Creates a payment intent server-side via a Supabase Edge Function.</li>
+<li><strong>Confirm Card Payment</strong>: Client-side confirmation with Stripe.js.</li>
+</ul>
+<p>The payment flow is as follows:</p>
+<pre><code>1. Client sends cart total to Edge Function
+2. Edge Function creates a PaymentIntent via Stripe API
+3. Client receives client_secret
+4. Client confirms payment with card details via Stripe Elements
+5. Stripe processes the payment and returns a result
+6. On success, order is created in the database
+</code></pre>
+<h2>3.3 Development Tools</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VS Code</td>
+<td>Code editor</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>Version control</td>
+</tr>
+<tr>
+<td>npm</td>
+<td>Package management</td>
+</tr>
+<tr>
+<td>Supabase CLI</td>
+<td>Local development, migrations, function deployment</td>
+</tr>
+<tr>
+<td>Chrome DevTools</td>
+<td>Debugging and performance analysis</td>
+</tr>
+</tbody></table>
+<h2>3.4 Deployment</h2>
+<p>The application is deployed as a static site (since Supabase handles the backend):</p>
+<ul>
+<li><strong>Frontend</strong>: Built with <code>vite build</code> and deployed to a hosting service (e.g., Vercel, Netlify, or Supabase Hosting).</li>
+<li><strong>Backend</strong>: Fully managed by Supabase cloud.</li>
+<li><strong>Environment Variables</strong>: Supabase URL and anon key configured in the hosting platform.</li>
+</ul>
+<hr>
+<h1>Chapter 4: Implementation</h1>
+<h2>4.1 Project Setup and Structure</h2>
+<p>The project was initialized using Vite with the React + TypeScript template. The directory structure is organized as follows:</p>
+<pre><code>maison-tislit-e-commerce-website/
+├── public/
+│   └── images/           # Static assets (product images, HERO.mp4)
+├── src/
+│   ├── components/       # Reusable UI components
+│   │   ├── Footer.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── ProductModal.tsx
+│   │   ├── Toast.tsx
+│   │   └── WhatsAppButton.tsx
+│   ├── context/          # React Context providers
+│   │   ├── AppContext.tsx      # Global state (auth, cart, products)
+│   │   └── LanguageContext.tsx # i18n state management
+│   ├── pages/            # Page-level components
+│   │   ├── HomePage.tsx
+│   │   ├── ShopPage.tsx
+│   │   ├── CartPage.tsx
+│   │   ├── CheckoutPage.tsx
+│   │   ├── ConfirmationPage.tsx
+│   │   ├── LoginPage.tsx
+│   │   ├── RegisterPage.tsx
+│   │   ├── AccountPage.tsx
+│   │   ├── AdminPage.tsx
+│   │   └── ContactPage.tsx
+│   ├── supabase/         # Supabase integration
+│   │   ├── client.ts     # Supabase client initialization
+│   │   ├── queries.ts    # Database query functions
+│   │   └── types.ts      # Database row type definitions
+│   ├── translations/     # i18n files
+│   │   ├── fr.ts         # French translations
+│   │   └── en.ts         # English translations
+│   ├── utils/
+│   │   ├── cn.ts         # Tailwind class merging utility
+│   │   └── animations.ts # Scroll-reveal animation hooks
+│   ├── App.tsx           # Root component with routing
+│   ├── main.tsx          # Application entry point
+│   ├── types.ts          # Shared TypeScript interfaces
+│   └── index.css         # Tailwind directives + global styles
+├── supabase/
+│   ├── migrations/       # Database migrations
+│   │   └── 00001_schema.sql
+│   └── functions/        # Edge Functions
+│       └── create-payment-intent/
+│           └── index.ts
+├── index.html
+├── vite.config.ts
+└── package.json
+</code></pre>
+<h2>4.2 Authentication System</h2>
+<p>Authentication is handled by Supabase Auth and wrapped in the AppContext. The implementation covers three operations: login, registration, and logout.</p>
+<p><strong>Login flow:</strong></p>
+<pre><code class="language-typescript">// src/context/AppContext.tsx (simplified)
+const login = async (email: string, password: string) =&gt; {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) return false;
+  // Fetch user profile
+  const profile = await getProfile(data.user.id);
+  setUser({ id, name, email });
+  setProfile(profile);
+  return true;
+};
+</code></pre>
+<p><strong>Row Level Security (RLS):</strong></p>
+<ul>
+<li>Products are readable by anyone (<code>SELECT</code> policy for all users).</li>
+<li>Orders are only readable by the owning user or an admin.</li>
+<li>Admin routes and operations are protected by checking <code>is_admin</code> on the profiles table.</li>
+</ul>
+<h2>4.3 Product Catalog</h2>
+<p>Products are stored in the <code>products</code> PostgreSQL table and fetched via the <code>getProducts()</code> query function:</p>
+<pre><code class="language-typescript">export async function getProducts(): Promise&lt;ProductRow[]&gt; {
+  const { data, error } = await supabase
+    .from(&#39;products&#39;)
+    .select(&#39;*&#39;)
+    .order(&#39;created_at&#39;, { ascending: false });
+  return data || [];
+}
+</code></pre>
+<h3>4.3.1 Category Filtering</h3>
+<p>The ShopPage implements client-side filtering by category using React state:</p>
+<pre><code class="language-typescript">const filtered = products
+  .filter(p =&gt; activeCategory === &#39;all&#39; || p.category === activeCategory)
+  .sort((a, b) =&gt; {
+    if (sortBy === &#39;price-asc&#39;) return a.price - b.price;
+    if (sortBy === &#39;price-desc&#39;) return b.price - a.price;
+    return 0;
+  });
+</code></pre>
+<h3>4.3.2 Product Cards</h3>
+<p>Each product is displayed as a <code>ProductCard</code> component with:</p>
+<ul>
+<li>Product image with hover zoom effect</li>
+<li>Badge display (Bestseller, Nouveau, Premium, Promo)</li>
+<li>Discount percentage when originalPrice is set</li>
+<li>Color chips showing available colors</li>
+<li>Quick-add-to-cart button</li>
+</ul>
+<h2>4.4 Shopping Cart</h2>
+<p>The cart is managed through React Context and persisted to localStorage:</p>
+<pre><code class="language-typescript">const [cart, setCart] = useState&lt;CartItem[]&gt;(() =&gt; {
+  const saved = localStorage.getItem(&#39;maison-tislit-cart&#39;);
+  return saved ? JSON.parse(saved) : [];
+});
+</code></pre>
+<p><strong>Operations:</strong></p>
+<ul>
+<li><strong>Add to cart</strong>: Checks for existing item with same ID, size, and color; increments quantity if found, otherwise adds new item.</li>
+<li><strong>Remove from cart</strong>: Filters out the matching item.</li>
+<li><strong>Update quantity</strong>: Changes quantity or removes if zero.</li>
+<li><strong>Cart persistence</strong>: Cart is saved to localStorage on every change via a <code>useEffect</code>.</li>
+</ul>
+<h2>4.5 Checkout &amp; Payment</h2>
+<h3>4.5.1 Checkout Flow</h3>
+<p>The checkout is a two-step process:</p>
+<ol>
+<li><strong>Delivery Information</strong>: User fills in name, email, phone, address, and city.</li>
+<li><strong>Payment</strong>: User enters card details via Stripe Elements.</li>
+</ol>
+<h3>4.5.2 Stripe Integration</h3>
+<p><strong>Server-side (Edge Function):</strong></p>
+<pre><code class="language-typescript">// supabase/functions/create-payment-intent/index.ts
+const paymentIntent = await stripe.paymentIntents.create({
+  amount: amount * 100, // Convert to cents
+  currency: &#39;eur&#39;,
+  automatic_payment_methods: { enabled: true },
+});
+</code></pre>
+<p><strong>Client-side:</strong></p>
+<pre><code class="language-typescript">const { error } = await stripe.confirmCardPayment(clientSecret, {
+  payment_method: { card: elements.getElement(CardElement) },
+});
+</code></pre>
+<h3>4.5.3 Order Creation</h3>
+<p>On successful payment, an order is created in the database with:</p>
+<ul>
+<li>User ID, total amount, delivery information</li>
+<li>Order items with product snapshots (name, price, size, color at time of purchase)</li>
+<li>Status set to &quot;pending&quot;</li>
+</ul>
+<h2>4.6 Multilingual Support</h2>
+<p>The application supports French and English through a custom translation system:</p>
+<pre><code class="language-typescript">// LanguageContext provides current locale and translation function
+const { t, locale, setLocale } = useTranslation();
+
+// Usage in components
+&lt;h1&gt;{t(&#39;shop.ourBoutique&#39;)}&lt;/h1&gt;
+</code></pre>
+<p>Translation files export key-value objects:</p>
+<pre><code class="language-typescript">// fr.ts
+const fr = {
+  &#39;nav.home&#39;: &#39;Accueil&#39;,
+  &#39;shop.ourBoutique&#39;: &#39;Notre Boutique&#39;,
+  // ...
+};
+
+// en.ts
+const en = {
+  &#39;nav.home&#39;: &#39;Home&#39;,
+  &#39;shop.ourBoutique&#39;: &#39;Our Boutique&#39;,
+  // ...
+};
+</code></pre>
+<p>Product names and descriptions are stored in both French and English in the database, and the UI selects the appropriate language based on the current locale.</p>
+<h2>4.7 Admin Dashboard</h2>
+<p>The admin panel is a protected page accessible only to users with <code>is_admin = true</code>. It features:</p>
+<h3>4.7.1 Overview Section</h3>
+<ul>
+<li>Statistics cards: Total products, pending orders, unread messages, registered users, revenue.</li>
+<li>Data fetched from the database and displayed in a clean grid layout.</li>
+</ul>
+<h3>4.7.2 Stock Management</h3>
+<ul>
+<li>Searchable, filterable product table.</li>
+<li>Add/edit modal with fields for all product attributes.</li>
+<li>Delete with confirmation.</li>
+</ul>
+<h3>4.7.3 Order Management</h3>
+<ul>
+<li>Orders displayed in a table with status badges (pending/shipped/delivered).</li>
+<li>One-click status updates.</li>
+<li>Filters by status.</li>
+</ul>
+<h3>4.7.4 Message Management</h3>
+<ul>
+<li>Customer inquiries displayed in a read/unread view.</li>
+<li>Reply functionality with inline form.</li>
+</ul>
+<h3>4.7.5 User Management</h3>
+<ul>
+<li>Table of registered users with admin status indicator.</li>
+<li>Ability to toggle admin privileges.</li>
+</ul>
+<h2>4.8 Performance Optimizations</h2>
+<ul>
+<li><strong>Lazy loading</strong>: Images use <code>loading=&quot;lazy&quot;</code> for deferred loading off-screen.</li>
+<li><strong>CSS</strong>: Tailwind purges unused styles in production builds.</li>
+<li><strong>Build</strong>: Vite produces optimized chunks with code splitting.</li>
+</ul>
+<h2>4.9 Contact Page</h2>
+<p>The contact page (<code>ContactPage.tsx</code>) provides a way for visitors and customers to get in touch with the Maison Tislit team directly from the website.</p>
+<h3>4.9.1 Page Structure</h3>
+<p>The page is divided into three sections:</p>
+<ol>
+<li><strong>Hero banner</strong>: A full-width brand-colored section with a subtle geometric pattern background, displaying the page title and subtitle. The content uses a CSS keyframe animation (<code>hero-fade-in</code>) for a smooth entrance without any JavaScript dependency.</li>
+<li><strong>Atelier information + contact form</strong>: A two-column layout showing the atelier&#39;s address, phone, email, and business hours on the left, and a contact form on the right.</li>
+<li><strong>Support links</strong>: Three cards (Wholesale, Press, Concierge) with email contact links, styled on a brand-colored background.</li>
+</ol>
+<p>All page translations (labels, placeholders, success/error messages) are defined in the <code>fr.ts</code> and <code>en.ts</code> translation files.</p>
+<h3>4.9.2 Contact Form</h3>
+<p>The form collects four fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Input Type</th>
+<th>Table Column</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name</td>
+<td>Text input</td>
+<td><code>messages.name</code></td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Email input</td>
+<td><code>messages.email</code></td>
+</tr>
+<tr>
+<td>Subject</td>
+<td>Select dropdown</td>
+<td><code>messages.subject</code></td>
+</tr>
+<tr>
+<td>Message</td>
+<td>Textarea</td>
+<td><code>messages.body</code></td>
+</tr>
+</tbody></table>
+<p>On submission, the form inserts the data directly into the <code>messages</code> PostgreSQL table via <code>supabase.from(&#39;messages&#39;).insert()</code>. Submission does not require authentication — the Row Level Security policy permits public inserts (<code>WITH CHECK (true)</code>) while restricting read, update, and delete operations to administrators only.</p>
+<h3>4.9.3 Spam Protection</h3>
+<p>Since the form accepts public submissions, three layers of spam protection are implemented client-side:</p>
+<ol>
+<li><strong>Honeypot field</strong>: A hidden input (<code>_hp</code>) that is invisible to humans via <code>display: none</code> and <code>tabIndex={-1}</code>. Automated bots typically fill all form fields, including hidden ones. If the <code>_hp</code> field contains a value on submission, the request is silently ignored.</li>
+<li><strong>Time check</strong>: The component records the page mount timestamp via a <code>useRef</code>. Submissions that occur in under 4 seconds are rejected — legitimate users need at least this long to read and fill out the form.</li>
+<li><strong>Send cooldown</strong>: After a successful submission, the send button is disabled for 90 seconds with a countdown timer displayed below it. This prevents rapid repeated submissions.</li>
+</ol>
+<p>These measures stop the vast majority of automated spam without requiring a third-party CAPTCHA service, additional API keys, or server-side Edge Functions.</p>
+<h3>4.9.4 Scroll Reveal Animations</h3>
+<p>The page uses two custom React hooks defined in <code>src/utils/animations.ts</code>:</p>
+<ul>
+<li><strong><code>useScrollReveal</code></strong>: Applies a fade-in + slide-up animation when an element scrolls into view. The hook sets the element&#39;s initial opacity to <code>0</code> and <code>transform: translateY(60px)</code> on mount (committed via a forced reflow). When the <code>IntersectionObserver</code> detects the element&#39;s top has reached 85% of the viewport, it enables a CSS transition that animates to <code>opacity: 1, translateY(0)</code>. This approach completely avoids the dynamic imports and flickering that plagued the previous GSAP + ScrollTrigger implementation.</li>
+<li><strong><code>useStaggerReveal</code></strong>: Same concept but for a list of child elements, each animated with a staggered transition delay (<code>i * stagger</code> seconds).</li>
+</ul>
+<p>Both hooks check whether the element is already in the viewport on mount; if so, no animation is applied, ensuring in-viewport content is never hidden. A <code>IntersectionObserver</code> polyfill check provides graceful degradation.</p>
+<h2>4.10 Key Screenshots</h2>
+<p><em>(Insert screenshots of: Homepage, Shop Page, Product Modal, Cart, Checkout, Admin Dashboard)</em></p>
+<hr>
+<h1>Chapter 5: Testing &amp; Validation</h1>
+<h2>5.1 Testing Strategy</h2>
+<p>Testing was performed at multiple levels to ensure the application functions correctly across all features. Given the project&#39;s scope, the testing strategy focused on:</p>
+<ul>
+<li><strong>Functional testing</strong>: Verifying that each feature works as specified in the requirements.</li>
+<li><strong>Integration testing</strong>: Ensuring frontend components work correctly with the Supabase backend.</li>
+<li><strong>Responsive testing</strong>: Verifying the UI renders correctly on different screen sizes.</li>
+<li><strong>User acceptance testing</strong>: Manual testing by simulating real user flows.</li>
+</ul>
+<h2>5.2 Functional Testing</h2>
+<h3>5.2.1 Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User registration</td>
+<td>Fill registration form, submit</td>
+<td>Account created, redirected</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>User login</td>
+<td>Enter credentials, submit</td>
+<td>Logged in, toast notification</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Login with wrong password</td>
+<td>Enter incorrect password</td>
+<td>Error message displayed</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Logout</td>
+<td>Click logout button</td>
+<td>Session cleared, redirected to home</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Protected routes</td>
+<td>Access /account while logged out</td>
+<td>Redirected to login</td>
+<td>✅ Pass</td>
+</tr>
+</tbody></table>
+<h3>5.2.2 Product Browsing</h3>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>View all products</td>
+<td>Navigate to shop</td>
+<td>All products displayed</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Filter by category</td>
+<td>Click category button</td>
+<td>Products filtered correctly</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Sort by price</td>
+<td>Select sort option</td>
+<td>Products sorted ascending/descending</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Product details</td>
+<td>Click product card</td>
+<td>Modal opens with details</td>
+<td>✅ Pass</td>
+</tr>
+</tbody></table>
+<h3>5.2.3 Cart Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Add to cart</td>
+<td>Click add button, logged in</td>
+<td>Item added, toast shown</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Add to cart (guest)</td>
+<td>Click add button, not logged in</td>
+<td>Modal opens for login prompt</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Update quantity</td>
+<td>Change quantity in cart</td>
+<td>Total updates correctly</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Remove item</td>
+<td>Click remove</td>
+<td>Item removed from cart</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Cart persistence</td>
+<td>Refresh page</td>
+<td>Cart items preserved</td>
+<td>✅ Pass</td>
+</tr>
+</tbody></table>
+<h3>5.2.4 Checkout &amp; Payment</h3>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fill delivery form</td>
+<td>Enter valid info</td>
+<td>Proceed to payment step</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Successful payment</td>
+<td>Enter valid test card</td>
+<td>Payment succeeds, order created</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Failed payment</td>
+<td>Enter declined card</td>
+<td>Error message displayed</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Order confirmation</td>
+<td>After successful payment</td>
+<td>Confirmation page shown</td>
+<td>✅ Pass</td>
+</tr>
+</tbody></table>
+<h3>5.2.5 Contact Form</h3>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Submit contact form</td>
+<td>Fill all fields, click send</td>
+<td>Data inserted into messages table, success toast</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Submit with empty fields</td>
+<td>Leave required fields blank</td>
+<td>Browser validation prevents submission</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Honeypot spam detection</td>
+<td>Fill hidden _hp field programmatically</td>
+<td>Request silently ignored</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Rapid submission</td>
+<td>Submit form twice in under 90s</td>
+<td>Button disabled, cooldown shown</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Admin views message</td>
+<td>Navigate to admin → Messages</td>
+<td>New submission appears in table</td>
+<td>✅ Pass</td>
+</tr>
+</tbody></table>
+<h3>5.2.6 Admin Dashboard</h3>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Steps</th>
+<th>Expected Result</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Create product</td>
+<td>Fill add form, save</td>
+<td>Product appears in table and shop</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Edit product</td>
+<td>Modify fields, update</td>
+<td>Changes reflected</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Delete product</td>
+<td>Click delete, confirm</td>
+<td>Product removed</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Update order status</td>
+<td>Click ship/deliver</td>
+<td>Status badge updates</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>Reply to message</td>
+<td>Type reply, send</td>
+<td>Reply saved, status changes</td>
+<td>✅ Pass</td>
+</tr>
+</tbody></table>
+<h2>5.3 Responsive Testing</h2>
+<p>The application was tested on the following viewport sizes:</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Width</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mobile</td>
+<td>375px</td>
+<td>✅ Renders correctly</td>
+</tr>
+<tr>
+<td>Tablet</td>
+<td>768px</td>
+<td>✅ Renders correctly</td>
+</tr>
+<tr>
+<td>Desktop</td>
+<td>1280px</td>
+<td>✅ Renders correctly</td>
+</tr>
+<tr>
+<td>Large Desktop</td>
+<td>1920px</td>
+<td>✅ Renders correctly</td>
+</tr>
+</tbody></table>
+<h2>5.4 Security Testing</h2>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SQL injection via form inputs</td>
+<td>✅ Prevented by Supabase parameterized queries</td>
+</tr>
+<tr>
+<td>Unauthorized admin access</td>
+<td>✅ Blocked by RLS policies and client-side checks</td>
+</tr>
+<tr>
+<td>JWT token validation</td>
+<td>✅ Handled by Supabase Auth</td>
+</tr>
+<tr>
+<td>Stripe payment secrets</td>
+<td>✅ Processed server-side via Edge Function</td>
+</tr>
+<tr>
+<td>Contact form spam</td>
+<td>✅ Blocked by honeypot field, time check, and cooldown</td>
+</tr>
+</tbody></table>
+<h2>5.5 Known Limitations</h2>
+<ul>
+<li><strong>Image management</strong>: Product images are stored in the public directory rather than Supabase Storage (future improvement).</li>
+<li><strong>Real-time updates</strong>: The app uses polling rather than Supabase real-time subscriptions for simplicity.</li>
+<li><strong>No automated tests</strong>: Unit and integration tests were not implemented due to time constraints.</li>
+<li><strong>No search functionality</strong>: Products can only be browsed by category, not searched by keyword.</li>
+</ul>
+<hr>
+<h1>General Conclusion</h1>
+<p>This project successfully delivered a full-stack e-commerce platform for Maison Tislit, a brand specializing in Moroccan traditional feminine clothing. The application meets all primary objectives set at the outset of the project:</p>
+<ul>
+<li>A <strong>responsive, elegant frontend</strong> built with React and Tailwind CSS that reflects the brand&#39;s cultural identity.</li>
+<li>A <strong>secure backend</strong> powered by Supabase, providing authentication, a PostgreSQL database with Row Level Security, and serverless functions for payment processing.</li>
+<li>A <strong>complete shopping experience</strong> from product browsing and cart management to Stripe payment integration and order confirmation.</li>
+<li>A <strong>comprehensive admin dashboard</strong> enabling the brand to manage products, orders, customer messages, and users.</li>
+<li><strong>Multilingual support</strong> with French and English interfaces.</li>
+</ul>
+<h2>Key Achievements</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Achievement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Frontend</td>
+<td>10 pages, reusable component architecture, responsive design</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>5 database tables, RLS policies, migrations, Edge Functions</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Full registration/login/logout with session management</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>Stripe integration with payment intents</td>
+</tr>
+<tr>
+<td>Admin</td>
+<td>5 management sections with CRUD operations</td>
+</tr>
+<tr>
+<td>i18n</td>
+<td>240+ translation keys across two languages</td>
+</tr>
+</tbody></table>
+<h2>Future Perspectives</h2>
+<p>Several enhancements could be made in future iterations:</p>
+<ol>
+<li><strong>Search functionality</strong>: Implement full-text search across product names and descriptions.</li>
+<li><strong>Product reviews</strong>: Allow customers to leave ratings and reviews.</li>
+<li><strong>Wishlist</strong>: Create a dedicated favorites/wishlist feature.</li>
+<li><strong>Email notifications</strong>: Send order confirmation and shipping updates via email.</li>
+<li><strong>Inventory management</strong>: Real-time stock tracking with low-stock alerts.</li>
+<li><strong>Analytics dashboard</strong>: Detailed sales reports, customer insights, and conversion tracking.</li>
+<li><strong>Mobile application</strong>: Develop a React Native app for iOS and Android.</li>
+<li><strong>Supabase Storage</strong>: Migrate product images to Supabase Storage for better scalability.</li>
+<li><strong>Automated testing</strong>: Add unit tests (Vitest) and end-to-end tests (Cypress/Playwright).</li>
+</ol>
+<h2>Personal Reflection</h2>
+<p>Building Maison Tislit&#39;s e-commerce platform was a rewarding experience that combined frontend design, backend architecture, payment integration, and database management. The project demonstrated the power of modern web technologies — particularly the React + Supabase stack — in delivering a production-ready application with minimal infrastructure overhead. The result is a platform that authentically represents Moroccan craftsmanship in the digital space while providing a seamless experience for customers across languages and devices.</p>
+<hr>
+
+</body>
+</html>

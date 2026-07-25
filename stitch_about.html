@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About Us | MAISON TISLIT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=EB+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e7e2da",
+                    "on-tertiary-fixed": "#1d1c17",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-container": "#1f2020",
+                    "surface-variant": "#353535",
+                    "surface": "#131313",
+                    "secondary-fixed": "#ffdada",
+                    "on-secondary-container": "#d6aaab",
+                    "outline": "#989084",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#4c463c",
+                    "on-surface": "#e4e2e1",
+                    "on-primary-fixed-variant": "#53452a",
+                    "inverse-on-surface": "#303030",
+                    "on-error": "#690005",
+                    "background": "#131313",
+                    "on-surface-variant": "#cfc5b9",
+                    "tertiary": "#cac6be",
+                    "on-secondary": "#452829",
+                    "primary-fixed": "#f6e0bb",
+                    "on-secondary-fixed": "#2d1415",
+                    "surface-container-low": "#1b1c1c",
+                    "surface-container-highest": "#353535",
+                    "secondary": "#e9bcbc",
+                    "primary-fixed-dim": "#d8c4a1",
+                    "on-background": "#e4e2e1",
+                    "surface-dim": "#131313",
+                    "secondary-fixed-dim": "#e9bcbc",
+                    "inverse-surface": "#e4e2e1",
+                    "on-primary-fixed": "#251a04",
+                    "secondary-container": "#5f3e3f",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-container": "#45381e",
+                    "surface-bright": "#393939",
+                    "error-container": "#93000a",
+                    "tertiary-container": "#a7a39c",
+                    "on-tertiary-fixed-variant": "#494741",
+                    "primary": "#d8c4a1",
+                    "tertiary-fixed-dim": "#cac6be",
+                    "primary-container": "#b4a180",
+                    "on-tertiary": "#32302b",
+                    "inverse-primary": "#6c5c40",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed-variant": "#5f3e3f",
+                    "surface-tint": "#d8c4a1",
+                    "on-tertiary-container": "#3b3a34",
+                    "on-primary": "#3b2f16"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit-lg": "32px",
+                    "unit-md": "16px",
+                    "margin-mobile": "20px",
+                    "container-max": "1440px",
+                    "unit-xs": "4px",
+                    "unit-sm": "8px",
+                    "unit-xl": "64px",
+                    "margin-desktop": "80px",
+                    "gutter": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["EB Garamond", "serif"],
+                    "headline-lg": ["Cinzel", "serif"],
+                    "label-sm": ["EB Garamond", "serif"],
+                    "display-lg-mobile": ["Cinzel", "serif"],
+                    "display-lg": ["Cinzel", "serif"],
+                    "body-md": ["EB Garamond", "serif"],
+                    "headline-md": ["Cinzel", "serif"]
+            },
+            "fontSize": {
+                    "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "0.03em", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .zellige-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%23b4a180' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop py-unit-md bg-transparent transition-colors duration-500 border-b border-outline-variant/20" id="main-nav">
+<div class="flex items-center gap-unit-lg">
+<a class="font-headline-lg text-headline-lg tracking-[0.2em] text-primary" href="#">MAISON TISLIT</a>
+</div>
+<div class="hidden md:flex gap-unit-lg items-center">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/80 hover:text-primary transition-colors duration-300" href="#">Collections</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/80 hover:text-primary transition-colors duration-300" href="#">Heritage</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/80 hover:text-primary transition-colors duration-300" href="#">Artisans</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-primary border-b border-primary pb-1" href="#">Maison</a>
+</div>
+<div class="flex items-center gap-unit-md text-primary">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-opacity">shopping_bag</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-70 transition-opacity">person</span>
+</div>
+</nav>
+<!-- 1. Hero Section -->
+<header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-[2000ms] hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDshtdgRImQ_6Ft1-oXKzDqw21Si2XiFl9WDs9hvPzjHqSx-4TDEOTYR8NvSBTrSVVfg_W5FXdoiHE1EX8xmxSqfo0rYartMtrP8_4armV_cOozwj3zKDsKAzBbFi3_WgxakxAz0nYi2QMJqtV2ViKX60-jbuWAc55sUmBH10LzEw2vly9U6HLEsUIEiaD9stQU9BURztYBYzzOTZ9MdLEbhrneDWdlwHjhi0t_V4kFBqg-pPh4_WETHg9CxjK7lgTMCTrBD-6UWEs')">
+</div>
+<div class="absolute inset-0 bg-surface-container-lowest/60 mix-blend-multiply"></div>
+</div>
+<div class="relative z-10 text-center px-margin-mobile reveal-up">
+<h1 class="font-display-lg text-display-lg text-primary-fixed-dim mb-unit-sm tracking-[0.3em]">MAISON TISLIT</h1>
+<p class="font-body-lg italic text-on-surface/90 tracking-widest">Woven in Tradition, Worn with Elegance</p>
+<div class="mt-unit-xl">
+<div class="w-[1px] h-24 bg-primary/50 mx-auto"></div>
+</div>
+</div>
+</header>
+<!-- 2. Heritage Story -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-unit-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+<div class="reveal-up">
+<div class="aspect-[4/5] bg-cover bg-center shadow-2xl grayscale hover:grayscale-0 transition-all duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCy5GB1M30gUjSc662Vdkq8F8WeprQLoRnN6tN5UUnge1GUF95ancV_pRDpclYw5ki3TBD6hIpovj_MT6xrR5IDH1nHStoJv60_nZs2q01i1H4_sLh2AJgyA_8s74x05EbHySBD8BrJt9pvUw7LAlJREMTEyirAvlP9KjGFctZFtnEBwytiHo20-Y70YGaY79Nmjd36y_de-H7g-LGwejG984TY-Tp6iIwKkaPq4hwCSGPaUm_WuGBEcYELH1mYAeOVAsQXfLVPSqk')"></div>
+</div>
+<div class="md:pl-unit-xl reveal-up" style="transition-delay: 200ms;">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-unit-lg">Our Heritage</h2>
+<p class="font-body-lg text-on-surface-variant mb-unit-md leading-relaxed">
+                    Maison Tislit was born from the silent valleys of the Atlas Mountains, where the rhythm of the loom has echoed for generations. Our story is not merely about fashion; it is a sacred preservation of the Berber soul and the Andalusian artistry that has defined Moroccan luxury for centuries.
+                </p>
+<p class="font-body-lg text-on-surface-variant leading-relaxed">
+                    Every thread we pull is a link to an ancestor; every pattern we stitch is a map of our shared history. We work exclusively with master artisans who have inherited their secrets from their mothers and fathers, ensuring that the 'Slow Luxury' of the Maghreb continues to flourish in a modern world.
+                </p>
+</div>
+</div>
+</section>
+<!-- 3. Craftsmanship Process -->
+<section class="bg-surface-container-low py-unit-xl">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-unit-xl">
+<h3 class="font-headline-md text-headline-md text-primary-fixed-dim tracking-widest uppercase mb-unit-sm">The Art of the Craft</h3>
+<div class="flex justify-center items-center gap-unit-sm">
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 20;">diamond</span>
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+</div>
+</div>
+<div class="relative grid grid-cols-1 md:grid-cols-4 gap-gutter px-unit-lg">
+<!-- Connector Line (Desktop) -->
+<div class="hidden md:block absolute top-[85px] left-margin-desktop right-margin-desktop h-[1px] bg-outline-variant/30 z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center text-center group reveal-up" style="transition-delay: 100ms;">
+<div class="w-40 h-40 bg-cover bg-center border-[6px] border-surface-container mb-unit-md transition-transform duration-500 group-hover:-translate-y-2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD-VIVN5Lz1HiM3A0CFuePgxmRFRUruu3pIuJVTMGGey1C8Ka8nuduZ99DrFxY8ueKAnZUoRxr87V66vsku14BB4zvLef8-PjPqTwtbeXvVh0pJeI78qB9JiUh3VnpMac7c8DI1cpS4TjemrKQ0s-cxCS6uj08F6C5adPrQa5nqrM-gvryEqB8678p2vlgM4BcLpR3oanA8DbW9b40wnJ9z6SICGmzAEpJ_n4EqRCShpfYlsB_12MEXZnanc6ljtxd1vArS4d2FXxk')"></div>
+<h4 class="font-headline-md text-body-lg text-primary mb-unit-xs">Hand Embroidery</h4>
+<p class="font-body-md italic text-on-surface-variant">The soul of the piece.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center text-center group reveal-up" style="transition-delay: 200ms;">
+<div class="w-40 h-40 bg-cover bg-center border-[6px] border-surface-container mb-unit-md transition-transform duration-500 group-hover:-translate-y-2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVMdxTKY5DShmarB0UQpaSxXNAeIqsFjyB8OJliBjTClrC-5dp9gQW4DmjDSdWRCL1rA5GzXZt4K-JzprIdBNX7UcNQ3kQS71pr1P81fkdZRgoy4_h2IqxmhU1GQUcvEo4zVfJNk8sKQH-si0QRuljlMu3QbNAXVZxqzru5ILINMg2MffFmtrt8xCWQxgBz7iegabscGP6JdRjkpll29ge72vTSUIKX-ZX90rf2r_Ef_TfPbNMzVJBens2RCvN_F-yQqkSxcw2FBw')"></div>
+<h4 class="font-headline-md text-body-lg text-primary mb-unit-xs">Fabric Selection</h4>
+<p class="font-body-md italic text-on-surface-variant">Ethically sourced excellence.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center text-center group reveal-up" style="transition-delay: 300ms;">
+<div class="w-40 h-40 bg-cover bg-center border-[6px] border-surface-container mb-unit-md transition-transform duration-500 group-hover:-translate-y-2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCyCjkYDw8QRGzEZtsWvdIXowQF7dnnWtaTT7oP6qaZG2lcOg-HBrVLn3XjBrMopLBNsnw0-iFt0xrMHbQb9y9AV8b_oR5uc9g2kEh_ED6zb3-fqBQYKAAkWTURSlRsKEJ2JwWyA66Rw3lhI5TjbG0_YY_0oQy32tsIdzPnlhOFbAj7ZpwVKrx43P3Yy_k-ZXIFMWLHOlabt6qbb6xq-A4LPGeXQJB2Bg9A0aUluOk1_BTNLnbNcD2ar0bVtTleTnYM8KBGC8M4Cqo')"></div>
+<h4 class="font-headline-md text-body-lg text-primary mb-unit-xs">Master Tailoring</h4>
+<p class="font-body-md italic text-on-surface-variant">Structural perfection.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative z-10 flex flex-col items-center text-center group reveal-up" style="transition-delay: 400ms;">
+<div class="w-40 h-40 bg-cover bg-center border-[6px] border-surface-container mb-unit-md transition-transform duration-500 group-hover:-translate-y-2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAA8UXs9lRebIQu8jDp8Owk8OvHFt6D7bjQZzRw0s8HRcMNKRgxYw1Gfri6V4KxbYgGcD173BVQgm6aTyS0DwjpqAuU4RaOvWeoFqDazyV64LJJBd3OsjyRQyWLm4i93YMQznsdq9_oekazaH-YXxBojMvN1GK_DoAJCfBHyKT06JdtYBeLdIM9IVDqTQ30HgmCsTs1-MD_MI8VkfjHOSbFQcwG2SXQ30lUekoJqafSGu7vcghw_V9uhNfrJCbKJhOL4_YUx9zkCTc')"></div>
+<h4 class="font-headline-md text-body-lg text-primary mb-unit-xs">Final Piece</h4>
+<p class="font-body-md italic text-on-surface-variant">A legacy reborn.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Tradition Reimagined -->
+<section class="w-full flex flex-col md:flex-row min-h-[819px]">
+<div class="flex-1 relative group overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQBK6hTuQk9R018BgtVOkRSIv-h48c60hWzHoK7-0xBEbBM2mgXsI0biTmpLCF7dxcuxuVEZmTiQMaeWLfI_WhvYMg7_Oq_fdNjWs6v64weyT3MtaJdIAn2IzMQgUKYiLIbW-UTJBSp4DpAzu7L3HBouCrRsiAISA3p69Xzq8sHZ4Q1VT9FG-Z_g20EJclIqg_Tg53atUc_0uSa3LZozVTWCo8J9ZXQ4vLR1ivPVSYxrsn6XvIGEdWvgx8hvL5jSfvxHUlkebbqh8')"></div>
+<div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors"></div>
+<div class="absolute bottom-unit-lg left-unit-lg text-white">
+<span class="font-label-sm uppercase tracking-widest text-on-surface">The Root</span>
+</div>
+</div>
+<div class="w-[1px] bg-outline-variant/30 h-auto hidden md:block"></div>
+<div class="flex-1 flex flex-col items-center justify-center bg-surface-container-low px-unit-xl py-unit-xl relative">
+<div class="text-center reveal-up">
+<h2 class="font-headline-lg text-display-lg text-primary mb-unit-md">Tradition Reimagined</h2>
+<div class="w-20 h-[1px] bg-outline mx-auto mb-unit-md"></div>
+<p class="font-body-lg text-on-surface-variant max-w-md mx-auto">
+                    We do not look back to live in the past, but to find the vocabulary for the future. Our designs distill ancestral motifs into contemporary silhouettes for the global woman.
+                </p>
+</div>
+</div>
+<div class="w-[1px] bg-outline-variant/30 h-auto hidden md:block"></div>
+<div class="flex-1 relative group overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwzkV9iRdhpWqI6bZoIn0XFFYv3fLwmYfsSzEjc3Tjvyvj3wX5H64cGYon2sINEZEnJQ4XS2xmncBa7llw_JYKPIxyVLn8boJHKpWg7HHF-r6smTAPTZ6QeAL3YthisObYok1TepqWdmCf4xK3sl2KcL56atUr83qqsmPGUU-YJFQASJCFmnDz0RpOE3azTk4RG_GPOfnVLjnRxYbC4fXV_ZjwJeL0jOWhqJJrcF89fmTr9fL9_Q_Y2S3CLoD6QDOqWlsSmO8GbkI')"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+<div class="absolute bottom-unit-lg right-unit-lg text-white text-right">
+<span class="font-label-sm uppercase tracking-widest text-on-surface">The Evolution</span>
+</div>
+</div>
+</section>
+<!-- 5. Artisan Spotlight -->
+<section class="bg-primary-container text-on-primary-container py-unit-xl overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="flex flex-col md:flex-row items-center gap-unit-xl">
+<div class="flex-1 reveal-up">
+<span class="material-symbols-outlined text-primary text-5xl mb-unit-md opacity-50">format_quote</span>
+<blockquote class="font-body-lg italic text-3xl md:text-4xl leading-snug text-on-primary-container mb-unit-lg">
+                        "The artisan's hand is the ultimate rebel in an age of machines. At Maison Tislit, we protect the poetry of the human touch, ensuring that our heritage doesn't just survive, but speaks to the world."
+                    </blockquote>
+<cite class="font-headline-md text-primary block not-italic">— Laila Benani, Founder &amp; Creative Director</cite>
+</div>
+<div class="flex-none reveal-up" style="transition-delay: 200ms;">
+<div class="w-64 h-64 md:w-80 md:h-80 rounded-full border-2 border-primary/30 p-unit-sm">
+<div class="w-full h-full rounded-full bg-cover bg-center grayscale" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbyADXEJAUzETha5j23EwxFzDpt3XJ285YUTJmctIjmZmpGufc69jooZUuXaS75X50d2xPJ4dBxxhGt7rrpXBaYHUVAzPdKDBykeNfbbBRF_2es1sWxwhOqS9Kgu5QQfn9XNblKF199iyq42WZQ4aXslnUu-Vf-1YJfJmO7svy9hYJdWXshLPJVaQZXuK_JpCPL-e4OIrMUQx-LiT6YaWX7bJwMo0Cs7wQq864CgFHPXVLCfC8wv8UdlCr6nDhX3-ZUi2N-tUXQ94')"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Materials & Techniques -->
+<section class="zellige-pattern py-unit-xl bg-background">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-unit-xl text-center">
+<div class="reveal-up" style="transition-delay: 100ms;">
+<span class="material-symbols-outlined text-primary text-4xl mb-unit-sm">auto_fix_high</span>
+<h3 class="font-headline-md text-on-surface mb-unit-md uppercase tracking-widest">Hand Embroidery</h3>
+<p class="font-body-md text-on-surface-variant">Each garment features 'R'anda' or 'Terz' embroidery, meticulously hand-stitched by women's collectives in the Fes region, taking up to 40 hours per piece.</p>
+</div>
+<div class="reveal-up" style="transition-delay: 200ms;">
+<span class="material-symbols-outlined text-primary text-4xl mb-unit-sm">palette</span>
+<h3 class="font-headline-md text-on-surface mb-unit-md uppercase tracking-widest">Natural Dyes</h3>
+<p class="font-body-md text-on-surface-variant">We utilize botanical pigments derived from pomegranate skins, indigo leaves, and saffron crocus, creating a living palette that ages beautifully with time.</p>
+</div>
+<div class="reveal-up" style="transition-delay: 300ms;">
+<span class="material-symbols-outlined text-primary text-4xl mb-unit-sm">texture</span>
+<h3 class="font-headline-md text-on-surface mb-unit-md uppercase tracking-widest">Handwoven Fabric</h3>
+<p class="font-body-md text-on-surface-variant">Our silk and cotton blends are woven on traditional pit looms, preserving a texture and drape that industrial machines simply cannot replicate.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. Closing CTA -->
+<section class="py-unit-xl bg-surface-container-low text-center">
+<div class="max-w-md mx-auto px-margin-mobile reveal-up">
+<div class="mb-unit-md flex justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">filter_vintage</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-unit-lg">The collection awaits your discovery.</h2>
+<button class="bg-primary-container text-on-primary-container px-unit-lg py-unit-md font-label-sm uppercase tracking-[0.2em] transition-all hover:bg-primary-fixed hover:text-on-primary-fixed hover:tracking-[0.3em]">
+                Discover the Collection
+            </button>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-unit-xl px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter bg-surface-container-lowest border-t border-outline-variant/30">
+<div class="md:col-span-1">
+<h4 class="font-headline-md text-headline-md text-primary mb-unit-sm">MAISON TISLIT</h4>
+<p class="text-on-surface-variant text-body-md">Ancestral heritage, contemporary luxury.</p>
+</div>
+<div class="flex flex-col gap-unit-xs">
+<h5 class="text-primary font-bold mb-unit-sm uppercase text-sm tracking-widest">The Maison</h5>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Artisans</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Sustainability</a>
+</div>
+<div class="flex flex-col gap-unit-xs">
+<h5 class="text-primary font-bold mb-unit-sm uppercase text-sm tracking-widest">Support</h5>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Size Guide</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col gap-unit-xs">
+<h5 class="text-primary font-bold mb-unit-sm uppercase text-sm tracking-widest">Newsletter</h5>
+<div class="flex border-b border-outline-variant/30 py-unit-xs">
+<input class="bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/40 flex-1 font-body-md" placeholder="Email address" type="email"/>
+<button class="text-primary font-label-sm uppercase tracking-widest">Join</button>
+</div>
+</div>
+<div class="md:col-span-4 mt-unit-xl pt-unit-md border-t border-outline-variant/10 text-center">
+<p class="text-on-surface-variant/50 text-xs tracking-widest">© 2024 MAISON TISLIT. ANCESTRAL HERITAGE, CONTEMPORARY LUXURY.</p>
+</div>
+</footer>
+<script>
+        // Reveal on scroll logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up').forEach((el) => observer.observe(el));
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-surface-container-lowest');
+                nav.classList.remove('bg-transparent');
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('bg-surface-container-lowest');
+                nav.classList.add('bg-transparent');
+                nav.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

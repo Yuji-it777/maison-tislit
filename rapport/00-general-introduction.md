@@ -1,0 +1,9 @@
+# General Introduction
+
+The Moroccan traditional clothing industry, known for its rich heritage of djellabas, takchitas, and gandouras, has long been rooted in local craftsmanship and physical marketplaces. In recent years, however, the global shift toward e-commerce has created new opportunities for artisanal brands to reach a wider audience. Yet, many Moroccan clothing brands still lack a dedicated digital presence that reflects the elegance and cultural significance of their products.
+
+Maison Tislit was founded with the mission of celebrating Moroccan feminine clothing by blending traditional craftsmanship with contemporary design. To support this vision, we identified the need for a custom e-commerce platform — one that not only allows customers to browse and purchase products but also provides a seamless, multilingual, and culturally resonant shopping experience.
+
+This project focuses on the design and development of a full-stack e-commerce website for Maison Tislit. The platform includes user authentication, a product catalog with filtering and sorting, a shopping cart, secure payment processing via Stripe, order management, and an administrative dashboard for managing products, orders, and customer messages. The application is built using React with TypeScript for the frontend and Supabase — a backend-as-a-service platform — for the database, authentication, and API layer.
+
+This report is structured as follows: Chapter 1 presents a state-of-the-art analysis of the e-commerce landscape for traditional clothing and defines the problem statement. Chapter 2 covers the analysis and design phases, including functional requirements and system architecture. Chapter 3 details the technologies and tools selected for the project. Chapter 4 describes the implementation of each major feature. Chapter 5 discusses testing and validation. Finally, the conclusion summarizes the achievements and outlines future perspectives.
