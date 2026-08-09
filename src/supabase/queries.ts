@@ -1,5 +1,5 @@
 import { supabase } from './client';
-import type { ProductRow, OrderRow, OrderItemRow, MessageRow, ProfileRow, ReviewRow } from './types';
+import type { ProductRow, OrderRow, OrderItemRow, MessageRow, ProfileRow, ReviewRow, NewsletterSubscriberRow } from './types';
 
 /* ───── Products ───── */
 export async function getProducts(): Promise<ProductRow[]> {
@@ -17,6 +17,7 @@ export async function getProduct(id: number): Promise<ProductRow | null> {
 export async function createProduct(product: Partial<ProductRow>): Promise<ProductRow> {
   const { data, error } = await supabase.from('products').insert(product).select().single();
   if (error) throw error;
+  if (!data) throw new Error('Failed to create product');
   return data;
 }
 
@@ -47,6 +48,7 @@ export async function getOrdersByUser(userId: string): Promise<OrderRow[]> {
 export async function createOrder(order: Partial<OrderRow>): Promise<OrderRow> {
   const { data, error } = await supabase.from('orders').insert(order).select().single();
   if (error) throw error;
+  if (!data) throw new Error('Failed to create order');
   return data;
 }
 
@@ -83,6 +85,7 @@ export async function getMessages(): Promise<MessageRow[]> {
 export async function createMessage(msg: Partial<MessageRow>): Promise<MessageRow> {
   const { data, error } = await supabase.from('messages').insert(msg).select().single();
   if (error) throw error;
+  if (!data) throw new Error('Failed to create message');
   return data;
 }
 
@@ -117,6 +120,18 @@ export async function updateProfile(id: string, profile: Partial<ProfileRow>): P
   if (error) throw error;
 }
 
+/* ───── Newsletter Subscribers ───── */
+export async function getNewsletterSubscribers(): Promise<NewsletterSubscriberRow[]> {
+  const { data, error } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+export async function deleteNewsletterSubscriber(id: number): Promise<void> {
+  const { error } = await supabase.from('newsletter_subscribers').delete().eq('id', id);
+  if (error) throw error;
+}
+
 /* ───── Reviews ───── */
 export async function getProductReviews(productId: number): Promise<ReviewRow[]> {
   const { data, error } = await supabase
@@ -131,5 +146,6 @@ export async function getProductReviews(productId: number): Promise<ReviewRow[]>
 export async function createReview(review: Partial<ReviewRow>): Promise<ReviewRow> {
   const { data, error } = await supabase.from('reviews').insert(review).select().single();
   if (error) throw error;
+  if (!data) throw new Error('Failed to create review');
   return data;
 }

@@ -43,21 +43,25 @@ export default function OrderTrackingPage() {
     setOrder(null);
 
     try {
-      // Basic order lookup by ID and partial email match (since we don't store email on the order row directly, we check user profile)
-      const { data, error: fetchError } = await supabase
+      const { data: orderData, error: fetchError } = await supabase
         .from('orders')
-        .select(`*, profiles:user_id(email)`)
+        .select('*')
         .eq('id', orderId)
         .single();
 
-      if (fetchError) throw new Error('Order not found');
-      
-      // Simple validation
-      if (data.profiles && data.profiles.email !== email) {
+      if (fetchError || !orderData) throw new Error('Order not found');
+
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('id', orderData.user_id)
+        .single();
+
+      if (!profileData || profileData.email !== email) {
         throw new Error('Email does not match');
       }
 
-      setOrder(data);
+      setOrder(orderData);
     } catch (err: any) {
       setError(locale === 'en' ? 'Order not found. Please check your ID and email.' : 'Commande introuvable. Veuillez vérifier votre numéro et email.');
     } finally {

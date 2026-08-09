@@ -24,13 +24,26 @@ export default function AccountPage() {
   const [loadingOrders, setLoadingOrders] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      setLoadingOrders(true);
-      getOrdersByUser(user.id).then(setOrders).catch(() => {}).finally(() => setLoadingOrders(false));
-    }
+    if (!user) return;
+    let cancelled = false;
+    setLoadingOrders(true);
+    getOrdersByUser(user.id)
+      .then(data => { if (!cancelled) setOrders(data); })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setLoadingOrders(false); });
+    return () => { cancelled = true; };
   }, [user]);
 
   const wishlistProducts = products.filter(p => wishlist.includes(p.id));
+
+  const memberSince = (() => {
+    try {
+      const d = new Date();
+      return d.toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-US', { month: 'long', year: 'numeric' });
+    } catch {
+      return '—';
+    }
+  })();
 
   if (!user) {
     return (
@@ -69,7 +82,6 @@ export default function AccountPage() {
           {[
             { icon: <Package size={32} className="text-brand" />, labelKey: 'account.orders', value: orders.length, color: 'bg-brand border-brand' },
             { icon: <Heart size={32} className="text-red-500" />, labelKey: 'account.favorites', value: wishlist.length, color: 'bg-rose-50 border-rose-200' },
-            { icon: '', labelKey: 'account.loyaltyPoints', value: '510', color: 'bg-emerald-50 border-emerald-200' },
           ].map(s => (
             <div key={s.labelKey} className={`${s.color} border rounded-xl p-6 text-center`}>
               <div className="text-3xl mb-2 flex justify-center">{typeof s.icon === 'string' ? s.icon : s.icon}</div>
@@ -175,7 +187,7 @@ export default function AccountPage() {
             </div>
             <div className="bg-stone-50 rounded-lg p-4">
               <p className="text-xs text-stone-400 uppercase tracking-wider mb-1">{t('account.memberSince')}</p>
-              <p className="text-stone-800 font-medium">Janvier 2025</p>
+              <p className="text-stone-800 font-medium">{memberSince}</p>
             </div>
             <div className="bg-stone-50 rounded-lg p-4">
               <p className="text-xs text-stone-400 uppercase tracking-wider mb-1">{t('account.status')}</p>

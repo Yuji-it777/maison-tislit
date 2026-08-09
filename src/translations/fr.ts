@@ -251,6 +251,7 @@ const fr = {
   'toast.accountCreatedEnd': '',
   'toast.loggedOut': 'Déconnexion réussie.',
   'toast.addedToCart': ' ajouté au panier !',
+  'toast.newsletterError': "Échec de l'abonnement. Veuillez réessayer.",
 
   // Reviews
   'review.loading': 'Chargement des avis...',

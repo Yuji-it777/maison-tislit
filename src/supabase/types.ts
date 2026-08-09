@@ -38,6 +38,7 @@ export interface OrderItemRow {
   price: number;
   size: string;
   color: string;
+  custom_measurements?: string | null;
 }
 
 export interface MessageRow {
@@ -56,6 +57,12 @@ export interface ProfileRow {
   name: string;
   email: string;
   is_admin: boolean;
+  created_at: string;
+}
+
+export interface NewsletterSubscriberRow {
+  id: number;
+  email: string;
   created_at: string;
 }
 

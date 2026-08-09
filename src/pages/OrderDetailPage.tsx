@@ -40,18 +40,22 @@ export default function OrderDetailPage() {
 
   useEffect(() => {
     if (!id) return;
+    let cancelled = false;
     const orderId = Number(id);
     getOrder(orderId).then(async (o) => {
+      if (cancelled) return;
       if (!o) { setLoading(false); return; }
       setOrder(o);
       const [orderItems, profiles] = await Promise.all([
         getOrderItems(orderId),
         getProfiles(),
       ]);
+      if (cancelled) return;
       setItems(orderItems);
       setProfile(profiles.find(p => p.id === o.user_id) || null);
       setLoading(false);
     });
+    return () => { cancelled = true; };
   }, [id]);
 
   const changeStatus = async (status: OrderStatus) => {
@@ -137,7 +141,28 @@ export default function OrderDetailPage() {
               {items.map((item, i) => (
                 <tr key={item.id || i} className="border-b border-stone-50 last:border-0">
                   <td className="py-3 pr-3 font-medium" style={{ color: '#555' }}>{item.product_name}</td>
-                  <td className="py-3 pr-3" style={{ color: '#777' }}>{item.size || '—'}</td>
+                  <td className="py-3 pr-3" style={{ color: '#777' }}>
+                    <div>{item.size || '—'}</div>
+                    {item.custom_measurements && (() => {
+                      try {
+                        const m = JSON.parse(item.custom_measurements);
+                        return (
+                          <div className="text-[10px] text-stone-500 mt-1 p-2 bg-stone-50 rounded border border-stone-100/50 space-y-0.5" style={{ minWidth: '160px' }}>
+                            <span className="font-semibold block text-[10px]">Mesures (cm):</span>
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5">
+                              <span>Épaules: {m.shoulders || '—'}</span>
+                              <span>Poitrine: {m.bust || '—'}</span>
+                              <span>Taille: {m.waist || '—'}</span>
+                              <span>Hanches: {m.hips || '—'}</span>
+                              <span className="col-span-2">Longueur: {m.length || '—'}</span>
+                            </div>
+                          </div>
+                        );
+                      } catch {
+                        return <div className="text-[10px] text-stone-500 mt-1">{item.custom_measurements}</div>;
+                      }
+                    })()}
+                  </td>
                   <td className="py-3 pr-3" style={{ color: '#777' }}>{item.color || '—'}</td>
                   <td className="py-3 pr-3 text-right" style={{ color: '#777' }}>{item.quantity}</td>
                   <td className="py-3 text-right font-medium" style={{ color: '#555' }}>{formatPrice(Number(item.price))}</td>

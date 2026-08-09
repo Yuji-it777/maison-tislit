@@ -7,10 +7,11 @@ import {
   getOrders, updateOrderStatus,
   getMessages, updateMessage, deleteMessage,
   getProfiles, updateProfile,
+  getNewsletterSubscribers, deleteNewsletterSubscriber,
 } from '../supabase/queries';
-import type { ProductRow, OrderRow, MessageRow, ProfileRow } from '../supabase/types';
+import type { ProductRow, OrderRow, MessageRow, ProfileRow, NewsletterSubscriberRow } from '../supabase/types';
 
-type Section = 'overview' | 'stock' | 'orders' | 'messages' | 'users';
+type Section = 'overview' | 'stock' | 'orders' | 'messages' | 'users' | 'newsletter';
 type OrderStatus = 'pending' | 'shipped' | 'delivered';
 
 const GOLD = '#B4A180';
@@ -55,6 +56,7 @@ export default function AdminPage() {
     { id: 'stock' as Section, label: 'Stock', icon: icons.box },
     { id: 'orders' as Section, label: 'Orders', icon: icons.bag },
     { id: 'messages' as Section, label: 'Messages', icon: icons.mail },
+    { id: 'newsletter' as Section, label: 'Newsletter', icon: icons.mail },
     { id: 'users' as Section, label: 'Users', icon: icons.users },
   ];
 
@@ -92,6 +94,7 @@ export default function AdminPage() {
         {section === 'stock' && <StockSection />}
         {section === 'orders' && <OrdersSection />}
         {section === 'messages' && <MessagesSection />}
+        {section === 'newsletter' && <NewsletterSection />}
         {section === 'users' && <UsersSection />}
       </main>
     </div>
@@ -626,6 +629,65 @@ function MessagesSection() {
             </>
           )}
         </div>
+      </div>
+    </>
+  );
+}
+
+/* ───── Newsletter ───── */
+function NewsletterSection() {
+  const [subscribers, setSubscribers] = useState<NewsletterSubscriberRow[]>([]);
+
+  useEffect(() => { getNewsletterSubscribers().then(setSubscribers).catch(() => {}); }, []);
+
+  const remove = async (id: number) => {
+    if (!confirm('Supprimer cet abonné ?')) return;
+    await deleteNewsletterSubscriber(id);
+    setSubscribers(prev => prev.filter(s => s.id !== id));
+  };
+
+  return (
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-lg font-semibold" style={{ color: DARK }}>Newsletter Subscribers</h1>
+        <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ background: '#eaf3de', color: '#3b6d11' }}>
+          {subscribers.length} subscribers
+        </span>
+      </div>
+      <div className="rounded-xl" style={{ background: '#fff', border: '0.5px solid rgba(0,0,0,0.06)' }}>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-stone-100 text-[11px] uppercase tracking-wider" style={{ color: '#bbb' }}>
+              <th className="p-4 pr-3 font-medium text-left">Email</th>
+              <th className="p-4 pr-3 font-medium text-left">Subscribed</th>
+              <th className="p-4 font-medium text-left" />
+            </tr>
+          </thead>
+          <tbody>
+            {subscribers.map(s => (
+              <tr key={s.id} className="border-b border-stone-50 hover:bg-stone-50/50 transition-colors">
+                <td className="p-4 pr-3" style={{ color: '#555' }}>{s.email}</td>
+                <td className="p-4 pr-3 text-xs" style={{ color: '#bbb' }}>{new Date(s.created_at).toLocaleDateString('fr-FR')}</td>
+                <td className="p-4">
+                  <button
+                    onClick={() => remove(s.id)}
+                    className="text-[10px] px-2.5 py-1 rounded-md transition-colors hover:opacity-80"
+                    style={{ color: '#ef4444', background: 'transparent', border: '1px solid #fecaca' }}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {subscribers.length === 0 && (
+              <tr>
+                <td colSpan={3} className="p-8 text-center text-sm" style={{ color: '#bbb' }}>
+                  No subscribers yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </>
   );

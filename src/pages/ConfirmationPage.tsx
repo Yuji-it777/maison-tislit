@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 
 export default function ConfirmationPage() {
   const { setCurrentPage, orderDetails, user } = useApp();
   const { t } = useTranslation();
-  const orderNumber = `MT-${Date.now().toString().slice(-6)}`;
+  const [fallbackOrderNumber] = useState(() => `MT-${Date.now().toString().slice(-6)}`);
+  const orderNumber = orderDetails?.id ? `MT-${String(orderDetails.id).padStart(6, '0')}` : fallbackOrderNumber;
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50 flex items-center justify-center px-4 py-16">

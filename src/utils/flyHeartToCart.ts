@@ -5,7 +5,14 @@ export default async function flyHeartToCart(
 ) {
   if (!sourceEl) { onComplete(); return; }
 
-  const { gsap } = await import('gsap');
+  let gsap: any;
+  try {
+    const mod = await import('gsap');
+    gsap = mod.gsap;
+  } catch {
+    onComplete();
+    return;
+  }
 
   const sourceRect = sourceEl.getBoundingClientRect();
   const targetBtn = document.querySelector<HTMLElement>('[data-target="wishlist-icon"]');

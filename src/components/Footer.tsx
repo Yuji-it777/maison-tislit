@@ -2,7 +2,7 @@ import { MapPin, Phone, Mail, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Footer() {
   const { setCurrentPage, subscribeToNewsletter } = useApp();
@@ -11,6 +11,13 @@ export default function Footer() {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const subscribedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (subscribedTimerRef.current) clearTimeout(subscribedTimerRef.current);
+    };
+  }, []);
 
   const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +27,8 @@ export default function Footer() {
     if (success) {
       setEmail('');
       setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 4000);
+      if (subscribedTimerRef.current) clearTimeout(subscribedTimerRef.current);
+      subscribedTimerRef.current = setTimeout(() => setSubscribed(false), 4000);
     }
     setSubmitting(false);
   };

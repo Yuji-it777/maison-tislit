@@ -12,6 +12,13 @@ interface Payload {
   captchaToken: string;
 }
 
+const MAX_LENGTHS = {
+  name: 200,
+  email: 254,
+  subject: 500,
+  body: 5000,
+} as const;
+
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -43,6 +50,21 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Validate field lengths
+    const name = body.name.slice(0, MAX_LENGTHS.name);
+    const email = body.email.slice(0, MAX_LENGTHS.email);
+    const subject = (body.subject || '').slice(0, MAX_LENGTHS.subject);
+    const messageBody = body.body.slice(0, MAX_LENGTHS.body);
+
+    // Basic email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid email format' }),
+        { status: 400, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Verify Turnstile token with Cloudflare
     const turnstileSecret = Deno.env.get('TURNSTILE_SECRET_KEY') || '';
     const verifyResp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
@@ -68,7 +90,7 @@ Deno.serve(async (req) => {
 
     const { error: insertError } = await supabase
       .from('messages')
-      .insert({ name: body.name, email: body.email, subject: body.subject, body: body.body });
+      .insert({ name, email, subject, body: messageBody });
 
     if (insertError) throw insertError;
 
@@ -76,9 +98,9 @@ Deno.serve(async (req) => {
       JSON.stringify({ success: true }),
       { status: 200, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' } }
     );
-  } catch (error: any) {
+  } catch {
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'An internal error occurred. Please try again.' }),
       { status: 400, headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' } }
     );
   }

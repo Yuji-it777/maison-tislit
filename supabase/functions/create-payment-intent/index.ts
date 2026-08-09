@@ -4,6 +4,7 @@
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
 import { z } from 'https://deno.land/x/zod@v3.23.8/mod.ts';
 import { jwtVerify } from 'https://esm.sh/jose@5';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
   apiVersion: '2023-10-16',
@@ -18,10 +19,25 @@ const ALLOWED_ORIGINS = [
   'https://chdbhqdhivupvawfriyi.supabase.co',
 ];
 
-const PayloadSchema = z.object({
-  amount: z.number().int().min(50, 'Amount must be at least 50 cents').max(99999999, 'Amount exceeds maximum'),
-  currency: z.string().length(3).default('eur'),
+const CartItemSchema = z.object({
+  product_id: z.number().int().positive(),
+  quantity: z.number().int().min(1).max(100),
+  selected_size: z.string().max(50),
+  selected_color: z.string().max(50),
 });
+
+const PayloadSchema = z.object({
+  currency: z.string().length(3).default('eur'),
+  country: z.string().max(100).default('Maroc'),
+  payment_method: z.enum(['stripe', 'cod']).default('stripe'),
+  cart_items: z.array(CartItemSchema).min(1, 'Cart must have at least 1 item').max(50, 'Cart too large'),
+});
+
+const SHIPPING_CONFIG = {
+  domestic: { freeThreshold: 2000, cost: 60 },
+  international: { cost: 200 },
+  codFeePercent: 0.05,
+} as const;
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('origin') || '';
@@ -61,6 +77,7 @@ Deno.serve(async (req) => {
     );
   }
 
+  let userId: string;
   try {
     const { payload } = await jwtVerify(
       token,
@@ -73,6 +90,7 @@ Deno.serve(async (req) => {
     if (!payload.sub || payload.aud !== 'authenticated') {
       return unauthorized(corsHeaders);
     }
+    userId = payload.sub;
   } catch {
     return unauthorized(corsHeaders);
   }
@@ -89,21 +107,107 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { amount, currency } = parsed.data;
+    const { currency, country, payment_method, cart_items } = parsed.data;
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount),
-      currency,
-      automatic_payment_methods: { enabled: true },
-    });
+    // Server-side Supabase client with service role to bypass RLS
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+      { auth: { persistSession: false } }
+    );
 
+    // Fetch actual product prices and stock from the database
+    const productIds = cart_items.map(item => item.product_id);
+    const { data: products, error: fetchError } = await supabase
+      .from('products')
+      .select('id, price, stock, name')
+      .in('id', productIds);
+
+    if (fetchError) {
+      return new Response(
+        JSON.stringify({ error: 'Failed to verify cart items' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Build a lookup map
+    const productMap = new Map(products.map(p => [p.id, p]));
+
+    // Validate all items exist and have sufficient stock
+    for (const item of cart_items) {
+      const product = productMap.get(item.product_id);
+      if (!product) {
+        return new Response(
+          JSON.stringify({ error: `Product ${item.product_id} not found` }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      if (product.stock < item.quantity) {
+        return new Response(
+          JSON.stringify({ error: `Insufficient stock for "${product.name}". Available: ${product.stock}, requested: ${item.quantity}` }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    // Compute subtotal from server-side prices (never trust client prices)
+    const subtotal = cart_items.reduce((sum, item) => {
+      const product = productMap.get(item.product_id)!;
+      return sum + product.price * item.quantity;
+    }, 0);
+
+    // Compute shipping
+    const isMorocco = country === 'Maroc' || country === 'Morocco';
+    const shipping = isMorocco
+      ? (subtotal >= SHIPPING_CONFIG.domestic.freeThreshold ? 0 : SHIPPING_CONFIG.domestic.cost)
+      : SHIPPING_CONFIG.international.cost;
+
+    // Compute COD fee
+    const codFee = payment_method === 'cod' ? Math.round(subtotal * SHIPPING_CONFIG.codFeePercent) : 0;
+
+    // Server-computed total (in cents for Stripe)
+    const serverTotalCents = Math.round((subtotal + shipping + codFee) * 100);
+
+    // For Stripe: create PaymentIntent with server-computed amount
+    if (payment_method === 'stripe') {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: serverTotalCents,
+        currency,
+        automatic_payment_methods: { enabled: true },
+        metadata: {
+          user_id: userId,
+          subtotal_mad: subtotal.toString(),
+          shipping_mad: shipping.toString(),
+          cod_fee_mad: codFee.toString(),
+        },
+      });
+
+      return new Response(
+        JSON.stringify({
+          clientSecret: paymentIntent.client_secret,
+          serverTotal: subtotal + shipping + codFee,
+          subtotal,
+          shipping,
+          codFee,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // For COD: just return the server-computed totals (no Stripe PaymentIntent needed)
     return new Response(
-      JSON.stringify({ clientSecret: paymentIntent.client_secret }),
+      JSON.stringify({
+        serverTotal: subtotal + shipping + codFee,
+        subtotal,
+        shipping,
+        codFee,
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error: any) {
+    console.error('create-payment-intent error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'An internal error occurred. Please try again.' }),
       { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

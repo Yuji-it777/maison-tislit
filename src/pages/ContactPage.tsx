@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 import { MapPin, Phone, Mail, Clock, Store, Newspaper, Headphones } from 'lucide-react';
@@ -18,17 +18,25 @@ export default function ContactPage() {
   const infoRef = useScrollReveal<HTMLDivElement>();
   const supportRef = useScrollReveal<HTMLDivElement>();
 
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown((c) => {
+        if (c <= 1) { clearInterval(timer); return 0; }
+        return c - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formRef.current) return;
 
     const form = new FormData(formRef.current);
 
-    // Honeypot — bots fill hidden fields
     if (form.get('_hp')) return;
-    // Time check — submitted in under 4s → bot
     if (Date.now() - mountedAt.current < 4000) return;
-    // Captcha check
     if (!captchaToken) {
       showToast(t('security.captchaRequired'), 'error');
       return;
@@ -49,14 +57,7 @@ export default function ContactPage() {
       if (data?.error) throw new Error(data.error);
       showToast(t('contact.success'), 'success');
       formRef.current.reset();
-
       setCooldown(90);
-      const timer = setInterval(() => {
-        setCooldown((c) => {
-          if (c <= 1) { clearInterval(timer); return 0; }
-          return c - 1;
-        });
-      }, 1000);
     } catch {
       showToast(t('contact.error'), 'error');
     } finally {

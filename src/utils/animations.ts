@@ -7,7 +7,7 @@ export function useScrollReveal<T extends HTMLElement>() {
     const el = ref.current;
     if (!el) return;
 
-    // If already in viewport, skip animation
+    // If already in viewport, skip animation but ensure visible
     if (el.getBoundingClientRect().top < window.innerHeight * 0.85) return;
 
     // 1. Instantly place element at hidden state (no transition)
@@ -96,8 +96,10 @@ export function useHeroReveal<T extends HTMLElement>() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let cancelled = false;
     let ctx: any;
     import('gsap').then(({ gsap }) => {
+      if (cancelled) return;
       ctx = gsap.context(() => {
         const spans = el.querySelectorAll('span, p, .hero-btn');
         gsap.from(spans, {
@@ -109,7 +111,7 @@ export function useHeroReveal<T extends HTMLElement>() {
         });
       });
     });
-    return () => ctx?.revert();
+    return () => { cancelled = true; ctx?.revert(); };
   }, []);
   return ref;
 }

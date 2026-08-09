@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CartItem, User, Page, Product, Review, Currency } from '../types';
 import { useTranslation } from './LanguageContext';
@@ -45,8 +45,8 @@ interface AppContextType {
 
   orderPlaced: boolean;
   setOrderPlaced: (v: boolean) => void;
-  orderDetails: { name: string; address: string; city: string; phone: string } | null;
-  setOrderDetails: (d: { name: string; address: string; city: string; phone: string } | null) => void;
+  orderDetails: { id?: number; name: string; address: string; city: string; phone: string } | null;
+  setOrderDetails: (d: { id?: number; name: string; address: string; city: string; phone: string } | null) => void;
 
   products: Product[];
   loadingProducts: boolean;
@@ -66,6 +66,8 @@ interface AppContextType {
 
   toast: { message: string; type: 'success' | 'error' | 'info' } | null;
   showToast: (message: string, type?: 'success' | 'error' | 'info') => void;
+
+  calculateShipping: (subtotal: number, country?: string) => number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -101,6 +103,10 @@ function mapReviewRow(row: ReviewRow): Review {
   };
 }
 
+function safeLocalStorageSet(key: string, value: string) {
+  try { localStorage.setItem(key, value); } catch {}
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -116,10 +122,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [loading, setLoading] = useState(true);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const [orderDetails, setOrderDetails] = useState<{ name: string; address: string; city: string; phone: string } | null>(null);
+  const [orderDetails, setOrderDetails] = useState<{ id?: number; name: string; address: string; city: string; phone: string } | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [currency, setCurrency] = useState<Currency>('MAD');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const formatPrice = (priceInMAD: number) => {
     if (currency === 'MAD') return `${Math.round(priceInMAD)} MAD`;
@@ -130,9 +137,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const subscribeToNewsletter = async (email: string) => {
     try {
-      const { error } = await supabase.from('newsletter_subscribers').insert([{ email }]);
-      if (error && error.code !== '23505') throw error; // ignore duplicate email error
-      showToast(t('toast.newsletterSuccess') || 'Subscribed successfully!', 'success');
+      const { error } = await supabase.from('newsletter_subscribers').insert({ email });
+      if (error && error.code !== '23505') throw error;
+      showToast(t('footer.newsletterSuccess'), 'success');
       return true;
     } catch (err) {
       console.error(err);
@@ -146,32 +153,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const isAdmin = profile?.is_admin === true;
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    toastTimerRef.current = setTimeout(() => setToast(null), 3000);
   };
 
   /* ───── Session on mount ───── */
   useEffect(() => {
+    let cancelled = false;
     supabase.auth.getSession().then(({ data: { session } }) => {
+      if (cancelled) return;
       if (session?.user) {
         const uid = session.user.id;
         setUser({ id: uid, name: session.user.user_metadata?.name || session.user.email || '', email: session.user.email || '' });
-        getProfile(uid).then(p => { setProfile(p); setLoading(false); });
+        getProfile(uid).then(p => { if (!cancelled) { setProfile(p); setLoading(false); } });
       } else {
         setLoading(false);
       }
     });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (cancelled) return;
       if (session?.user) {
         const uid = session.user.id;
         setUser({ id: uid, name: session.user.user_metadata?.name || session.user.email || '', email: session.user.email || '' });
-        getProfile(uid).then(p => setProfile(p));
+        getProfile(uid).then(p => { if (!cancelled) setProfile(p); });
       } else {
         setUser(null);
         setProfile(null);
       }
     });
-    return () => listener?.subscription.unsubscribe();
+    return () => { cancelled = true; listener?.subscription.unsubscribe(); };
   }, []);
 
   /* ───── Auth ───── */
@@ -282,17 +293,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  useEffect(() => { refreshProducts(); }, []);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoadingProducts(true);
+      try {
+        const rows = await getProducts();
+        if (!cancelled) setProducts(rows.map(mapSupabaseProduct));
+      } catch (err) {
+        console.error('Failed to load products:', err);
+      } finally {
+        if (!cancelled) setLoadingProducts(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   /* ───── Cart Persistence ───── */
   useEffect(() => {
-    localStorage.setItem('maison-tislit-cart', JSON.stringify(cart));
+    safeLocalStorageSet('maison-tislit-cart', JSON.stringify(cart));
   }, [cart]);
+
+  /* ───── Shipping calculation ───── */
+  const calculateShipping = useCallback((subtotal: number, country?: string): number => {
+    const isMorocco = !country || country === 'Maroc' || country === 'Morocco';
+    return isMorocco ? (subtotal >= 2000 ? 0 : 60) : 200;
+  }, []);
 
   /* ───── Cart ───── */
   const addToCart = (product: Product, size: string, color: string, qty = 1, customMeasurements?: CartItem['customMeasurements']) => {
     setCart(prev => {
-      // If it's a custom size, we treat it as a unique item so it doesn't stack.
       if (size === 'Custom') {
         return [...prev, { ...product, quantity: qty, selectedSize: size, selectedColor: color, customMeasurements }];
       }
@@ -335,7 +365,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    localStorage.setItem('maison-tislit-wishlist', JSON.stringify(wishlist));
+    safeLocalStorageSet('maison-tislit-wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
 
   const toggleWishlist = (productId: number) => {
@@ -355,7 +385,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    localStorage.setItem('maison-tislit-reviews', JSON.stringify(reviews));
+    safeLocalStorageSet('maison-tislit-reviews', JSON.stringify(reviews));
   }, [reviews]);
 
   const fetchProductReviews = async (productId: number) => {
@@ -417,6 +447,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       reviews, fetchProductReviews, addReview,
       currency, setCurrency,
       formatPrice,
+      calculateShipping,
       subscribeToNewsletter,
 
       toast, showToast,

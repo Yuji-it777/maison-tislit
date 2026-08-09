@@ -2,7 +2,7 @@ import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, user, formatPrice } = useApp();
+  const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, user, formatPrice, calculateShipping } = useApp();
   const { t } = useTranslation();
 
   if (cart.length === 0) {
@@ -27,7 +27,7 @@ export default function CartPage() {
     );
   }
 
-  const shipping = cartTotal >= 2000 ? 0 : 60;
+  const shipping = calculateShipping(cartTotal);
   const total = cartTotal + shipping;
 
   return (

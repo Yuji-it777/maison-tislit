@@ -251,6 +251,7 @@ const en = {
   'toast.accountCreatedEnd': '',
   'toast.loggedOut': 'Logged out successfully.',
   'toast.addedToCart': ' added to cart!',
+  'toast.newsletterError': 'Failed to subscribe. Please try again.',
 
   // Reviews
   'review.loading': 'Loading reviews...',

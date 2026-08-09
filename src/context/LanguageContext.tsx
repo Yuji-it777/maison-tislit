@@ -15,14 +15,26 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 const translations = { fr, en };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>('en');
+  const [locale, setLocale] = useState<Locale>(() => {
+    try {
+      const saved = localStorage.getItem('maison-tislit-locale');
+      if (saved === 'fr' || saved === 'en') return saved;
+    } catch {}
+    return 'en';
+  });
+
+  const handleSetLocale = (l: Locale) => {
+    setLocale(l);
+    try { localStorage.setItem('maison-tislit-locale', l); } catch {}
+  };
 
   const t = (key: string): string => {
-    return translations[locale][key as keyof typeof fr] || key;
+    const val = translations[locale][key as keyof typeof fr];
+    return val !== undefined ? val : key;
   };
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t }}>
+    <LanguageContext.Provider value={{ locale, setLocale: handleSetLocale, t }}>
       {children}
     </LanguageContext.Provider>
   );
