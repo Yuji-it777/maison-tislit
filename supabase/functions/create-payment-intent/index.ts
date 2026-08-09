@@ -1,15 +1,23 @@
 // Supabase Edge Function — create-payment-intent
 // Deploy: supabase functions deploy create-payment-intent
 // Set secret: supabase functions secrets set STRIPE_SECRET_KEY=sk_live_...
+//
+// Demo mode: if STRIPE_SECRET_KEY is missing or set to "demo", the function
+// refuses to create PaymentIntents and returns a friendly demo message instead.
 import Stripe from 'https://esm.sh/stripe@14?target=deno';
 import { z } from 'https://deno.land/x/zod@v3.23.8/mod.ts';
 import { jwtVerify } from 'https://esm.sh/jose@5';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-  apiVersion: '2023-10-16',
-  httpClient: Stripe.createFetchHttpClient(),
-});
+const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY');
+const isDemoMode = !stripeSecretKey || stripeSecretKey === 'demo';
+
+const stripe = isDemoMode
+  ? null
+  : new Stripe(stripeSecretKey!, {
+      apiVersion: '2023-10-16',
+      httpClient: Stripe.createFetchHttpClient(),
+    });
 
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
@@ -170,7 +178,17 @@ Deno.serve(async (req) => {
 
     // For Stripe: create PaymentIntent with server-computed amount
     if (payment_method === 'stripe') {
-      const paymentIntent = await stripe.paymentIntents.create({
+      if (isDemoMode) {
+        return new Response(
+          JSON.stringify({
+            demo: true,
+            error: 'This is a demo environment — checkout is disabled',
+          }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const paymentIntent = await stripe!.paymentIntents.create({
         amount: serverTotalCents,
         currency,
         automatic_payment_methods: { enabled: true },

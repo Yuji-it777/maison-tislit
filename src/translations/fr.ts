@@ -189,6 +189,8 @@ const fr = {
   'checkout.shipping': 'Livraison',
   'checkout.free': 'Gratuite',
   'checkout.total': 'Total',
+  'checkout.demoDisabled': 'Ceci est un environnement de démonstration — le paiement est désactivé',
+  'checkout.demoDisabledHint': 'Le paiement est indisponible dans cette version de démonstration. Parcourez le catalogue et explorez le tableau de bord admin à la place.',
 
   // ConfirmationPage
   'confirmation.title': 'Commande Confirmée !',

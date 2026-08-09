@@ -189,6 +189,8 @@ const en = {
   'checkout.shipping': 'Shipping',
   'checkout.free': 'Free',
   'checkout.total': 'Total',
+  'checkout.demoDisabled': 'This is a demo environment — checkout is disabled',
+  'checkout.demoDisabledHint': 'Payment is unavailable in this demo deployment. Browse the catalog and explore the admin dashboard instead.',
 
   // ConfirmationPage
   'confirmation.title': 'Order Confirmed!',

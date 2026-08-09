@@ -13,9 +13,8 @@ import { createOrder, createOrderItems } from '../supabase/queries';
 import { supabase } from '../supabase/client';
 
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-const stripePromise = stripeKey && stripeKey !== 'pk_test_REPLACE_WITH_YOUR_KEY'
-  ? loadStripe(stripeKey)
-  : null;
+const isDemoMode = !stripeKey || stripeKey === 'demo' || stripeKey === 'pk_test_REPLACE_WITH_YOUR_KEY';
+const stripePromise = isDemoMode ? null : loadStripe(stripeKey);
 
 const COUNTRIES = ['Maroc', 'France', 'Belgique', 'Suisse', 'Espagne', 'Italie', 'Allemagne', 'Pays-Bas', 'Royaume-Uni'];
 const COUNTRIES_EN = ['Morocco', 'France', 'Belgium', 'Switzerland', 'Spain', 'Italy', 'Germany', 'Netherlands', 'United Kingdom'];
@@ -200,6 +199,10 @@ export default function CheckoutPage() {
 
   /* User selects Stripe → create PaymentIntent */
   const handleChooseStripe = async () => {
+    if (isDemoMode) {
+      showToast(t('checkout.demoDisabled') || 'This is a demo environment — checkout is disabled', 'info');
+      return;
+    }
     if (!stripePromise) {
       showToast(t('checkout.stripeNotAvailable') || 'Stripe is not configured', 'error');
       return;
@@ -356,35 +359,48 @@ export default function CheckoutPage() {
 
               {paymentMethod === null && (
                 <>
-                  {/* Payment method selection */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                    <button
-                      onClick={handleChooseStripe}
-                      disabled={loading}
-                      className="border-2 border-stone-200 hover:border-brand rounded-xl p-5 text-left transition-all disabled:opacity-50 text-center"
-                    >
-                      <div className="flex justify-center mb-3">
-                        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor" color="#635bff">
-                          <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
-                        </svg>
-                      </div>
-                      <p className="text-sm font-semibold text-stone-800">{t('checkout.card')}</p>
-                      <p className="text-xs text-stone-500 mt-1">{t('checkout.cardDesc')}</p>
-                    </button>
+                  {isDemoMode ? (
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-6 text-center">
+                      <p className="text-base font-semibold text-amber-900 mb-1">
+                        {t('checkout.demoDisabled') || 'This is a demo environment — checkout is disabled'}
+                      </p>
+                      <p className="text-xs text-amber-700">
+                        {t('checkout.demoDisabledHint') || 'Payment is unavailable in this demo deployment. Browse the catalog and explore the admin dashboard instead.'}
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Payment method selection */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <button
+                          onClick={handleChooseStripe}
+                          disabled={loading}
+                          className="border-2 border-stone-200 hover:border-brand rounded-xl p-5 text-left transition-all disabled:opacity-50 text-center"
+                        >
+                          <div className="flex justify-center mb-3">
+                            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor" color="#635bff">
+                              <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
+                            </svg>
+                          </div>
+                          <p className="text-sm font-semibold text-stone-800">{t('checkout.card')}</p>
+                          <p className="text-xs text-stone-500 mt-1">{t('checkout.cardDesc')}</p>
+                        </button>
 
-                    <button
-                      onClick={handleChooseCod}
-                      className="border-2 border-stone-200 hover:border-brand rounded-xl p-5 text-left transition-all text-center"
-                    >
-                      <div className="flex justify-center mb-3">
-                        <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125V9.75M3.75 6v9m0 0h18" />
-                        </svg>
+                        <button
+                          onClick={handleChooseCod}
+                          className="border-2 border-stone-200 hover:border-brand rounded-xl p-5 text-left transition-all text-center"
+                        >
+                          <div className="flex justify-center mb-3">
+                            <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125V9.75M3.75 6v9m0 0h18" />
+                            </svg>
+                          </div>
+                          <p className="text-sm font-semibold text-stone-800">{t('checkout.cod')}</p>
+                          <p className="text-xs text-stone-500 mt-1">{t('checkout.codDesc')}</p>
+                        </button>
                       </div>
-                      <p className="text-sm font-semibold text-stone-800">{t('checkout.cod')}</p>
-                      <p className="text-xs text-stone-500 mt-1">{t('checkout.codDesc')}</p>
-                    </button>
-                  </div>
+                    </>
+                  )}
 
                   <div className="flex gap-4">
                     <button type="button" onClick={() => setStep(1)}
