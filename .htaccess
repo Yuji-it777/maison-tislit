@@ -1,0 +1,28 @@
+# Maison Tislit — STRATO Hosting (Apache) configuration
+# 301 redirects for unprefixed URLs, HTTPS enforcement, SPA fallback.
+
+# --- HTTPS enforcement (requires STRATO SSL cert to be active) ---
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# --- 301s: unprefixed URLs -> default locale (server-side, passes link equity) ---
+RewriteRule ^$ /en/ [R=301,L]
+RewriteRule ^shop$ /en/shop [R=301,L]
+RewriteRule ^product/([^/]+)/?$ /en/product/$1 [R=301,L]
+RewriteRule ^about$ /en/about [R=301,L]
+RewriteRule ^contact$ /en/contact [R=301,L]
+RewriteRule ^cart$ /en/cart [R=301,L]
+RewriteRule ^login$ /en/login [R=301,L]
+RewriteRule ^checkout$ /en/checkout [R=301,L]
+RewriteRule ^confirmation$ /en/confirmation [R=301,L]
+RewriteRule ^account$ /en/account [R=301,L]
+RewriteRule ^tracking$ /en/tracking [R=301,L]
+RewriteRule ^shipping$ /en/shipping [R=301,L]
+RewriteRule ^returns$ /en/returns [R=301,L]
+
+# --- SPA fallback: only reached when no static file/dir exists at the path ---
+# (prerendered dist/en/... snapshots exist on disk, so they win naturally)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
