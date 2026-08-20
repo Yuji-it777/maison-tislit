@@ -1,5 +1,6 @@
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, formatPrice, calculateShipping } = useApp();
@@ -8,6 +9,7 @@ export default function CartPage() {
   if (cart.length === 0) {
     return (
       <div className="pt-20 min-h-screen bg-stone-50 flex items-center justify-center px-6">
+        <SEO title={t('seo.cartTitle')} description={t('seo.cartDescription')} />
         <div className="text-center">
           <div className="text-6xl mb-6">/</div>
           <h2 className="text-3xl font-bold text-stone-800 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -32,6 +34,7 @@ export default function CartPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50">
+      <SEO title={t('seo.cartTitle')} description={t('seo.cartDescription')} />
       <div className="bg-stone-800 text-white py-12 px-6 text-center">
         <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{t('cart.myCart')}</h1>
         <p className="text-stone-300 text-sm">{cart.length} {cart.length > 1 ? t('cart.items') : t('cart.item')}</p>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 import { WHATSAPP_LINK } from '../config';
 
 export default function ConfirmationPage() {
@@ -13,6 +14,7 @@ export default function ConfirmationPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50 flex items-center justify-center px-4 py-16">
+      <SEO noindex />
       <div className="max-w-2xl w-full">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 p-10 text-center text-white">

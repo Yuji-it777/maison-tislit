@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import { supabase } from '../supabase/client';
 import { useApp } from '../context/AppContext';
+import SEO from '../components/SEO';
 import { CheckCircle, Package, Truck, MapPin, Clock, XCircle } from 'lucide-react';
 
 const STEPS = ['pending', 'processing', 'shipped', 'delivered'] as const;
@@ -82,6 +83,7 @@ export default function OrderTrackingPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50 flex flex-col items-center py-16 px-6">
+      <SEO title={t('seo.trackingTitle')} description={t('seo.trackingDescription')} />
       <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
         <h1 className="text-3xl font-bold text-center mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
           {locale === 'en' ? 'Track Your Order' : 'Bestelling Volgen'}

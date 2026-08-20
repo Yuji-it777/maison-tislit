@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 export default function ShippingPolicyPage() {
-  const { locale } = useTranslation();
+  const { locale, t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -10,6 +11,7 @@ export default function ShippingPolicyPage() {
 
   return (
     <div className="pt-24 pb-16 min-h-screen bg-stone-50">
+      <SEO title={t('seo.shippingTitle')} description={t('seo.shippingDescription')} />
       <div className="max-w-3xl mx-auto px-6 bg-white p-10 rounded-2xl shadow-sm">
         <h1 className="text-3xl font-bold mb-8 text-stone-800" style={{ fontFamily: "'Playfair Display', serif" }}>
           {locale === 'en' ? 'Shipping Policy' : 'Verzendbeleid'}

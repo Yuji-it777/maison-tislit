@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import SEO from '../components/SEO';
 import { getOrder, getOrderItems, getProfiles, updateOrderStatus } from '../supabase/queries';
 import type { OrderRow, OrderItemRow, ProfileRow } from '../supabase/types';
 
@@ -78,6 +79,7 @@ export default function OrderDetailPage() {
   if (!order) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: BG }}>
+        <SEO noindex />
         <h1 className="text-xl font-semibold" style={{ color: '#999' }}>Order not found</h1>
         <button onClick={() => navigate('/admin')} className="px-4 py-2 text-xs rounded-lg" style={{ background: DARK, color: GOLD, border: 'none' }}>
           Back to Admin
@@ -92,6 +94,7 @@ export default function OrderDetailPage() {
 
   return (
     <div className="min-h-screen" style={{ background: BG }}>
+      <SEO noindex />
       <header className="flex items-center justify-between px-6 py-4" style={{ background: DARK }}>
         <div className="flex items-center gap-4">
           <button onClick={() => navigate('/admin')} className="text-xs hover:underline" style={{ color: GOLD }}>← Back to Admin</button>

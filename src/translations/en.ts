@@ -297,6 +297,18 @@ const en = {
   'seo.aboutDescription': 'Founded in Fez, Maison Tislit celebrates Moroccan craftsmanship through timeless feminine clothing.',
   'seo.contactTitle': 'Contact Us',
   'seo.contactDescription': 'Get in touch with Maison Tislit for orders, custom measurements, or inquiries.',
+  'seo.shippingTitle': 'Shipping Policy',
+  'seo.shippingDescription': 'Shipping rates and delivery times for Maison Tislit orders within Morocco and internationally.',
+  'seo.returnsTitle': 'Returns & Exchanges',
+  'seo.returnsDescription': 'Maison Tislit return policy: 14-day returns, conditions, and refund process.',
+  'seo.trackingTitle': 'Order Tracking',
+  'seo.trackingDescription': 'Track your Maison Tislit order status in real time from processing to delivery.',
+  'seo.cartTitle': 'Your Shopping Cart',
+  'seo.cartDescription': 'Review your Maison Tislit cart and proceed to checkout.',
+  'seo.confirmationTitle': 'Order Confirmation',
+  'seo.confirmationDescription': 'Your Maison Tislit order has been placed. Track it or contact us for support.',
+  'seo.orderDetailTitle': 'Order Details',
+  'seo.orderDetailDescription': 'View your Maison Tislit order details.',
 
   // Product detail
   'product.notFound': 'Product not found',

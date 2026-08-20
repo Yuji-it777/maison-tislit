@@ -120,7 +120,8 @@ export default function ProductDetailPage() {
 
   const productName = locale === 'en' && product.nameEn ? product.nameEn : product.name;
   const productDesc = locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description;
-  const canonical = `${SITE_URL}/product/${product.slug}`;
+  const productPath = localizePath(`/product/${product.slug}`, locale);
+  const canonical = `${SITE_URL}${productPath}`;
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -151,7 +152,7 @@ export default function ProductDetailPage() {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: t('nav.shop'), item: `${SITE_URL}/shop` },
+      { '@type': 'ListItem', position: 2, name: t('nav.shop'), item: `${SITE_URL}${localizePath('/shop', locale)}` },
       { '@type': 'ListItem', position: 3, name: productName, item: canonical },
     ],
   };

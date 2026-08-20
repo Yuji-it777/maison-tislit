@@ -1,10 +1,80 @@
 [build]
-  command = "npm run build"
+  command = "npm run build:seo"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
 
+# 301s: unprefixed URLs -> default locale (server-side, passes link equity)
+# Root is forced so the 301 wins over the prerendered dist/index.html safety net.
+[[redirects]]
+  from = "/"
+  to = "/en/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shop"
+  to = "/en/shop"
+  status = 301
+
+[[redirects]]
+  from = "/product/:slug"
+  to = "/en/product/:slug"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/en/about"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/en/contact"
+  status = 301
+
+[[redirects]]
+  from = "/cart"
+  to = "/en/cart"
+  status = 301
+
+[[redirects]]
+  from = "/login"
+  to = "/en/login"
+  status = 301
+
+[[redirects]]
+  from = "/checkout"
+  to = "/en/checkout"
+  status = 301
+
+[[redirects]]
+  from = "/confirmation"
+  to = "/en/confirmation"
+  status = 301
+
+[[redirects]]
+  from = "/account"
+  to = "/en/account"
+  status = 301
+
+[[redirects]]
+  from = "/tracking"
+  to = "/en/tracking"
+  status = 301
+
+[[redirects]]
+  from = "/shipping"
+  to = "/en/shipping"
+  status = 301
+
+[[redirects]]
+  from = "/returns"
+  to = "/en/returns"
+  status = 301
+
+# SPA fallback: only reached when no static file exists at the path
+# (static files take precedence over non-forced redirects)
 [[redirects]]
   from = "/*"
   to = "/index.html"
