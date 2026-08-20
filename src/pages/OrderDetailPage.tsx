@@ -107,11 +107,11 @@ export default function OrderDetailPage() {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-xs" style={{ color: '#999' }}>Name</span>
-              <p className="font-medium mt-0.5" style={{ color: '#555' }}>{profile?.name || order.user_id.slice(0, 8)}</p>
+              <p className="font-medium mt-0.5" style={{ color: '#555' }}>{profile?.name || order.customer_name || (order.user_id ? order.user_id.slice(0, 8) : 'Guest')}</p>
             </div>
             <div>
               <span className="text-xs" style={{ color: '#999' }}>Email</span>
-              <p className="font-medium mt-0.5" style={{ color: '#555' }}>{profile?.email || '—'}</p>
+              <p className="font-medium mt-0.5" style={{ color: '#555' }}>{profile?.email || order.customer_email || '—'}</p>
             </div>
             <div>
               <span className="text-xs" style={{ color: '#999' }}>Phone</span>
@@ -204,9 +204,13 @@ export default function OrderDetailPage() {
               <div>
                 <span className="text-xs" style={{ color: '#999' }}>Payment Method</span>
                 <p className="font-medium text-sm mt-0.5" style={{ color: '#555' }}>
-                  <Badge variant={order.payment_method === 'cod' ? 'warn' : 'info'}>
-                    {order.payment_method === 'cod' ? 'Cash on Delivery' : 'Card (Stripe)'}
-                  </Badge>
+                  {order.payment_method === 'whatsapp' ? (
+                    <Badge variant="success">WhatsApp</Badge>
+                  ) : order.payment_method === 'cod' ? (
+                    <Badge variant="warn">Cash on Delivery</Badge>
+                  ) : (
+                    <Badge variant="info">Card (Stripe)</Badge>
+                  )}
                 </p>
               </div>
               <div>

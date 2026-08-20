@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CartItem, User, Page, Product, Review, Currency } from '../types';
-import { useTranslation } from './LanguageContext';
+import { useTranslation, localizePath, stripLocale } from './LanguageContext';
 import { supabase } from '../supabase/client';
 import type { ProfileRow } from '../supabase/types';
 import { getProducts, getProfile, createReview, getProductReviews } from '../supabase/queries';
@@ -10,7 +10,7 @@ import type { ReviewRow } from '../supabase/types';
 const pageToPath: Record<Page, string> = {
   home: '/', shop: '/shop', about: '/about',
   cart: '/cart', login: '/login',
-  register: '/register', checkout: '/checkout', confirmation: '/confirmation',
+  checkout: '/checkout', confirmation: '/confirmation',
   account: '/account', admin: '/admin', contact: '/contact',
   shipping: '/shipping', returns: '/returns', tracking: '/tracking'
 };
@@ -27,7 +27,6 @@ interface AppContextType {
   isAdmin: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   resetPassword: (email: string) => Promise<boolean>;
 
@@ -45,8 +44,8 @@ interface AppContextType {
 
   orderPlaced: boolean;
   setOrderPlaced: (v: boolean) => void;
-  orderDetails: { id?: number; name: string; address: string; city: string; phone: string } | null;
-  setOrderDetails: (d: { id?: number; name: string; address: string; city: string; phone: string } | null) => void;
+  orderDetails: { id?: number; name: string; email?: string; address: string; city: string; phone: string; whatsappUrl?: string } | null;
+  setOrderDetails: (d: { id?: number; name: string; email?: string; address: string; city: string; phone: string; whatsappUrl?: string } | null) => void;
 
   products: Product[];
   loadingProducts: boolean;
@@ -57,7 +56,7 @@ interface AppContextType {
 
   reviews: Review[];
   fetchProductReviews: (productId: number) => Promise<void>;
-  addReview: (productId: number, rating: number, comment: string) => void;
+  addReview: (productId: number, rating: number, comment: string, name: string) => void;
 
   currency: Currency;
   setCurrency: (currency: Currency) => void;
@@ -75,6 +74,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 function mapSupabaseProduct(row: any): Product {
   return {
     id: row.id,
+    slug: row.slug || '',
     name: row.name,
     nameEn: row.name_en,
     nameAr: row.name_ar || '',
@@ -95,7 +95,7 @@ function mapReviewRow(row: ReviewRow): Review {
   return {
     id: row.id,
     productId: row.product_id,
-    userId: row.user_id,
+    userId: row.user_id || '',
     userName: row.user_name,
     rating: row.rating,
     comment: row.comment,
@@ -110,8 +110,8 @@ function safeLocalStorageSet(key: string, value: string) {
 export function AppProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentPage: Page = pathToPage[location.pathname] ?? 'home';
-  const setCurrentPage = (page: Page) => navigate(pageToPath[page]);
+  const currentPage: Page = pathToPage[stripLocale(location.pathname)] ?? 'home';
+  const setCurrentPage = (page: Page) => navigate(localizePath(pageToPath[page], locale));
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<ProfileRow | null>(null);
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -122,7 +122,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [loading, setLoading] = useState(true);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const [orderDetails, setOrderDetails] = useState<{ id?: number; name: string; address: string; city: string; phone: string } | null>(null);
+  const [orderDetails, setOrderDetails] = useState<{ id?: number; name: string; email?: string; address: string; city: string; phone: string; whatsappUrl?: string } | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [currency, setCurrency] = useState<Currency>('MAD');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
@@ -226,36 +226,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return true;
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
-    if (!name.trim() || name.length < 2) {
-      showToast('Name must be at least 2 characters', 'error');
-      return false;
-    }
-    if (password.length < 8) {
-      showToast('Password must be at least 8 characters', 'error');
-      return false;
-    }
-    if (!/[A-Z]/.test(password)) {
-      showToast('Password must contain an uppercase letter', 'error');
-      return false;
-    }
-    if (!/[0-9]/.test(password)) {
-      showToast('Password must contain a number', 'error');
-      return false;
-    }
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name } },
-    });
-    if (error) {
-      showToast(error.message === 'User already registered' ? t('toast.emailTaken') : error.message, 'error');
-      return false;
-    }
-    showToast(`${t('toast.accountCreated')}${name}${t('toast.accountCreatedEnd')}`, 'success');
-    return true;
-  };
-
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -270,7 +240,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string): Promise<boolean> => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/login`,
+      redirectTo: `${window.location.origin}${localizePath('/login', locale)}`,
     });
     if (error) {
       showToast(t('auth.resetError'), 'error');
@@ -403,13 +373,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addReview = async (productId: number, rating: number, comment: string) => {
-    if (!user) return;
+  const addReview = async (productId: number, rating: number, comment: string, name: string) => {
+    const reviewerName = (name || (user?.name) || 'Anonymous').trim() || 'Anonymous';
     try {
       const row = await createReview({
         product_id: productId,
-        user_id: user.id,
-        user_name: user.name,
+        user_id: user?.id || null,
+        user_name: reviewerName,
         rating,
         comment,
       });
@@ -419,8 +389,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const review: Review = {
         id: Date.now(),
         productId,
-        userId: user.id,
-        userName: user.name || 'Anonymous',
+        userId: user?.id || '',
+        userName: reviewerName,
         rating,
         comment,
         createdAt: new Date().toISOString(),
@@ -436,7 +406,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     <AppContext.Provider value={{
       currentPage, setCurrentPage,
       user, isAdmin, loading,
-      login, register, logout, resetPassword,
+      login, logout, resetPassword,
       cart, addToCart, removeFromCart, updateQuantity, clearCart,
       cartTotal, cartCount,
       wishlist, toggleWishlist, isInWishlist,

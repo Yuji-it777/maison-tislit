@@ -7,7 +7,6 @@ const en = {
   'nav.login': 'Login',
   'nav.logout': 'Logout',
   'nav.myAccount': 'My Account',
-  'nav.register': 'Register',
   'nav.about': 'About',
 
   // HomePage
@@ -79,6 +78,7 @@ const en = {
   'shop.itemsFound': 'item(s) found',
   'shop.noItems': 'No items in this category',
   'shop.viewDetails': 'View details',
+  'shop.quickView': 'Quick view',
   'shop.add': 'Add',
 
   // ProductModal
@@ -86,9 +86,6 @@ const en = {
   'modal.size': 'Size:',
   'modal.quantity': 'Quantity:',
   'modal.addToCart': 'Add to Cart',
-  'modal.loginToOrder': 'Log in to order',
-  'modal.noAccount': "Don't have an account?",
-  'modal.registerFree': 'Register for free',
 
   // CartPage
   'cart.emptyTitle': 'Your cart is empty',
@@ -106,58 +103,29 @@ const en = {
   'cart.freeShippingNote': 'Free shipping on orders over 2,000 €',
   'cart.total': 'Total',
   'cart.checkout': '✓ Order Now',
-  'cart.loginToCheckout': 'Login to Checkout',
   'cart.continueShopping': '← Continue Shopping',
-  'cart.securePayment': 'Secure Payment',
+  'cart.orderViaWhatsApp': 'Orders via WhatsApp',
   'cart.shippingMorocco': 'Morocco Delivery',
 
   // LoginPage
-  'login.title': 'Login to Your Account',
-  'login.demo': 'Demo credentials available upon request',
+  'login.title': 'Admin Login',
+  'login.adminOnly': "Maison Tislit admin area only",
   'login.email': 'Email Address',
   'login.emailPlaceholder': 'your@email.com',
   'login.password': 'Password',
   'login.forgotPassword': 'Forgot password?',
   'login.loggingIn': 'Logging in...',
   'login.login': 'Sign In',
-  'login.or': 'Or',
-  'login.noAccount': "Don't have an account?",
-  'login.createAccount': 'Create a free account',
   'login.backToHome': '← Back to Home',
-
-  // RegisterPage
-  'register.title': 'Create Your Account',
-  'register.fullName': 'Full Name',
-  'register.namePlaceholder': 'Your full name',
-  'register.email': 'Email Address',
-  'register.emailPlaceholder': 'your@email.com',
-  'register.password': 'Password',
-  'register.passwordPlaceholder': 'Min 8 characters, 1 uppercase, 1 number',
-  'register.confirmPassword': 'Confirm Password',
-  'register.confirmPlaceholder': 'Repeat your password',
-  'register.passwordMismatch': "Passwords don't match.",
-  'register.passwordTooShort': 'Password must be at least 8 characters.',
-  'register.passwordMismatchHint': "Passwords don't match",
-  'register.acceptTerms1': 'I accept the ',
-  'register.terms': 'terms and conditions',
-  'register.and': ' and the ',
-  'register.privacyPolicy': 'privacy policy',
-  'register.of': ' of ',
-  'register.creatingAccount': 'Creating account...',
-  'register.createAccount': 'Create My Account',
-  'register.or': 'Or',
-  'register.hasAccount': 'Already have an account?',
-  'register.login': 'Sign in',
-  'register.backToHome': '← Back to Home',
 
   // CheckoutPage
   'checkout.title': 'Checkout',
   'checkout.step1': 'Delivery',
-  'checkout.step2': 'Payment',
+  'checkout.step2': 'Confirmation',
   'checkout.deliveryInfo': 'Delivery Information',
   'checkout.fullName': 'Full Name *',
   'checkout.namePlaceholder': 'Your full name',
-  'checkout.email': 'Email *',
+  'checkout.email': 'Email',
   'checkout.emailPlaceholder': 'email@example.com',
   'checkout.phone': 'Phone *',
   'checkout.phonePlaceholder': '+212 6XX-XXXXXX',
@@ -172,25 +140,19 @@ const en = {
   'checkout.orderNote': 'Order Note (optional)',
   'checkout.notePlaceholder': 'Special instructions, custom size, etc.',
   'checkout.backToCart': '← Cart',
-  'checkout.continueToPayment': 'Continue → Payment',
-  'checkout.paymentMethod': 'Payment Method',
-  'checkout.card': 'Credit/Debit Card (Visa, Mastercard)',
-  'checkout.cardDesc': 'Secure online payment (Visa, Mastercard)',
-  'checkout.cod': 'Cash on Delivery',
-  'checkout.codDesc': 'Pay cash or card when your order arrives',
-  'checkout.codInfo': 'Additional 5% fee applies for cash on delivery',
+  'checkout.continueToPayment': 'Continue → Confirmation',
   'checkout.deliveryAddress': 'Delivery Address',
   'checkout.edit': 'Edit',
   'checkout.back': '← Back',
-  'checkout.confirmOrder': '✓ Confirm Order – ',
-  'checkout.processing': 'Processing...',
+  'checkout.processing': 'Opening WhatsApp...',
   'checkout.summary': 'Summary',
   'checkout.subtotal': 'Subtotal',
   'checkout.shipping': 'Shipping',
   'checkout.free': 'Free',
   'checkout.total': 'Total',
-  'checkout.demoDisabled': 'This is a demo environment — checkout is disabled',
-  'checkout.demoDisabledHint': 'Payment is unavailable in this demo deployment. Browse the catalog and explore the admin dashboard instead.',
+  'checkout.whatsappTitle': 'Order via WhatsApp',
+  'checkout.whatsappHint': "WhatsApp will open with your order details — just press Send.",
+  'checkout.sendViaWhatsApp': 'Send Order via WhatsApp',
 
   // ConfirmationPage
   'confirmation.title': 'Order Confirmed!',
@@ -212,10 +174,14 @@ const en = {
   'confirmation.delivered': 'Delivered to you',
   'confirmation.dependingOnCity': 'Depending on your city',
   'confirmation.emailNote': 'A confirmation email will be sent to ',
+  'confirmation.sendViaWhatsApp': 'Send my order on WhatsApp',
+  'confirmation.openWhatsApp': 'Open WhatsApp',
+  'confirmation.whatsappHint': "If WhatsApp didn't open automatically, tap the button above to send your order.",
+  'confirmation.whatsappNote': 'Your order has been sent on WhatsApp — our team will confirm availability and delivery very soon.',
   'confirmation.continueShopping': 'Continue Shopping',
   'confirmation.viewAccount': 'View My Account',
   'confirmation.support': 'Questions? Contact us at ',
-  'confirmation.orWhatsApp': ' or via WhatsApp',
+  'confirmation.orWhatsApp': 'or via WhatsApp',
 
   // AccountPage
   'account.loginRequired': 'Login Required',
@@ -268,7 +234,8 @@ const en = {
   'review.yourReview': 'Your Review',
   'review.placeholder': 'Share your thoughts...',
   'review.sectionTitle': 'Customer Reviews',
-  'review.loginToReview': 'Login to Review',
+  'review.yourName': 'Your Name',
+  'review.namePlaceholder': 'e.g. Fatima Zahra',
   'review.submitted': 'Review submitted!',
 
   // Password Reset
@@ -330,6 +297,11 @@ const en = {
   'seo.aboutDescription': 'Founded in Fez, Maison Tislit celebrates Moroccan craftsmanship through timeless feminine clothing.',
   'seo.contactTitle': 'Contact Us',
   'seo.contactDescription': 'Get in touch with Maison Tislit for orders, custom measurements, or inquiries.',
+
+  // Product detail
+  'product.notFound': 'Product not found',
+  'product.notFoundMessage': 'This product may have been removed or the link is incorrect.',
+  'product.backToShop': 'Back to shop',
 
 };
 

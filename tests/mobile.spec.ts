@@ -21,7 +21,7 @@ test.describe('Mobile responsive', () => {
     await page.goto('/cart');
     await page.waitForLoadState('networkidle');
     await expect(
-      page.getByText('My Cart').or(page.getByText('Mon Panier')).or(page.getByText('Your cart is empty')).or(page.getByText('Votre panier est vide'))
+      page.getByText('My Cart').or(page.getByText('Mijn Winkelwagen')).or(page.getByText('Your cart is empty')).or(page.getByText('Uw winkelwagen is leeg'))
     ).toBeVisible();
   });
 });

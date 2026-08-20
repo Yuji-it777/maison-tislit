@@ -13,12 +13,15 @@ export interface ProductRow {
   colors: string[];
   badge: string | null;
   stock: number;
+  slug: string | null;
   created_at: string;
 }
 
 export interface OrderRow {
   id: number;
-  user_id: string;
+  user_id: string | null;
+  customer_name: string;
+  customer_email: string;
   status: 'pending' | 'shipped' | 'delivered';
   total: number;
   address: string;
@@ -69,7 +72,7 @@ export interface NewsletterSubscriberRow {
 export interface ReviewRow {
   id: number;
   product_id: number;
-  user_id: string;
+  user_id: string | null;
   user_name: string;
   rating: number;
   comment: string;

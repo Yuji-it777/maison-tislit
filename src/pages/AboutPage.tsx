@@ -144,7 +144,7 @@ export default function AboutPage() {
               <blockquote className="font-serif italic text-3xl md:text-4xl leading-snug text-[#45381e] mb-8">
                 The artisan's hand is the ultimate rebel in an age of machines. At Maison Tislit, we protect the poetry of the human touch, ensuring that our heritage doesn't just survive, but speaks to the world.
               </blockquote>
-              <cite className="font-serif text-[24px] text-[#45381e] font-bold block not-italic">— Fatema ezzahra El Ghazi, Founder & Creative Director</cite>
+              <cite className="font-serif text-[24px] text-[#45381e] font-bold block not-italic">— Fatima ezzahra El Ghazi, Founder & Creative Director</cite>
             </motion.div>
             <motion.div {...fadeUp(0.2)} className="flex-none">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full border-2 border-[#45381e]/30 p-2">

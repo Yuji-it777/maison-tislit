@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { readFileSync } from 'fs';
 
 export const TEST_USER = {
   email: 'admin@example.com',
@@ -30,14 +31,51 @@ export function getCartKey(): string {
 }
 
 export async function seedCart(page: Page, items: unknown[] = [MOCK_CART_ITEM]): Promise<void> {
+  const itemsWithRealIds = await Promise.all(
+    items.map(async (item: any) => {
+      if (item.id !== MOCK_CART_ITEM.id) return item;
+      const realId = await fetchRealProductId();
+      return { ...item, id: realId };
+    })
+  );
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
   await page.evaluate(
     ({ key, data }) => {
       localStorage.setItem(key, JSON.stringify(data));
     },
-    { key: getCartKey(), data: items }
+    { key: getCartKey(), data: itemsWithRealIds }
   );
+}
+
+async function fetchRealProductId(): Promise<number> {
+  const env = readEnvFile();
+  const supabaseUrl = env.VITE_SUPABASE_URL || '';
+  const supabaseKey = env.VITE_SUPABASE_ANON_KEY || '';
+  try {
+    const res = await fetch(`${supabaseUrl}/rest/v1/products?select=id&limit=1`, {
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+    });
+    const rows = await res.json();
+    if (Array.isArray(rows) && rows.length > 0) return Number(rows[0].id);
+  } catch {
+    // fall back to the mock id (order tests will skip gracefully without a real DB)
+  }
+  return MOCK_CART_ITEM.id;
+}
+
+function readEnvFile(): Record<string, string> {
+  try {
+    const content = readFileSync('.env', 'utf8');
+    const result: Record<string, string> = {};
+    for (const line of content.split('\n')) {
+      const match = line.match(/^([A-Z0-9_]+)=(.*)$/);
+      if (match) result[match[1]] = match[2].trim();
+    }
+    return result;
+  } catch {
+    return {};
+  }
 }
 
 export async function clearCart(page: Page): Promise<void> {
@@ -48,12 +86,12 @@ export async function clearCart(page: Page): Promise<void> {
 
 export async function loginAsAdmin(page: Page): Promise<void> {
   await page.goto('/login');
-  await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+  await page.waitForSelector('input[type="password"]', { timeout: 15000 });
   await page.fill('input[type="email"]', TEST_USER.email);
   await page.fill('input[type="password"]', TEST_USER.password);
   await page.click('button[type="submit"]');
   try {
-    await page.waitForURL(/\/shop|\//, { timeout: 10000 });
+    await page.waitForURL(url => !url.pathname.startsWith('/login'), { timeout: 10000 });
   } catch {
     // if login fails, tests will skip gracefully
   }

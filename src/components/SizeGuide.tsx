@@ -30,7 +30,7 @@ const MEASUREMENTS: Record<string, { bust: number[]; waist: number[]; hips: numb
 export default function SizeGuide({ onClose }: Props) {
   const { locale } = useTranslation();
 
-  const HEADERS = ['Taille', 'Buste (cm)', 'Taille (cm)', 'Hanches (cm)', 'Longueur (cm)'];
+  const HEADERS = ['Maat', 'Borst (cm)', 'Taille (cm)', 'Heupen (cm)', 'Lengte (cm)'];
   const HEADERS_EN = ['Size', 'Bust (cm)', 'Waist (cm)', 'Hips (cm)', 'Length (cm)'];
   const headers = locale === 'en' ? HEADERS_EN : HEADERS;
   const data = MEASUREMENTS.djellaba;
@@ -43,7 +43,7 @@ export default function SizeGuide({ onClose }: Props) {
       <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-lg font-bold text-stone-800" style={{ fontFamily: "'Playfair Display', serif" }}>
-            {locale === 'en' ? 'Size Guide' : 'Guide des Tailles'}
+            {locale === 'en' ? 'Size Guide' : 'Maatgids'}
           </h3>
           <button onClick={onClose} className="text-stone-400 hover:text-stone-700">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -55,7 +55,7 @@ export default function SizeGuide({ onClose }: Props) {
         <p className="text-xs text-stone-500 mb-4">
           {locale === 'en'
             ? 'Measurements are in centimeters. If you are between sizes, we recommend choosing the larger size.'
-            : 'Les mesures sont en centimètres. Si vous êtes entre deux tailles, nous recommandons de choisir la taille supérieure.'}
+            : 'De maten zijn in centimeters. Als u tussen twee maten in zit, raden we aan de grotere maat te kiezen.'}
         </p>
 
         <table className="w-full text-sm">
@@ -82,7 +82,7 @@ export default function SizeGuide({ onClose }: Props) {
         <p className="text-[10px] text-stone-400 mt-4">
           {locale === 'en'
             ? '* Length may vary depending on the model. Contact us for precise measurements.'
-            : '* La longueur peut varier selon le modèle. Contactez-nous pour des mesures précises.'}
+            : '* De lengte kan variëren afhankelijk van het model. Neem contact met ons op voor exacte maten.'}
         </p>
       </div>
     </div>

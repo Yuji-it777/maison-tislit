@@ -2,8 +2,8 @@ import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, user, formatPrice, calculateShipping } = useApp();
-  const { t } = useTranslation();
+  const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, formatPrice, calculateShipping } = useApp();
+  const { t, locale } = useTranslation();
 
   if (cart.length === 0) {
     return (
@@ -71,13 +71,13 @@ export default function CartPage() {
                   </div>
                   {item.customMeasurements && (
                     <div className="mt-2 text-[10px] text-stone-500 bg-stone-50 p-2 rounded border border-stone-100">
-                      <span className="font-semibold block mb-1">Mesures sur-mesure (cm):</span>
+                      <span className="font-semibold block mb-1">{locale === 'en' ? 'Custom measurements (cm):' : 'Maten op maat (cm):'}</span>
                       <div className="flex flex-wrap gap-x-3 gap-y-1">
-                        <span>Épaules: {item.customMeasurements.shoulders}</span>
-                        <span>Poitrine: {item.customMeasurements.bust}</span>
-                        <span>Taille: {item.customMeasurements.waist}</span>
-                        <span>Hanches: {item.customMeasurements.hips}</span>
-                        <span>Longueur: {item.customMeasurements.length}</span>
+                        <span>{locale === 'en' ? 'Shoulders' : 'Schouders'}: {item.customMeasurements.shoulders}</span>
+                        <span>{locale === 'en' ? 'Bust' : 'Borst'}: {item.customMeasurements.bust}</span>
+                        <span>{locale === 'en' ? 'Waist' : 'Taille'}: {item.customMeasurements.waist}</span>
+                        <span>{locale === 'en' ? 'Hips' : 'Heupen'}: {item.customMeasurements.hips}</span>
+                        <span>{locale === 'en' ? 'Length' : 'Lengte'}: {item.customMeasurements.length}</span>
                       </div>
                     </div>
                   )}
@@ -135,13 +135,10 @@ export default function CartPage() {
             </div>
 
             <button
-              onClick={() => {
-                if (!user) { setCurrentPage('login'); return; }
-                setCurrentPage('checkout');
-              }}
+              onClick={() => setCurrentPage('checkout')}
               className="w-full bg-brand hover:bg-brand text-white py-4 text-sm tracking-widest uppercase font-medium transition-all duration-300 rounded hover:shadow-lg mb-3"
             >
-              {user ? t('cart.checkout') : t('cart.loginToCheckout')}
+              {t('cart.checkout')}
             </button>
 
             <button
@@ -152,7 +149,7 @@ export default function CartPage() {
             </button>
 
             <div className="mt-6 flex items-center justify-center gap-3 text-stone-400 text-xs">
-              <span>{t('cart.securePayment')}</span>
+              <span>{t('cart.orderViaWhatsApp')}</span>
               <span>•</span>
               <span>{t('cart.shippingMorocco')}</span>
             </div>

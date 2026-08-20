@@ -1,5 +1,6 @@
 export interface Product {
   id: number;
+  slug: string;
   name: string;
   nameEn: string;
   nameAr: string;
@@ -44,6 +45,6 @@ export interface Review {
   createdAt: string;
 }
 
-export type Page = 'home' | 'shop' | 'about' | 'cart' | 'login' | 'register' | 'checkout' | 'confirmation' | 'account' | 'admin' | 'contact' | 'tracking' | 'shipping' | 'returns';
+export type Page = 'home' | 'shop' | 'about' | 'cart' | 'login' | 'checkout' | 'confirmation' | 'account' | 'admin' | 'contact' | 'tracking' | 'shipping' | 'returns';
 
 export type Currency = 'MAD' | 'EUR' | 'USD';

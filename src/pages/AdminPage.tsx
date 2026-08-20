@@ -10,6 +10,9 @@ import {
   getNewsletterSubscribers, deleteNewsletterSubscriber,
 } from '../supabase/queries';
 import type { ProductRow, OrderRow, MessageRow, ProfileRow, NewsletterSubscriberRow } from '../supabase/types';
+import { supabase } from '../supabase/client';
+import SEO from '../components/SEO';
+import { slugify } from '../utils/slug';
 
 type Section = 'overview' | 'stock' | 'orders' | 'messages' | 'users' | 'newsletter';
 type OrderStatus = 'pending' | 'shipped' | 'delivered';
@@ -47,6 +50,15 @@ const STAT_COLORS: Record<string, { bg: string; color: string }> = {
   revenue: { bg: '#faeeda', color: '#854f0b' },
 };
 
+function buildUniqueSlug(name: string, existing: { slug: string | null }[]): string {
+  const taken = new Set(existing.map(p => p.slug).filter(Boolean) as string[]);
+  let slug = slugify(name);
+  if (!taken.has(slug)) return slug;
+  let counter = 2;
+  while (taken.has(`${slug}-${counter}`)) counter++;
+  return `${slug}-${counter}`;
+}
+
 export default function AdminPage() {
   const [section, setSection] = useState<Section>('overview');
   const { setCurrentPage, user } = useApp();
@@ -62,6 +74,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen flex pt-16" style={{ background: BG }}>
+      <SEO noindex />
       <aside className="fixed left-0 top-16 w-[200px] h-[calc(100vh-64px)] flex flex-col z-40" style={{ background: DARK }}>
         <div className="px-5 py-4 pb-5 border-b border-white/10 mb-2">
           <div className="text-sm font-semibold text-white">Maison Tislit</div>
@@ -134,10 +147,15 @@ function OverviewSection() {
     })
     .reduce((sum, o) => sum + Number(o.total), 0);
 
-  const getCustomerName = (userId: string): string => {
-    const profile = profiles.find(p => p.id === userId);
-    if (profile) return profile.name || profile.email;
-    return userId.slice(0, 8);
+  const getCustomerName = (o: OrderRow): string => {
+    if (o.user_id) {
+      const profile = profiles.find(p => p.id === o.user_id);
+      if (profile) return profile.name || profile.email;
+      return o.user_id.slice(0, 8);
+    }
+    if (o.customer_name) return o.customer_name;
+    if (o.customer_email) return o.customer_email;
+    return 'Guest';
   };
 
   const markAsShipped = async (id: number) => {
@@ -234,7 +252,7 @@ function OverviewSection() {
               {recentOrders.map(o => (
                 <tr key={o.id} className="border-b border-stone-50 last:border-0">
                   <td className="py-2 pr-2 font-medium" style={{ color: '#555' }}>#{o.id}</td>
-                  <td className="py-2 pr-2 text-sm" style={{ color: '#777' }}>{getCustomerName(o.user_id)}</td>
+                  <td className="py-2 pr-2 text-sm" style={{ color: '#777' }}>{getCustomerName(o)}</td>
                   <td className="py-2 pr-2 text-sm font-medium" style={{ color: '#555' }}>{Number(o.total).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</td>
                   <td className="py-2 pr-2"><StatusBadge status={o.status} /></td>
                   <td className="py-2">
@@ -338,9 +356,28 @@ function StockSection() {
   const [catFilter, setCatFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState({ name: '', name_en: '', name_ar: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' });
 
   useEffect(() => { getProducts().then(setProducts).catch(() => {}); }, []);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const path = `products/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      const { error } = await supabase.storage.from('product-images').upload(path, file, { upsert: false });
+      if (error) throw error;
+      const { data } = supabase.storage.from('product-images').getPublicUrl(path);
+      setForm(f => ({ ...f, image: data.publicUrl }));
+    } catch (err: any) {
+      alert(err.message || 'Upload failed');
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -353,14 +390,21 @@ function StockSection() {
   const saveProduct = async () => {
     if (!form.name.trim()) return alert('Nom requis');
     const data = { ...form, price: Number(form.price), stock: Number(form.stock), sizes: form.sizes.split(',').map(s => s.trim()).filter(Boolean), colors: form.colors.split(',').map(s => s.trim()).filter(Boolean), badge: form.badge || null };
-    if (editId !== null) {
-      await updateProduct(editId, data);
-      setProducts(prev => prev.map(p => p.id === editId ? { ...p, ...data } : p));
-    } else {
-      const created = await createProduct(data as any);
-      setProducts(prev => [...prev, created]);
+    try {
+      if (editId !== null) {
+        const existing = products.find(p => p.id === editId);
+        const nameChanged = existing && (form.name !== existing.name || form.name_en !== existing.name_en);
+        const dataWithSlug = { ...data, slug: nameChanged || !existing?.slug ? buildUniqueSlug(form.name_en || form.name, products.filter(p => p.id !== editId)) : existing.slug };
+        await updateProduct(editId, dataWithSlug);
+        setProducts(prev => prev.map(p => p.id === editId ? { ...p, ...dataWithSlug } : p));
+      } else {
+        const created = await createProduct({ ...data, slug: buildUniqueSlug(form.name_en || form.name, products) } as any);
+        setProducts(prev => [...prev, created]);
+      }
+      setShowModal(false);
+    } catch (err: any) {
+      alert(err.message || 'Save failed');
     }
-    setShowModal(false);
   };
 
   const deleteProduct_ = async (id: number) => {
@@ -436,7 +480,18 @@ function StockSection() {
               <div><label className="text-xs" style={{ color: '#999' }}>Stock</label><input type="number" min={0} value={form.stock} onChange={e => setForm({ ...form, stock: +e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
               <div><label className="text-xs" style={{ color: '#999' }}>Badge</label><input value={form.badge} onChange={e => setForm({ ...form, badge: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
             </div>
-            <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Image path</label><input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} placeholder="/images/your-image.jpg" /></div>
+            <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Image</label>
+              <div className="flex items-center gap-2 mt-1">
+                <input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} className="flex-1 px-3 py-2 text-sm rounded-lg focus:outline-none" style={{ border: '1px solid #e5e5e5' }} placeholder="/images/your-image.jpg" />
+                <label className="flex-shrink-0 px-3 py-2 text-xs rounded-lg cursor-pointer transition-colors hover:opacity-90" style={{ background: DARK, color: GOLD, border: 'none' }}>
+                  {uploading ? 'Uploading...' : 'Upload image'}
+                  <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} className="hidden" />
+                </label>
+              </div>
+              {form.image && (
+                <img src={form.image} alt="preview" className="mt-2 w-16 h-20 object-cover rounded-lg" />
+              )}
+            </div>
             <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Description (FR)</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none resize-y" style={{ border: '1px solid #e5e5e5' }} /></div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Sizes (comma separated)</label><input value={form.sizes} onChange={e => setForm({ ...form, sizes: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
@@ -471,10 +526,14 @@ function OrdersSection() {
     setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
   };
 
-  const getCustomerName = (userId: string): string => {
-    const profile = profiles.find(p => p.id === userId);
-    if (profile) return profile.name || profile.email;
-    return userId.slice(0, 8);
+  const getCustomerName = (o: OrderRow): string => {
+    if (o.user_id) {
+      const profile = profiles.find(p => p.id === o.user_id);
+      if (profile) return profile.name || profile.email;
+    }
+    if (o.customer_name) return o.customer_name;
+    if (o.customer_email) return o.customer_email;
+    return o.user_id ? o.user_id.slice(0, 8) : 'Guest';
   };
 
   const tabs = [
@@ -515,11 +574,15 @@ function OrdersSection() {
             {filtered.map(o => (
               <tr key={o.id} className="border-b border-stone-50 hover:bg-stone-50/50 transition-colors">
                 <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>#{o.id}</td>
-                <td className="py-2.5 pr-3 text-sm" style={{ color: '#777' }}>{getCustomerName(o.user_id)}</td>
+                <td className="py-2.5 pr-3 text-sm" style={{ color: '#777' }}>{getCustomerName(o)}</td>
                 <td className="py-2.5 pr-3">
-                  <Badge variant={o.payment_method === 'cod' ? 'warn' : 'info'}>
-                    {o.payment_method === 'cod' ? 'COD' : 'Carte'}
-                  </Badge>
+                  {o.payment_method === 'whatsapp' ? (
+                    <Badge variant="success">WhatsApp</Badge>
+                  ) : o.payment_method === 'cod' ? (
+                    <Badge variant="warn">COD</Badge>
+                  ) : (
+                    <Badge variant="info">Carte</Badge>
+                  )}
                 </td>
                 <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>{Number(o.total).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</td>
                 <td className="py-2.5 pr-3 text-xs" style={{ color: '#bbb' }}>{new Date(o.created_at).toLocaleDateString('fr-FR')}</td>

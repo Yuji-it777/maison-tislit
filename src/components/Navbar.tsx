@@ -61,11 +61,11 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             {/* Language Toggle */}
             <button
-              onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')}
+              onClick={() => setLocale(locale === 'nl' ? 'en' : 'nl')}
               className="text-xs font-bold tracking-wider uppercase px-2 py-1 border border-stone-300 rounded text-stone-600 hover:border-brand hover:text-brand transition-colors"
               aria-label="Toggle language"
             >
-              {locale === 'fr' ? 'EN' : 'FR'}
+              {locale === 'nl' ? 'EN' : 'NL'}
             </button>
 
             {/* Currency Toggle */}
@@ -136,17 +136,7 @@ export default function Navbar() {
                   {t('nav.logout')}
                 </button>
               </div>
-            ) : (
-              <button
-                onClick={() => setCurrentPage('login')}
-                className="hidden md:flex items-center gap-1.5 bg-stone-800 text-white text-xs font-medium tracking-widest uppercase px-4 py-2 rounded hover:bg-brand transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                {t('nav.login')}
-              </button>
-            )}
+            ) : null}
 
             {/* Mobile menu button */}
             <button
@@ -185,12 +175,7 @@ export default function Navbar() {
                   {t('nav.logout')}
                 </button>
               </>
-            ) : (
-              <>
-                {navLink(t('nav.login'), 'login')}
-                {navLink(t('nav.register'), 'register')}
-              </>
-            )}
+            ) : null}
           </div>
         )}
       </div>

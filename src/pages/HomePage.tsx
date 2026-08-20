@@ -18,7 +18,7 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function HomePage() {
-  const { setCurrentPage, setActiveCategory, products, user, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
+  const { setCurrentPage, setActiveCategory, products, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
   const { t, locale } = useTranslation();
   const storyRef = useScrollReveal<HTMLDivElement>();
   const categoriesRef = useStaggerReveal<HTMLDivElement>(0.15);
@@ -302,7 +302,6 @@ export default function HomePage() {
                   <button
                     onClick={e => {
                       e.stopPropagation();
-                      if (!user) { setCurrentPage('login'); return; }
                       const wasInWishlist = isInWishlist(product.id);
                       if (wasInWishlist) {
                         toggleWishlist(product.id);

@@ -1,6 +1,7 @@
 import { MapPin, Phone, Mail, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
+import { WHATSAPP_LINK } from '../config';
 
 import { useState, useRef, useEffect } from 'react';
 
@@ -40,7 +41,7 @@ export default function Footer() {
           
           <div className="lg:col-span-1">
             <h3 className="text-white text-2xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Maison Tislit</h3>
-            <p className="text-xs tracking-[0.3em] text-brand mb-4">MODE MAROCAINE FÉMININE</p>
+            <p className="text-xs tracking-[0.3em] text-brand mb-4">MAROKKAANSE DAMESMODE</p>
             <p className="text-sm leading-relaxed mb-6">{t('footer.tagline')}</p>
             
             <h4 className="text-white font-semibold mb-3 text-sm tracking-widest uppercase">{t('footer.newsletterTitle')}</h4>
@@ -136,7 +137,7 @@ export default function Footer() {
               </a>
               {/* WhatsApp */}
               <a
-                href="https://wa.me/31620813588"
+                href={WHATSAPP_LINK()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center text-brand hover:bg-brand hover:text-white transition-all duration-300"

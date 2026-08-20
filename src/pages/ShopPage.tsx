@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
+import { localizePath, type Locale } from '../context/LanguageContext';
 import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
 import { ShoppingBag, Heart, Search } from 'lucide-react';
@@ -213,23 +215,21 @@ export default function ShopPage() {
   );
 }
 
-function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen: () => void; t: (key: string) => string; locale: string }) {
-  const { addToCart, user, isInWishlist, toggleWishlist, showToast, setCurrentPage, formatPrice } = useApp();
+function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen: () => void; t: (key: string) => string; locale: Locale }) {
+  const { addToCart, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
+  const navigate = useNavigate();
 
   const outOfStock = product.stock <= 0;
+  const productUrl = localizePath(`/product/${product.slug}`, locale);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (outOfStock) return;
-    if (user) {
-      addToCart(product, product.sizes[0] || 'M', product.colors[0] || 'Default', 1);
-    } else {
-      onOpen();
-    }
+    addToCart(product, product.sizes[0] || 'M', product.colors[0] || 'Default', 1);
   };
 
   return (
-    <div className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={onOpen}>
+    <div className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(productUrl)}>
       <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
         <img
           src={product.image}
@@ -249,14 +249,13 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
         {outOfStock && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
             <span className="bg-white text-stone-700 text-xs font-bold px-4 py-2 tracking-widest uppercase rounded">
-              {locale === 'en' ? 'Out of Stock' : 'Rupture'}
+              {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
             </span>
           </div>
         )}
         <button
           onClick={e => {
             e.stopPropagation();
-            if (!user) { setCurrentPage('login'); return; }
             const wasInWishlist = isInWishlist(product.id);
             if (wasInWishlist) {
               toggleWishlist(product.id);
@@ -278,6 +277,12 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
             {t('shop.viewDetails')}
           </span>
         </div>
+        <button
+          onClick={e => { e.stopPropagation(); onOpen(); }}
+          className="absolute top-4 left-4 bg-white/80 backdrop-blur text-stone-800 text-[10px] font-semibold px-3 py-1.5 rounded-full tracking-widest uppercase hover:bg-white transition-colors z-10"
+        >
+          {t('shop.quickView')}
+        </button>
         <button
           onClick={handleAddToCart}
           className={`absolute bottom-4 right-4 p-3 rounded-full transition-all duration-300 shadow-lg ${

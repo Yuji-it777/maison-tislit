@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
 import { useApp } from '../context/AppContext';
-import { useTranslation } from '../context/LanguageContext';
+import { useTranslation, localizePath } from '../context/LanguageContext';
 import SizeGuide from './SizeGuide';
 import StarRating from './StarRating';
 import SEO from './SEO';
@@ -13,7 +14,8 @@ interface Props {
 }
 
 export default function ProductModal({ product, onClose }: Props) {
-  const { addToCart, user, setCurrentPage, setActiveCategory, products, reviews, fetchProductReviews, addReview, showToast, formatPrice } = useApp();
+  const navigate = useNavigate();
+  const { addToCart, setActiveCategory, products, reviews, fetchProductReviews, addReview, showToast, formatPrice } = useApp();
   const { t, locale } = useTranslation();
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || '');
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
@@ -27,6 +29,7 @@ export default function ProductModal({ product, onClose }: Props) {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [newRating, setNewRating] = useState(0);
   const [newComment, setNewComment] = useState('');
+  const [newName, setNewName] = useState('');
 
   useEffect(() => { fetchProductReviews(product.id); }, [product.id, fetchProductReviews]);
 
@@ -37,26 +40,22 @@ export default function ProductModal({ product, onClose }: Props) {
     : 0;
 
   const handleSubmitReview = () => {
-    if (!user || newRating === 0 || !newComment.trim()) return;
-    addReview(product.id, newRating, newComment.trim());
+    if (!newName.trim() || newRating === 0 || !newComment.trim()) return;
+    addReview(product.id, newRating, newComment.trim(), newName.trim());
     setNewRating(0);
     setNewComment('');
+    setNewName('');
     setShowReviewForm(false);
     showToast(t('review.submitted'), 'success');
   };
 
   const handleAdd = () => {
-    if (!user) {
-      onClose();
-      setCurrentPage('login');
-      return;
-    }
     if (outOfStock) return;
     
     // Check if custom measurements are required and filled
     if (selectedSize === 'Custom') {
       if (!customMeasurements.shoulders || !customMeasurements.bust || !customMeasurements.waist || !customMeasurements.hips || !customMeasurements.length) {
-        showToast(locale === 'en' ? 'Please fill all custom measurements' : 'Veuillez remplir toutes les mesures personnalisées', 'error');
+        showToast(locale === 'en' ? 'Please fill all custom measurements' : 'Vul alle persoonlijke maten in', 'error');
         return;
       }
       addToCart(product, selectedSize, selectedColor, quantity, customMeasurements);
@@ -94,7 +93,7 @@ export default function ProductModal({ product, onClose }: Props) {
               {outOfStock && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                   <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase rounded">
-                    {locale === 'en' ? 'Out of Stock' : 'Rupture de Stock'}
+                    {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
                   </span>
                 </div>
               )}
@@ -161,7 +160,7 @@ export default function ProductModal({ product, onClose }: Props) {
                     onClick={() => setShowSizeGuide(true)}
                     className="text-[10px] text-brand hover:underline"
                   >
-                    {locale === 'en' ? 'Size Guide' : 'Guide des tailles'}
+                    {locale === 'en' ? 'Size Guide' : 'Maatgids'}
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -175,14 +174,14 @@ export default function ProductModal({ product, onClose }: Props) {
                           : 'border-stone-300 text-stone-600 hover:border-stone-600'
                       }`}
                     >
-                      {s === 'Custom' ? (locale === 'en' ? 'Custom' : 'Sur-mesure') : s}
+                      {s === 'Custom' ? (locale === 'en' ? 'Custom' : 'Op maat') : s}
                     </button>
                   ))}
                 </div>
                 
                 {selectedSize === 'Custom' && (
                   <div className="mt-4 p-4 bg-stone-50 border border-stone-200 rounded-lg">
-                    <p className="text-xs text-stone-500 mb-3">{locale === 'en' ? 'Please provide your measurements in cm:' : 'Veuillez fournir vos mesures en cm :'}</p>
+                    <p className="text-xs text-stone-500 mb-3">{locale === 'en' ? 'Please provide your measurements in cm:' : 'Geef uw maten in cm:'}</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {['shoulders', 'bust', 'waist', 'hips', 'length'].map(measure => (
                         <div key={measure}>
@@ -215,7 +214,7 @@ export default function ProductModal({ product, onClose }: Props) {
                   >+</button>
                 </div>
                 {!outOfStock && product.stock <= 5 && (
-                  <span className="text-[10px] text-brand">{product.stock} {locale === 'en' ? 'left' : 'restant'}</span>
+                  <span className="text-[10px] text-brand">{product.stock} {locale === 'en' ? 'left' : 'over'}</span>
                 )}
               </div>
 
@@ -229,20 +228,9 @@ export default function ProductModal({ product, onClose }: Props) {
                 }`}
               >
                 {outOfStock
-                  ? (locale === 'en' ? 'Out of Stock' : 'Rupture de Stock')
-                  : user
-                    ? t('modal.addToCart')
-                    : t('modal.loginToOrder')}
+                  ? (locale === 'en' ? 'Out of Stock' : 'Uitverkocht')
+                  : t('modal.addToCart')}
               </button>
-
-              {!user && !outOfStock && (
-                <p className="text-center text-xs text-stone-400 mt-2">
-                  {t('modal.noAccount')}{' '}
-                  <button onClick={() => { onClose(); setCurrentPage('register'); }} className="text-brand hover:underline">
-                    {t('modal.registerFree')}
-                  </button>
-                </p>
-              )}
             </div>
           </div>
 
@@ -262,26 +250,26 @@ export default function ProductModal({ product, onClose }: Props) {
                   </div>
                 )}
               </div>
-              {user ? (
-                <button
+              <button
                   onClick={() => setShowReviewForm(!showReviewForm)}
                   className="text-xs tracking-widest uppercase text-brand hover:text-brand border border-brand px-4 py-2 rounded hover:bg-brand transition-all"
                 >
                   {showReviewForm ? t('review.cancel') : t('review.write')}
                 </button>
-              ) : (
-                <button
-                  onClick={() => { onClose(); setCurrentPage('login'); }}
-                  className="text-xs tracking-widest uppercase text-brand hover:text-brand border border-brand px-4 py-2 rounded hover:bg-brand transition-all"
-                >
-                  {t('review.loginToReview')}
-                </button>
-              )}
             </div>
 
             {showReviewForm && (
               <div className="mb-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
                 <label className="block text-xs font-semibold text-stone-700 mb-2 tracking-wider uppercase">
+                  {t('review.yourName')}
+                </label>
+                <input
+                  value={newName}
+                  onChange={e => setNewName(e.target.value)}
+                  className="w-full border border-stone-300 rounded p-3 text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand"
+                  placeholder={t('review.namePlaceholder')}
+                />
+                <label className="block text-xs font-semibold text-stone-700 mt-4 mb-2 tracking-wider uppercase">
                   {t('review.yourRating')}
                 </label>
                 <StarRating rating={newRating} onChange={setNewRating} size={24} />
@@ -298,7 +286,7 @@ export default function ProductModal({ product, onClose }: Props) {
                 <div className="flex justify-end mt-3">
                   <button
                     onClick={handleSubmitReview}
-                    disabled={newRating === 0 || !newComment.trim()}
+                    disabled={!newName.trim() || newRating === 0 || !newComment.trim()}
                     className="text-xs tracking-widest uppercase bg-brand text-white px-6 py-2.5 rounded hover:bg-brand disabled:bg-stone-300 disabled:cursor-not-allowed transition-all"
                   >
                     {t('review.submit')}
@@ -317,7 +305,7 @@ export default function ProductModal({ product, onClose }: Props) {
                   <div key={r.id} className="border-b border-stone-100 pb-4 last:border-0">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm font-medium text-stone-700">{r.userName}</span>
-                      <span className="text-[10px] text-stone-400">{new Date(r.createdAt).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                      <span className="text-[10px] text-stone-400">{new Date(r.createdAt).toLocaleDateString(locale === 'nl' ? 'nl-NL' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                     </div>
                     <StarRating rating={r.rating} size={12} />
                     <p className="text-sm text-stone-600 mt-1 leading-relaxed">{r.comment}</p>
@@ -330,7 +318,7 @@ export default function ProductModal({ product, onClose }: Props) {
           {related.length > 0 && (
             <div className="border-t border-stone-100 px-8 py-6">
               <h3 className="text-sm font-semibold text-stone-700 mb-4 tracking-wider uppercase" style={{ fontFamily: "'Raleway', sans-serif" }}>
-                {locale === 'en' ? 'You May Also Like' : 'Vous Aimerez Aussi'}
+                {locale === 'en' ? 'You May Also Like' : 'Dit vindt u misschien ook leuk'}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {related.map(r => (
@@ -339,7 +327,7 @@ export default function ProductModal({ product, onClose }: Props) {
                     onClick={() => {
                       onClose();
                       setActiveCategory(r.category);
-                      setCurrentPage('shop');
+                      navigate(localizePath(`/product/${r.slug}`, locale));
                     }}
                     className="group text-left"
                   >

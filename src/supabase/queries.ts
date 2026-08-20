@@ -14,6 +14,12 @@ export async function getProduct(id: number): Promise<ProductRow | null> {
   return data;
 }
 
+export async function getProductBySlug(slug: string): Promise<ProductRow | null> {
+  const { data, error } = await supabase.from('products').select('*').eq('slug', slug).maybeSingle();
+  if (error) return null;
+  return data;
+}
+
 export async function createProduct(product: Partial<ProductRow>): Promise<ProductRow> {
   const { data, error } = await supabase.from('products').insert(product).select().single();
   if (error) throw error;

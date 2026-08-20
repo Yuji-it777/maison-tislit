@@ -21,13 +21,26 @@ test.describe('General', () => {
     await expect(page).toHaveURL(/\/shop/);
 
     await page.getByText('Maison Tislit').first().click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL(/\/(en|nl)\/?$/);
+  });
+
+  test('language toggle switches between /en and /nl URLs', async ({ page }) => {
+    await page.goto('/');
+    await expect(page).toHaveURL(/\/en\//);
+
+    await page.getByRole('button', { name: 'Toggle language' }).click();
+    await expect(page).toHaveURL(/\/nl\/?/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'nl');
+
+    await page.getByRole('button', { name: 'Toggle language' }).click();
+    await expect(page).toHaveURL(/\/en\/?/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   });
 
   test('navigation works — cart icon navigates to /cart', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByLabel(/Cart|Panier/).first().click();
+    await page.getByLabel(/Cart|Winkelwagen/).first().click();
     await expect(page).toHaveURL(/\/cart/);
   });
 });

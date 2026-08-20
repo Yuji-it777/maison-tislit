@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 import Captcha from '../components/Captcha';
+import SEO from '../components/SEO';
 
 export default function LoginPage() {
   const { login, resetPassword, setCurrentPage } = useApp();
@@ -37,6 +38,7 @@ export default function LoginPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50 flex items-center justify-center px-4 py-12">
+      <SEO noindex />
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="bg-gradient-to-r from-stone-800 via-brand to-stone-800 h-2" />
@@ -52,7 +54,7 @@ export default function LoginPage() {
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="bg-brand border border-brand rounded-lg p-3 text-xs text-black">
-                  {t('login.demo')}
+                  {t('login.adminOnly')}
                 </div>
 
                 <div>
@@ -135,23 +137,6 @@ export default function LoginPage() {
                   )}
                 </button>
               </form>
-
-            <div className="mt-8 text-center">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="flex-1 h-px bg-stone-200" />
-                <span className="text-xs text-stone-400">{t('login.or')}</span>
-                <div className="flex-1 h-px bg-stone-200" />
-              </div>
-              <p className="text-sm text-stone-500">
-                {t('login.noAccount')}{' '}
-                <button
-                  onClick={() => setCurrentPage('register')}
-                  className="text-brand font-semibold hover:text-brand hover:underline transition-colors"
-                >
-                  {t('login.createAccount')}
-                </button>
-              </p>
-            </div>
           </div>
         </div>
 

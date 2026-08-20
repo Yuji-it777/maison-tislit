@@ -5,13 +5,14 @@ test.describe('Admin flow', () => {
   test('login as admin and navigate to admin page', async ({ page }) => {
     await page.goto('/login');
     await expect(page).toHaveURL(/\/login/);
+    await page.waitForSelector('input[type="password"]', { timeout: 15000 });
 
     await page.fill('input[type="email"]', 'admin@example.com');
     await page.fill('input[type="password"]', 'password123');
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(/\/shop|\//, { timeout: 10000 });
+      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
@@ -22,12 +23,13 @@ test.describe('Admin flow', () => {
 
   test('go to Orders page and verify order list', async ({ page }) => {
     await page.goto('/login');
+    await page.waitForSelector('input[type="password"]', { timeout: 15000 });
     await page.fill('input[type="email"]', 'admin@example.com');
     await page.fill('input[type="password"]', 'password123');
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(/\/shop|\//, { timeout: 10000 });
+      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
@@ -42,12 +44,13 @@ test.describe('Admin flow', () => {
 
   test('open an order detail page', async ({ page }) => {
     await page.goto('/login');
+    await page.waitForSelector('input[type="password"]', { timeout: 15000 });
     await page.fill('input[type="email"]', 'admin@example.com');
     await page.fill('input[type="password"]', 'password123');
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(/\/shop|\//, { timeout: 10000 });
+      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
@@ -61,12 +64,13 @@ test.describe('Admin flow', () => {
 
   test('mark order as Shipped', async ({ page }) => {
     await page.goto('/login');
+    await page.waitForSelector('input[type="password"]', { timeout: 15000 });
     await page.fill('input[type="email"]', 'admin@example.com');
     await page.fill('input[type="password"]', 'password123');
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(/\/shop|\//, { timeout: 10000 });
+      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }

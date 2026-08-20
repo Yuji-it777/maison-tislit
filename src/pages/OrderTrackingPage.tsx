@@ -51,46 +51,49 @@ export default function OrderTrackingPage() {
 
       if (fetchError || !orderData) throw new Error('Order not found');
 
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('email')
-        .eq('id', orderData.user_id)
-        .single();
-
-      if (!profileData || profileData.email !== email) {
+      let emailMatches = false;
+      if (orderData.user_id) {
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('id', orderData.user_id)
+          .single();
+        emailMatches = !!profileData && profileData.email === email;
+      }
+      if (!emailMatches && orderData.customer_email !== email) {
         throw new Error('Email does not match');
       }
 
       setOrder(orderData);
     } catch (err: any) {
-      setError(locale === 'en' ? 'Order not found. Please check your ID and email.' : 'Commande introuvable. Veuillez vérifier votre numéro et email.');
+      setError(locale === 'en' ? 'Order not found. Please check your ID and email.' : 'Bestelling niet gevonden. Controleer uw nummer en e-mail.');
     } finally {
       setLoading(false);
     }
   };
 
   const statusMap: Record<string, string> = {
-    pending: locale === 'en' ? 'Pending' : 'En attente',
-    processing: locale === 'en' ? 'Processing' : 'En cours de traitement',
-    shipped: locale === 'en' ? 'Shipped' : 'Expédiée',
-    delivered: locale === 'en' ? 'Delivered' : 'Livrée',
-    cancelled: locale === 'en' ? 'Cancelled' : 'Annulée'
+    pending: locale === 'en' ? 'Pending' : 'In afwachting',
+    processing: locale === 'en' ? 'Processing' : 'In behandeling',
+    shipped: locale === 'en' ? 'Shipped' : 'Verzonden',
+    delivered: locale === 'en' ? 'Delivered' : 'Geleverd',
+    cancelled: locale === 'en' ? 'Cancelled' : 'Geannuleerd'
   };
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50 flex flex-col items-center py-16 px-6">
       <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
         <h1 className="text-3xl font-bold text-center mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-          {locale === 'en' ? 'Track Your Order' : 'Suivi de Commande'}
+          {locale === 'en' ? 'Track Your Order' : 'Bestelling Volgen'}
         </h1>
         <p className="text-center text-stone-500 mb-8 text-sm">
-          {locale === 'en' ? 'Enter your order ID and email to see the current status.' : 'Entrez votre numéro de commande et email pour voir le statut.'}
+          {locale === 'en' ? 'Enter your order ID and email to see the current status.' : 'Voer uw bestelnummer en e-mail in om de huidige status te zien.'}
         </p>
 
         <form onSubmit={handleTrack} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">
-              {locale === 'en' ? 'Order ID' : 'Numéro de commande'}
+              {locale === 'en' ? 'Order ID' : 'Bestelnummer'}
             </label>
             <input 
               type="text" 
@@ -119,7 +122,7 @@ export default function OrderTrackingPage() {
             disabled={loading}
             className="w-full bg-stone-800 hover:bg-brand text-white py-3 rounded-lg text-sm tracking-widest uppercase font-semibold transition-colors disabled:opacity-50"
           >
-            {loading ? '...' : (locale === 'en' ? 'Track Order' : 'Suivre la commande')}
+            {loading ? '...' : (locale === 'en' ? 'Track Order' : 'Bestelling volgen')}
           </button>
         </form>
 
@@ -132,7 +135,7 @@ export default function OrderTrackingPage() {
         {order && (
           <div className="mt-8 border-t border-stone-100 pt-8">
             <h3 className="text-lg font-bold mb-6 text-center" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {locale === 'en' ? 'Order Details' : 'Détails de la commande'} #{order.id}
+              {locale === 'en' ? 'Order Details' : 'Besteldetails'} #{order.id}
             </h3>
 
             {/* Visual stepper */}
@@ -172,7 +175,7 @@ export default function OrderTrackingPage() {
             {/* Details grid */}
             <div className="space-y-3 text-sm">
               <div className="flex justify-between p-3 bg-stone-50 rounded">
-                <span className="text-stone-500">{locale === 'en' ? 'Status' : 'Statut'}</span>
+                <span className="text-stone-500">{locale === 'en' ? 'Status' : 'Status'}</span>
                 <span className="font-bold text-brand">{statusMap[order.status] || order.status}</span>
               </div>
               <div className="flex justify-between p-3 bg-stone-50 rounded">
@@ -186,7 +189,7 @@ export default function OrderTrackingPage() {
             </div>
             {order.status === 'shipped' && (
               <div className="mt-4 p-4 bg-blue-50 text-blue-700 text-sm rounded text-center">
-                {locale === 'en' ? 'Your order is on the way! It should arrive soon.' : 'Votre commande est en route ! Elle devrait arriver bientôt.'}
+                {locale === 'en' ? 'Your order is on the way! It should arrive soon.' : 'Uw bestelling is onderweg! Deze zou spoedig moeten aankomen.'}
               </div>
             )}
           </div>
