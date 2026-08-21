@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS products (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   name_en TEXT NOT NULL,
-  name_ar TEXT NOT NULL DEFAULT '',
   category TEXT NOT NULL CHECK (category IN ('djellaba', 'takchita', 'gandoura', 'Caftan', 'Jabador', 'Accessoire')),
   price NUMERIC(10,2) NOT NULL,
   original_price NUMERIC(10,2),
@@ -175,17 +174,17 @@ CREATE POLICY "Admins can delete messages"
   USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true));
 
 -- 6. Seed products
-INSERT INTO products (name, name_en, name_ar, category, price, original_price, image, description, description_en, sizes, colors, badge, stock) VALUES
-  ('Djellaba Royale Émeraude', 'Emerald Royal Djellaba', 'جلابة رويال زمردية', 'djellaba', 1850, 2200, '/images/djellaba-royale-emeraude.jpg', 'Une djellaba majestueuse en tissu brodé de fils dorés.', 'A majestic djellaba in gold-embroidered fabric.', '{XS,S,M,L,XL}', '{Émeraude,Bordeaux,Marine}', 'Bestseller', 12),
-  ('Djellaba Safira Bleue', 'Blue Safira Djellaba', 'جلابة سفيرة زرقاء', 'djellaba', 1650, NULL, '/images/djellaba2.jpg', 'Djellaba en soie naturelle bleu royal.', 'Royal blue natural silk djellaba.', '{XS,S,M,L,XL,XXL}', '{Bleu Royal,Indigo,Turquoise}', 'Nouveau', 5),
-  ('Takchita Nour Al-Qamar', 'Nour Al-Qamar Takchita', 'تكشيطة نور القمر', 'takchita', 3200, 3800, '/images/takchita1.jpg', 'Une takchita somptueuse deux pièces en crêpe ivoire.', 'A sumptuous two-piece takchita in ivory crepe.', '{XS,S,M,L}', '{Ivoire & Or,Blanc & Argent}', 'Premium', 3),
-  ('Takchita Rosa Enchantée', 'Enchanted Rosa Takchita', 'تكشيطة روزا الساحرة', 'takchita', 2900, NULL, '/images/takchita2.jpg', 'Takchita romantique en rose poudré.', 'Romantic takchita in powder pink.', '{XS,S,M,L,XL}', '{Rose Poudré,Champagne,Pêche}', 'Collection Spéciale', 7),
-  ('Gandoura Sultana Bordeaux', 'Bordeaux Sultana Gandoura', 'قندورة سلطانة بوردو', 'gandoura', 1200, 1450, '/images/gandoura1.jpg', 'Gandoura sans manches en velours bordeaux.', 'Sleeveless gandoura in burgundy velvet.', '{XS,S,M,L,XL,XXL}', '{Bordeaux,Rubis,Prune}', 'Promo', 20),
-  ('Gandoura Jasmine Blanche', 'White Jasmine Gandoura', 'قندورة ياسمينة البيضاء', 'gandoura', 980, NULL, '/images/gandoura1.jpg', 'Gandoura légère en coton blanc.', 'Lightweight white cotton gandoura.', '{S,M,L,XL}', '{Blanc Cassé,Écru,Crème}', NULL, 2),
-  ('Caftan Royal Brodé', 'Embroidered Royal Caftan', 'قفطان ملكي مطرز', 'Caftan', 2800, NULL, '/images/djellaba1.jpg', 'Caftan en velours brodé main.', 'Hand-embroidered velvet caftan.', '{S,M,L,XL}', '{Or,Argent,Rose Gold}', NULL, 12),
-  ('Takchita Fassia', 'Fassi Takchita', 'تكشيطة فاسية', 'takchita', 4500, NULL, '/images/takchita1.jpg', 'Ensemble deux pièces traditionnel.', 'Traditional two-piece ensemble.', '{XS,S,M,L}', '{Blanc,Ivoire,Champagne}', 'Premium', 3),
-  ('Jabador Soie', 'Silk Jabador', 'جابادور حرير', 'Jabador', 1900, NULL, '/images/gandoura1.jpg', 'Jabador en soie pure.', 'Pure silk jabador.', '{S,M,L,XL}', '{Blanc,Noir,Rouge}', NULL, 0),
-  ('Ceinture Dorée', 'Golden Belt', 'حزام ذهبي', 'Accessoire', 350, NULL, '/images/gandoura1.jpg', 'Ceinture tissée or.', 'Woven gold belt.', '{Unique}', '{Or,Argent}', NULL, 25)
+INSERT INTO products (name, name_en, category, price, original_price, image, description, description_en, sizes, colors, badge, stock) VALUES
+  ('Djellaba Royale Émeraude', 'Emerald Royal Djellaba', 'djellaba', 1850, 2200, '/images/djellaba-royale-emeraude.jpg', 'Une djellaba majestueuse en tissu brodé de fils dorés.', 'A majestic djellaba in gold-embroidered fabric.', '{XS,S,M,L,XL}', '{Émeraude,Bordeaux,Marine}', 'Bestseller', 12),
+  ('Djellaba Safira Bleue', 'Blue Safira Djellaba', 'djellaba', 1650, NULL, '/images/djellaba2.jpg', 'Djellaba en soie naturelle bleu royal.', 'Royal blue natural silk djellaba.', '{XS,S,M,L,XL,XXL}', '{Bleu Royal,Indigo,Turquoise}', 'Nouveau', 5),
+  ('Takchita Nour Al-Qamar', 'Nour Al-Qamar Takchita', 'takchita', 3200, 3800, '/images/takchita1.jpg', 'Une takchita somptueuse deux pièces en crêpe ivoire.', 'A sumptuous two-piece takchita in ivory crepe.', '{XS,S,M,L}', '{Ivoire & Or,Blanc & Argent}', 'Premium', 3),
+  ('Takchita Rosa Enchantée', 'Enchanted Rosa Takchita', 'takchita', 2900, NULL, '/images/takchita2.jpg', 'Takchita romantique en rose poudré.', 'Romantic takchita in powder pink.', '{XS,S,M,L,XL}', '{Rose Poudré,Champagne,Pêche}', 'Collection Spéciale', 7),
+  ('Gandoura Sultana Bordeaux', 'Bordeaux Sultana Gandoura', 'gandoura', 1200, 1450, '/images/gandoura1.jpg', 'Gandoura sans manches en velours bordeaux.', 'Sleeveless gandoura in burgundy velvet.', '{XS,S,M,L,XL,XXL}', '{Bordeaux,Rubis,Prune}', 'Promo', 20),
+  ('Gandoura Jasmine Blanche', 'White Jasmine Gandoura', 'gandoura', 980, NULL, '/images/gandoura1.jpg', 'Gandoura légère en coton blanc.', 'Lightweight white cotton gandoura.', '{S,M,L,XL}', '{Blanc Cassé,Écru,Crème}', NULL, 2),
+  ('Caftan Royal Brodé', 'Embroidered Royal Caftan', 'Caftan', 2800, NULL, '/images/djellaba1.jpg', 'Caftan en velours brodé main.', 'Hand-embroidered velvet caftan.', '{S,M,L,XL}', '{Or,Argent,Rose Gold}', NULL, 12),
+  ('Takchita Fassia', 'Fassi Takchita', 'takchita', 4500, NULL, '/images/takchita1.jpg', 'Ensemble deux pièces traditionnel.', 'Traditional two-piece ensemble.', '{XS,S,M,L}', '{Blanc,Ivoire,Champagne}', 'Premium', 3),
+  ('Jabador Soie', 'Silk Jabador', 'Jabador', 1900, NULL, '/images/gandoura1.jpg', 'Jabador en soie pure.', 'Pure silk jabador.', '{S,M,L,XL}', '{Blanc,Noir,Rouge}', NULL, 0),
+  ('Ceinture Dorée', 'Golden Belt', 'Accessoire', 350, NULL, '/images/gandoura1.jpg', 'Ceinture tissée or.', 'Woven gold belt.', '{Unique}', '{Or,Argent}', NULL, 25)
 ON CONFLICT DO NOTHING;
 
 -- 8. Reviews

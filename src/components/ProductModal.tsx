@@ -115,9 +115,6 @@ export default function ProductModal({ product, onClose }: Props) {
               <h2 className="text-2xl font-bold text-stone-800 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
                 {locale === 'en' && product.nameEn ? product.nameEn : product.name}
               </h2>
-              <p className="text-stone-400 text-sm mb-4 italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-                {product.nameAr}
-              </p>
 
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-bold text-stone-900">{formatPrice(product.price)}</span>

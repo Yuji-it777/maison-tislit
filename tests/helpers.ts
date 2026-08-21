@@ -10,7 +10,6 @@ export const MOCK_CART_ITEM = {
   id: 999,
   name: 'Djellaba Test',
   nameEn: 'Test Djellaba',
-  nameAr: 'جلابة تجريبية',
   category: 'djellaba' as const,
   price: 49.99,
   originalPrice: 69.99,

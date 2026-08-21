@@ -144,7 +144,6 @@ CREATE TABLE IF NOT EXISTS products (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   name_en TEXT NOT NULL,
-  name_ar TEXT NOT NULL DEFAULT '',
   category TEXT NOT NULL CHECK (category IN ('djellaba', 'takchita', 'gandoura', 'Caftan', 'Jabador', 'Accessoire')),
   price NUMERIC(10,2) NOT NULL,
   original_price NUMERIC(10,2),

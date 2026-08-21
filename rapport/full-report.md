@@ -191,7 +191,6 @@ The database consists of the following tables:
 | id | BIGINT | Primary key, auto-increment |
 | name | TEXT | Product name (French) |
 | name_en | TEXT | Product name (English) |
-| name_ar | TEXT | Product name (Arabic) |
 | category | TEXT | Category (djellaba, takchita, gandoura) |
 | price | NUMERIC | Current price |
 | original_price | NUMERIC | Original price (for discounts) |

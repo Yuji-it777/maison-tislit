@@ -3,7 +3,6 @@ export interface Product {
   slug: string;
   name: string;
   nameEn: string;
-  nameAr: string;
   category: 'djellaba' | 'takchita' | 'gandoura';
   price: number;
   originalPrice?: number;

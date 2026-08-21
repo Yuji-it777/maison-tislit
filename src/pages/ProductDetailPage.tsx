@@ -17,7 +17,6 @@ function mapRow(row: ProductRow): Product {
     slug: row.slug || '',
     name: row.name,
     nameEn: row.name_en,
-    nameAr: row.name_ar || '',
     category: row.category as Product['category'],
     price: row.price ?? 150,
     originalPrice: row.original_price ?? undefined,
@@ -225,9 +224,6 @@ export default function ProductDetailPage() {
             <h1 className="text-3xl font-bold text-stone-800 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
               {productName}
             </h1>
-            <p className="text-stone-400 text-sm mb-4 italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-              {product.nameAr}
-            </p>
 
             <div className="flex items-baseline gap-3 mb-6">
               <span className="text-3xl font-bold text-stone-900">{formatPrice(product.price)}</span>

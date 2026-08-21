@@ -67,19 +67,16 @@ export default function HomePage() {
   const categories = [
     {
       name: 'Djellaba',
-      nameAr: 'الجلابة',
       description: t('home.catDjellabaDesc'),
       image: '/images/djellaba1.jpg',
     },
     {
       name: 'Takchita',
-      nameAr: 'التكشيطة',
       description: t('home.catTakchitaDesc'),
       image: '/images/takchita1.jpg',
     },
     {
       name: 'Gandoura',
-      nameAr: 'القندورة',
       description: t('home.catGandouraDesc'),
       image: '/images/gandoura1.jpg',
     },
@@ -248,9 +245,6 @@ export default function HomePage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/50 to-stone-900/30 group-hover:from-stone-950/90 transition-all duration-300" />
                 <div className="relative z-10">
-                  <span className="text-white/60 text-xs tracking-[0.3em] uppercase mb-2 block" style={{ fontFamily: "'Raleway', sans-serif" }}>
-                    {cat.nameAr}
-                  </span>
                   <h3 className="text-white text-3xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {cat.name}
                   </h3>

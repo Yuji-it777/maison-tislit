@@ -13,9 +13,9 @@ import SEO from '../components/SEO';
 const CATEGORIES = ['all', 'djellaba', 'takchita', 'gandoura'];
 const CAT_LABELS: Record<string, string> = {
   all: 'shop.catAll',
-  djellaba: 'Djellaba الجلابة',
-  takchita: 'Takchita التكشيطة',
-  gandoura: 'Gandoura القندورة',
+  djellaba: 'Djellaba',
+  takchita: 'Takchita',
+  gandoura: 'Gandoura',
 };
 
 const badgeKey = (badge: string): string => {

@@ -2,7 +2,6 @@ export interface ProductRow {
   id: number;
   name: string;
   name_en: string;
-  name_ar: string;
   category: string;
   price: number;
   original_price: number | null;

@@ -357,7 +357,7 @@ function StockSection() {
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [form, setForm] = useState({ name: '', name_en: '', name_ar: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' });
+  const [form, setForm] = useState({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' });
 
   useEffect(() => { getProducts().then(setProducts).catch(() => {}); }, []);
 
@@ -384,8 +384,8 @@ function StockSection() {
     return products.filter(p => p.name.toLowerCase().includes(q) && (!catFilter || p.category === catFilter));
   }, [products, search, catFilter]);
 
-  const openAdd = () => { setEditId(null); setForm({ name: '', name_en: '', name_ar: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' }); setShowModal(true); };
-  const openEdit = (p: ProductRow) => { setEditId(p.id); setForm({ name: p.name, name_en: p.name_en, name_ar: p.name_ar, category: p.category, price: p.price, stock: p.stock, description: p.description, description_en: p.description_en, sizes: p.sizes.join(', '), colors: p.colors.join(', '), badge: p.badge || '', image: p.image }); setShowModal(true); };
+  const openAdd = () => { setEditId(null); setForm({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' }); setShowModal(true); };
+  const openEdit = (p: ProductRow) => { setEditId(p.id); setForm({ name: p.name, name_en: p.name_en, category: p.category, price: p.price, stock: p.stock, description: p.description, description_en: p.description_en, sizes: p.sizes.join(', '), colors: p.colors.join(', '), badge: p.badge || '', image: p.image }); setShowModal(true); };
 
   const saveProduct = async () => {
     if (!form.name.trim()) return alert('Nom requis');
