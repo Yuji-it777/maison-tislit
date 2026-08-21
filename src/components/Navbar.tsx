@@ -38,7 +38,7 @@ export default function Navbar() {
               alt="Maison Tislit"
               width={256}
               height={256}
-              className="h-[130px] w-auto object-contain drop-shadow-sm transition-all duration-300"
+              className="h-[140px] w-auto object-contain drop-shadow-sm transition-all duration-300"
             />
             <span className="sr-only">Maison Tislit</span>
           </motion.button>
@@ -83,7 +83,7 @@ export default function Navbar() {
             <button
               data-target="wishlist-icon"
               onClick={() => setCurrentPage('account')}
-              className="relative p-2 text-stone-700 hover:text-brand transition-colors hidden md:block"
+              className="relative p-2 text-stone-700 hover:text-brand transition-colors hidden"
               aria-label="Wishlist"
             >
               <Heart size={20} className={wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''} />
