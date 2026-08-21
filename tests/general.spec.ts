@@ -6,7 +6,7 @@ test.describe('General', () => {
     await expect(page).toHaveTitle(/Maison Tislit/);
 
     await expect(page.getByText('Maison Tislit').first()).toBeVisible();
-    await expect(page.getByText('Collection 2025').first()).toBeVisible();
+    await expect(page.getByText('Collection 2027').first()).toBeVisible();
   });
 
   test('navigation works — Home and Shop links', async ({ page }) => {

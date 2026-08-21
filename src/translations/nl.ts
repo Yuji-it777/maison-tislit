@@ -10,7 +10,7 @@ const nl = {
   'nav.about': 'Over ons',
 
   // HomePage
-  'home.collection2025': 'Collectie 2025',
+  'home.collection2025': 'Collectie 2027',
   'home.heroTitle1': 'De Kunst van',
   'home.heroTitle2': 'Marokkaanse',
   'home.heroTitle3': 'Kleding',
@@ -38,9 +38,9 @@ const nl = {
   'why.artisanat.title': 'Authentiek Vakmanschap',
   'why.artisanat.desc': 'Elk stuk wordt met de hand genaaid door deskundige Marokkaanse ambachtsvrouwen',
   'why.matieres.title': 'Edele Materialen',
-  'why.matieres.desc': 'Zijde, fluweel, crêpe en borduurwerk met echt goud- en zilverdraad',
+  'why.matieres.desc': 'Zijde, fluweel en crêpe, met de hand ingekocht en bewerkt',
   'why.livraison.title': 'Bezorging Marokko',
-  'why.livraison.desc': 'Snelle bezorging in heel Marokko, luxe verpakking inbegrepen',
+  'why.livraison.desc': 'Snelle wereldwijde bezorging, met luxe verpakking inbegrepen',
   'why.surMesure.title': 'Op Maat',
   'why.surMesure.desc': 'Personalisatie- en aanpassingsservice beschikbaar voor alle stukken',
   'footer.tagline': 'De excellentie van traditionele Marokkaanse kleding, opnieuw uitgevonden voor de moderne vrouw.',
@@ -66,7 +66,7 @@ const nl = {
   'footer.returns': 'Retourneren & Ruilen',
 
   // ShopPage
-  'shop.collection2025': 'Collectie 2025',
+  'shop.collection2025': 'Collectie 2027',
   'shop.ourBoutique': 'Onze Boetiek',
   'shop.subtitle': 'Ontdek onze collectie authentieke Marokkaanse kleding',
   'shop.catAll': 'Alles bekijken',
@@ -289,7 +289,7 @@ const nl = {
 
   // SEO
   'seo.homeTitle': 'Maison Tislit – Marokkaanse Damesmode',
-  'seo.homeDescription': 'Maison Tislit viert de erfenis van Marokkaanse dameskleding — ambachtelijke djellaba\u2019s, takchita\u2019s en gandoura\u2019s. Ontdek onze collectie 2025.',
+  'seo.homeDescription': 'Maison Tislit viert de erfenis van Marokkaanse dameskleding — ambachtelijke djellaba\u2019s, takchita\u2019s en gandoura\u2019s. Ontdek onze collectie 2027.',
   'seo.shopTitle': 'Onze Collectie',
   'seo.shopDescription': 'Ontdek onze gecureerde collectie authentieke Marokkaanse djellaba\u2019s, takchita\u2019s en gandoura\u2019s — met de hand gemaakt door deskundige ambachtslieden.',
   'seo.aboutTitle': 'Over Maison Tislit',
@@ -313,6 +313,35 @@ const nl = {
   'product.notFound': 'Product niet gevonden',
   'product.notFoundMessage': 'Dit product is mogelijk verwijderd of de link is onjuist.',
   'product.backToShop': 'Terug naar de winkel',
+
+  // About page
+  'about.heroTagline': 'Geweven in traditie, gedragen met elegantie',
+  'about.heritageTitle': 'Ons Erfgoed',
+  'about.heritageLine1': 'Maison Tislit is geboren in de stille valleien van het Atlasgebergte, waar het ritme van het weefgetouw al generaties lang weerklinkt. Ons verhaal gaat niet alleen over mode; het is een heilige bewaring van de Berberziel en de Andalusië-kunst die Marokkaanse luxe eeuwenlang heeft bepaald.',
+  'about.heritageLine2': "Elke draad die wij trekken is een band met een voorouder; elk patroon dat wij stikken is een kaart van onze gedeelde geschiedenis. Wij werken uitsluitend met meesterambachtslieden die hun geheimen hebben geërfd van hun moeders en vaders, zodat de 'Slow Luxury' van de Maghreb blijft bloeien in een moderne wereld.",
+  'about.craftTitle': 'De Kunst van het Ambacht',
+  'about.stepEmbroideryTitle': 'Handborduurwerk',
+  'about.stepEmbroiderySubtitle': 'De ziel van het kledingstuk.',
+  'about.stepFabricTitle': 'Stofselectie',
+  'about.stepFabricSubtitle': 'Ethisch verantwoorde excellentie.',
+  'about.stepTailoringTitle': 'Meesterlijke Couture',
+  'about.stepTailoringSubtitle': 'Structurele perfectie.',
+  'about.stepFinalTitle': 'Eindproduct',
+  'about.stepFinalSubtitle': 'Een herrezen erfenis.',
+  'about.rootLabel': 'De Oorsprong',
+  'about.traditionTitle': 'Traditie Heruitgevonden',
+  'about.traditionLine': 'Wij kijken niet terug om in het verleden te leven, maar om de woordenschat voor de toekomst te vinden. Onze ontwerpen destilleren voorouderlijke motieven tot eigentijdse silhouetten voor de wereldwijde vrouw.',
+  'about.evolutionLabel': 'De Evolutie',
+  'about.quote': "De hand van de ambachtsman is de ultieme rebel in een tijdperk van machines. Bij Maison Tislit beschermen wij de poëzie van de menselijke aanraking, zodat ons erfgoed niet alleen overleeft, maar tot de wereld spreekt.",
+  'about.founder': '— Fatima ezzahra El Ghazi, Oprichter & Creatief Directeur',
+  'about.materialEmbroideryTitle': 'Handborduurwerk',
+  'about.materialEmbroideryDesc': "Elk kledingstuk bevat 'R'anda' of 'Terz' borduurwerk, minutieus met de hand gestikt door vrouwencollectieven in de regio Fez, tot wel 40 uur per stuk.",
+  'about.materialDyesTitle': 'Natuurlijke Kleurstoffen',
+  'about.materialDyesDesc': 'Wij gebruiken plantaardige pigmenten afkomstig van granaatappelschillen, indigobladeren en saffraankrokus, waardoor een levendig palet ontstaat dat prachtig veroudert met de tijd.',
+  'about.materialFabricTitle': 'Handgeweven Stof',
+  'about.materialFabricDesc': 'Onze zijde- en katoenmengsels worden geweven op traditionele grondweefgetouwen, waardoor een textuur en val behouden blijven die industriële machines simpelweg niet kunnen nabootsen.',
+  'about.ctaTitle': 'De collectie wacht op uw ontdekking.',
+  'about.ctaButton': 'Ontdek de Collectie',
 
 };
 

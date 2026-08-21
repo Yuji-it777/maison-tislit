@@ -34,7 +34,7 @@ export default function AboutPage() {
             MAISON TISLIT
           </h1>
           <p className="font-serif text-[20px] italic text-[#e4e2e1]/90 tracking-widest">
-            Woven in Tradition, Worn with Elegance
+            {t('about.heroTagline')}
           </p>
           <div className="mt-16">
             <div className="w-[1px] h-24 bg-[#d8c4a1]/50 mx-auto"></div>
@@ -52,12 +52,12 @@ export default function AboutPage() {
             ></div>
           </motion.div>
           <motion.div {...fadeUp(0.2)} className="md:pl-16">
-            <h2 className="font-serif text-[32px] text-[#d8c4a1] mb-8" style={{ fontFamily: "'Cinzel', serif" }}>Our Heritage</h2>
+            <h2 className="font-serif text-[32px] text-[#d8c4a1] mb-8" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.heritageTitle')}</h2>
             <p className="font-serif text-[20px] text-[#cfc5b9] mb-4 leading-relaxed">
-              Maison Tislit was born from the silent valleys of the Atlas Mountains, where the rhythm of the loom has echoed for generations. Our story is not merely about fashion; it is a sacred preservation of the Berber soul and the Andalusian artistry that has defined Moroccan luxury for centuries.
+              {t('about.heritageLine1')}
             </p>
             <p className="font-serif text-[20px] text-[#cfc5b9] leading-relaxed">
-              Every thread we pull is a link to an ancestor; every pattern we stitch is a map of our shared history. We work exclusively with master artisans who have inherited their secrets from their mothers and fathers, ensuring that the 'Slow Luxury' of the Maghreb continues to flourish in a modern world.
+              {t('about.heritageLine2')}
             </p>
           </motion.div>
         </div>
@@ -67,7 +67,7 @@ export default function AboutPage() {
       <section className="bg-[#1b1c1c] py-16">
         <div className="max-w-7xl mx-auto px-5 md:px-20">
           <div className="text-center mb-16">
-            <h3 className="font-serif text-[24px] text-[#d8c4a1] tracking-widest uppercase mb-2" style={{ fontFamily: "'Cinzel', serif" }}>The Art of the Craft</h3>
+            <h3 className="font-serif text-[24px] text-[#d8c4a1] tracking-widest uppercase mb-2" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.craftTitle')}</h3>
             <div className="flex justify-center items-center gap-2">
               <div className="h-[1px] w-12 bg-[#4c463c]"></div>
               <span className="material-symbols-outlined text-[#d8c4a1]" style={{ fontVariationSettings: "'opsz' 20" }}>diamond</span>
@@ -78,10 +78,10 @@ export default function AboutPage() {
             <div className="hidden md:block absolute top-[85px] left-20 right-20 h-[1px] bg-[#4c463c]/30 z-0"></div>
 
             {[
-              { title: "Hand Embroidery", subtitle: "The soul of the piece.", delay: 0.1, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-VIVN5Lz1HiM3A0CFuePgxmRFRUruu3pIuJVTMGGey1C8Ka8nuduZ99DrFxY8ueKAnZUoRxr87V66vsku14BB4zvLef8-PjPqTwtbeXvVh0pJeI78qB9JiUh3VnpMac7c8DI1cpS4TjemrKQ0s-cxCS6uj08F6C5adPrQa5nqrM-gvryEqB8678p2vlgM4BcLpR3oanA8DbW9b40wnJ9z6SICGmzAEpJ_n4EqRCShpfYlsB_12MEXZnanc6ljtxd1vArS4d2FXxk" },
-              { title: "Fabric Selection", subtitle: "Ethically sourced excellence.", delay: 0.2, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVMdxTKY5DShmarB0UQpaSxXNAeIqsFjyB8OJliBjTClrC-5dp9gQW4DmjDSdWRCL1rA5GzXZt4K-JzprIdBNX7UcNQ3kQS71pr1P81fkdZRgoy4_h2IqxmhU1GQUcvEo4zVfJNk8sKQH-si0QRuljlMu3QbNAXVZxqzru5ILINMg2MffFmtrt8xCWQxgBz7iegabscGP6JdRjkpll29ge72vTSUIKX-ZX90rf2r_Ef_TfPbNMzVJBens2RCvN_F-yQqkSxcw2FBw" },
-              { title: "Master Tailoring", subtitle: "Structural perfection.", delay: 0.3, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyCjkYDw8QRGzEZtsWvdIXowQF7dnnWtaTT7oP6qaZG2lcOg-HBrVLn3XjBrMopLBNsnw0-iFt0xrMHbQb9y9AV8b_oR5uc9g2kEh_ED6zb3-fqBQYKAAkWTURSlRsKEJ2JwWyA66Rw3lhI5TjbG0_YY_0oQy32tsIdzPnlhOFbAj7ZpwVKrx43P3Yy_k-ZXIFMWLHOlabt6qbb6xq-A4LPGeXQJB2Bg9A0aUluOk1_BTNLnbNcD2ar0bVtTleTnYM8KBGC8M4Cqo" },
-              { title: "Final Piece", subtitle: "A legacy reborn.", delay: 0.4, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAA8UXs9lRebIQu8jDp8Owk8OvHFt6D7bjQZzRw0s8HRcMNKRgxYw1Gfri6V4KxbYgGcD173BVQgm6aTyS0DwjpqAuU4RaOvWeoFqDazyV64LJJBd3OsjyRQyWLm4i93YMQznsdq9_oekazaH-YXxBojMvN1GK_DoAJCfBHyKT06JdtYBeLdIM9IVDqTQ30HgmCsTs1-MD_MI8VkfjHOSbFQcwG2SXQ30lUekoJqafSGu7vcghw_V9uhNfrJCbKJhOL4_YUx9zkCTc" }
+              { title: t('about.stepEmbroideryTitle'), subtitle: t('about.stepEmbroiderySubtitle'), delay: 0.1, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-VIVN5Lz1HiM3A0CFuePgxmRFRUruu3pIuJVTMGGey1C8Ka8nuduZ99DrFxY8ueKAnZUoRxr87V66vsku14BB4zvLef8-PjPqTwtbeXvVh0pJeI78qB9JiUh3VnpMac7c8DI1cpS4TjemrKQ0s-cxCS6uj08F6C5adPrQa5nqrM-gvryEqB8678p2vlgM4BcLpR3oanA8DbW9b40wnJ9z6SICGmzAEpJ_n4EqRCShpfYlsB_12MEXZnanc6ljtxd1vArS4d2FXxk" },
+              { title: t('about.stepFabricTitle'), subtitle: t('about.stepFabricSubtitle'), delay: 0.2, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVMdxTKY5DShmarB0UQpaSxXNAeIqsFjyB8OJliBjTClrC-5dp9gQW4DmjDSdWRCL1rA5GzXZt4K-JzprIdBNX7UcNQ3kQS71pr1P81fkdZRgoy4_h2IqxmhU1GQUcvEo4zVfJNk8sKQH-si0QRuljlMu3QbNAXVZxqzru5ILINMg2MffFmtrt8xCWQxgBz7iegabscGP6JdRjkpll29ge72vTSUIKX-ZX90rf2r_Ef_TfPbNMzVJBens2RCvN_F-yQqkSxcw2FBw" },
+              { title: t('about.stepTailoringTitle'), subtitle: t('about.stepTailoringSubtitle'), delay: 0.3, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyCjkYDw8QRGzEZtsWvdIXowQF7dnnWtaTT7oP6qaZG2lcOg-HBrVLn3XjBrMopLBNsnw0-iFt0xrMHbQb9y9AV8b_oR5uc9g2kEh_ED6zb3-fqBQYKAAkWTURSlRsKEJ2JwWyA66Rw3lhI5TjbG0_YY_0oQy32tsIdzPnlhOFbAj7ZpwVKrx43P3Yy_k-ZXIFMWLHOlabt6qbb6xq-A4LPGeXQJB2Bg9A0aUluOk1_BTNLnbNcD2ar0bVtTleTnYM8KBGC8M4Cqo" },
+              { title: t('about.stepFinalTitle'), subtitle: t('about.stepFinalSubtitle'), delay: 0.4, img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAA8UXs9lRebIQu8jDp8Owk8OvHFt6D7bjQZzRw0s8HRcMNKRgxYw1Gfri6V4KxbYgGcD173BVQgm6aTyS0DwjpqAuU4RaOvWeoFqDazyV64LJJBd3OsjyRQyWLm4i93YMQznsdq9_oekazaH-YXxBojMvN1GK_DoAJCfBHyKT06JdtYBeLdIM9IVDqTQ30HgmCsTs1-MD_MI8VkfjHOSbFQcwG2SXQ30lUekoJqafSGu7vcghw_V9uhNfrJCbKJhOL4_YUx9zkCTc" }
             ].map((step, i) => (
               <motion.div key={i} {...fadeUp(step.delay)} className="relative z-10 flex flex-col items-center text-center group">
                 <div
@@ -105,7 +105,7 @@ export default function AboutPage() {
           ></div>
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors"></div>
           <div className="absolute bottom-8 left-8 text-white">
-            <span className="text-[12px] font-semibold uppercase tracking-widest text-[#e4e2e1]">The Root</span>
+            <span className="text-[12px] font-semibold uppercase tracking-widest text-[#e4e2e1]">{t('about.rootLabel')}</span>
           </div>
         </div>
 
@@ -113,10 +113,10 @@ export default function AboutPage() {
 
         <div className="flex-1 flex flex-col items-center justify-center bg-[#1b1c1c] px-16 py-16 relative">
           <motion.div {...fadeUp(0)} className="text-center">
-            <h2 className="font-serif text-[40px] md:text-[64px] text-[#d8c4a1] mb-4" style={{ fontFamily: "'Cinzel', serif" }}>Tradition Reimagined</h2>
+            <h2 className="font-serif text-[40px] md:text-[64px] text-[#d8c4a1] mb-4" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.traditionTitle')}</h2>
             <div className="w-20 h-[1px] bg-[#989084] mx-auto mb-4"></div>
             <p className="font-serif text-[20px] text-[#cfc5b9] max-w-md mx-auto">
-              We do not look back to live in the past, but to find the vocabulary for the future. Our designs distill ancestral motifs into contemporary silhouettes for the global woman.
+              {t('about.traditionLine')}
             </p>
           </motion.div>
         </div>
@@ -130,7 +130,7 @@ export default function AboutPage() {
           ></div>
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
           <div className="absolute bottom-8 right-8 text-white text-right">
-            <span className="text-[12px] font-semibold uppercase tracking-widest text-[#e4e2e1]">The Evolution</span>
+            <span className="text-[12px] font-semibold uppercase tracking-widest text-[#e4e2e1]">{t('about.evolutionLabel')}</span>
           </div>
         </div>
       </section>
@@ -142,9 +142,9 @@ export default function AboutPage() {
             <motion.div {...fadeUp(0)} className="flex-1">
               <span className="material-symbols-outlined text-[#d8c4a1] text-5xl mb-4 opacity-50">format_quote</span>
               <blockquote className="font-serif italic text-3xl md:text-4xl leading-snug text-[#45381e] mb-8">
-                The artisan's hand is the ultimate rebel in an age of machines. At Maison Tislit, we protect the poetry of the human touch, ensuring that our heritage doesn't just survive, but speaks to the world.
+                {t('about.quote')}
               </blockquote>
-              <cite className="font-serif text-[24px] text-[#45381e] font-bold block not-italic">— Fatima ezzahra El Ghazi, Founder & Creative Director</cite>
+              <cite className="font-serif text-[24px] text-[#45381e] font-bold block not-italic">{t('about.founder')}</cite>
             </motion.div>
             <motion.div {...fadeUp(0.2)} className="flex-none">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full border-2 border-[#45381e]/30 p-2">
@@ -164,18 +164,18 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
             <motion.div {...fadeUp(0.1)}>
               <span className="material-symbols-outlined text-[#d8c4a1] text-4xl mb-2">auto_fix_high</span>
-              <h3 className="font-serif text-[24px] text-[#e4e2e1] mb-4 uppercase tracking-widest" style={{ fontFamily: "'Cinzel', serif" }}>Hand Embroidery</h3>
-              <p className="font-serif text-[16px] text-[#cfc5b9]">Each garment features 'R'anda' or 'Terz' embroidery, meticulously hand-stitched by women's collectives in the Fes region, taking up to 40 hours per piece.</p>
+              <h3 className="font-serif text-[24px] text-[#e4e2e1] mb-4 uppercase tracking-widest" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.materialEmbroideryTitle')}</h3>
+              <p className="font-serif text-[16px] text-[#cfc5b9]">{t('about.materialEmbroideryDesc')}</p>
             </motion.div>
             <motion.div {...fadeUp(0.2)}>
               <span className="material-symbols-outlined text-[#d8c4a1] text-4xl mb-2">palette</span>
-              <h3 className="font-serif text-[24px] text-[#e4e2e1] mb-4 uppercase tracking-widest" style={{ fontFamily: "'Cinzel', serif" }}>Natural Dyes</h3>
-              <p className="font-serif text-[16px] text-[#cfc5b9]">We utilize botanical pigments derived from pomegranate skins, indigo leaves, and saffron crocus, creating a living palette that ages beautifully with time.</p>
+              <h3 className="font-serif text-[24px] text-[#e4e2e1] mb-4 uppercase tracking-widest" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.materialDyesTitle')}</h3>
+              <p className="font-serif text-[16px] text-[#cfc5b9]">{t('about.materialDyesDesc')}</p>
             </motion.div>
             <motion.div {...fadeUp(0.3)}>
               <span className="material-symbols-outlined text-[#d8c4a1] text-4xl mb-2">texture</span>
-              <h3 className="font-serif text-[24px] text-[#e4e2e1] mb-4 uppercase tracking-widest" style={{ fontFamily: "'Cinzel', serif" }}>Handwoven Fabric</h3>
-              <p className="font-serif text-[16px] text-[#cfc5b9]">Our silk and cotton blends are woven on traditional pit looms, preserving a texture and drape that industrial machines simply cannot replicate.</p>
+              <h3 className="font-serif text-[24px] text-[#e4e2e1] mb-4 uppercase tracking-widest" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.materialFabricTitle')}</h3>
+              <p className="font-serif text-[16px] text-[#cfc5b9]">{t('about.materialFabricDesc')}</p>
             </motion.div>
           </div>
         </div>
@@ -187,9 +187,9 @@ export default function AboutPage() {
           <div className="mb-4 flex justify-center">
             <span className="material-symbols-outlined text-[#d8c4a1] text-3xl">filter_vintage</span>
           </div>
-          <h2 className="font-serif text-[32px] text-[#e4e2e1] mb-8" style={{ fontFamily: "'Cinzel', serif" }}>The collection awaits your discovery.</h2>
+          <h2 className="font-serif text-[32px] text-[#e4e2e1] mb-8" style={{ fontFamily: "'Cinzel', serif" }}>{t('about.ctaTitle')}</h2>
           <button onClick={() => setCurrentPage('shop')} className="bg-[#b4a180] text-[#45381e] px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.2em] transition-all hover:bg-[#f6e0bb] hover:text-[#251a04] hover:tracking-[0.3em]">
-            Discover the Collection
+            {t('about.ctaButton')}
           </button>
         </motion.div>
       </section>

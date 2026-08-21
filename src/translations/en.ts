@@ -10,7 +10,7 @@ const en = {
   'nav.about': 'About',
 
   // HomePage
-  'home.collection2025': 'Collection 2025',
+  'home.collection2025': 'Collection 2027',
   'home.heroTitle1': 'The Art of',
   'home.heroTitle2': 'Moroccan',
   'home.heroTitle3': 'Attire',
@@ -38,9 +38,9 @@ const en = {
   'why.artisanat.title': 'Authentic Craftsmanship',
   'why.artisanat.desc': 'Each piece is hand-stitched by expert Moroccan artisans',
   'why.matieres.title': 'Noble Materials',
-  'why.matieres.desc': 'Silk, velvet, crepe, and real gold and silver thread embroideries',
+  'why.matieres.desc': 'Silk, velvet, and crepe, sourced and worked by hand',
   'why.livraison.title': 'Delivery Morocco',
-  'why.livraison.desc': 'Fast delivery across Morocco, complimentary luxury packaging',
+  'why.livraison.desc': 'Fast delivery worldwide, with complimentary luxury packaging',
   'why.surMesure.title': 'Made to Measure',
   'why.surMesure.desc': 'Customization and alteration service available for all pieces',
   'footer.tagline': 'The excellence of traditional Moroccan clothing, reinvented for the modern woman.',
@@ -66,7 +66,7 @@ const en = {
   'footer.returns': 'Returns & Exchanges',
 
   // ShopPage
-  'shop.collection2025': 'Collection 2025',
+  'shop.collection2025': 'Collection 2027',
   'shop.ourBoutique': 'Our Boutique',
   'shop.subtitle': 'Discover our collection of authentic Moroccan clothing',
   'shop.catAll': 'View All',
@@ -290,7 +290,7 @@ const en = {
 
   // SEO
   'seo.homeTitle': 'Maison Tislit – Moroccan Feminine Fashion',
-  'seo.homeDescription': 'Maison Tislit celebrates the heritage of Moroccan feminine clothing — artisanal djellabas, takchitas, and gandouras. Discover our 2025 collection.',
+  'seo.homeDescription': 'Maison Tislit celebrates the heritage of Moroccan feminine clothing — artisanal djellabas, takchitas, and gandouras. Discover our 2027 collection.',
   'seo.shopTitle': 'Shop Our Collection',
   'seo.shopDescription': 'Discover our curated collection of authentic Moroccan djellabas, takchitas, and gandouras — handmade by expert artisans.',
   'seo.aboutTitle': 'About Maison Tislit',
@@ -314,6 +314,35 @@ const en = {
   'product.notFound': 'Product not found',
   'product.notFoundMessage': 'This product may have been removed or the link is incorrect.',
   'product.backToShop': 'Back to shop',
+
+  // About page
+  'about.heroTagline': 'Woven in Tradition, Worn with Elegance',
+  'about.heritageTitle': 'Our Heritage',
+  'about.heritageLine1': "Maison Tislit was born from the silent valleys of the Atlas Mountains, where the rhythm of the loom has echoed for generations. Our story is not merely about fashion; it is a sacred preservation of the Berber soul and the Andalusian artistry that has defined Moroccan luxury for centuries.",
+  'about.heritageLine2': "Every thread we pull is a link to an ancestor; every pattern we stitch is a map of our shared history. We work exclusively with master artisans who have inherited their secrets from their mothers and fathers, ensuring that the 'Slow Luxury' of the Maghreb continues to flourish in a modern world.",
+  'about.craftTitle': 'The Art of the Craft',
+  'about.stepEmbroideryTitle': 'Hand Embroidery',
+  'about.stepEmbroiderySubtitle': 'The soul of the piece.',
+  'about.stepFabricTitle': 'Fabric Selection',
+  'about.stepFabricSubtitle': 'Ethically sourced excellence.',
+  'about.stepTailoringTitle': 'Master Tailoring',
+  'about.stepTailoringSubtitle': 'Structural perfection.',
+  'about.stepFinalTitle': 'Final Piece',
+  'about.stepFinalSubtitle': 'A legacy reborn.',
+  'about.rootLabel': 'The Root',
+  'about.traditionTitle': 'Tradition Reimagined',
+  'about.traditionLine': 'We do not look back to live in the past, but to find the vocabulary for the future. Our designs distill ancestral motifs into contemporary silhouettes for the global woman.',
+  'about.evolutionLabel': 'The Evolution',
+  'about.quote': "The artisan's hand is the ultimate rebel in an age of machines. At Maison Tislit, we protect the poetry of the human touch, ensuring that our heritage doesn't just survive, but speaks to the world.",
+  'about.founder': '— Fatima ezzahra El Ghazi, Founder & Creative Director',
+  'about.materialEmbroideryTitle': 'Hand Embroidery',
+  'about.materialEmbroideryDesc': "Each garment features 'R'anda' or 'Terz' embroidery, meticulously hand-stitched by women's collectives in the Fes region, taking up to 40 hours per piece.",
+  'about.materialDyesTitle': 'Natural Dyes',
+  'about.materialDyesDesc': 'We utilize botanical pigments derived from pomegranate skins, indigo leaves, and saffron crocus, creating a living palette that ages beautifully with time.',
+  'about.materialFabricTitle': 'Handwoven Fabric',
+  'about.materialFabricDesc': 'Our silk and cotton blends are woven on traditional pit looms, preserving a texture and drape that industrial machines simply cannot replicate.',
+  'about.ctaTitle': 'The collection awaits your discovery.',
+  'about.ctaButton': 'Discover the Collection',
 
 };
 
