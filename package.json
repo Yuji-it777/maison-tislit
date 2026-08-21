@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:seo": "vite build && node scripts/prerender.mjs",
-    "deploy": "node scripts/deploy-strato.mjs",
+    "deploy": "npm run build:seo && node scripts/deploy-strato.mjs --no-build",
     "deploy:no-build": "node scripts/deploy-strato.mjs --no-build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
