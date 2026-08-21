@@ -121,7 +121,7 @@ export default function ContactPage() {
                     <Phone size={18} />
                   </div>
                   <div>
-                    <p className="text-stone-700 font-medium text-sm">{t('contact.phone')}</p>
+                    <a href="tel:+31620813588" className="text-brand font-medium text-sm hover:underline">{t('contact.phone')}</a>
                   </div>
                 </div>
 
