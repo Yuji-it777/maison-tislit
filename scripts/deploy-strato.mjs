@@ -48,6 +48,16 @@ async function walk(dir, base = '') {
   return entries;
 }
 
+async function removeRemote(sftp, remotePath) {
+  const items = await sftp.list(remotePath);
+  for (const item of items) {
+    const child = path.posix.join(remotePath, item.name);
+    if (item.type === 'd') await removeRemote(sftp, child);
+    else await sftp.delete(child, true);
+  }
+  await sftp.rmdir(remotePath, true);
+}
+
 const env = loadEnv(DEPLOY_ENV);
 const HOST = env.STRATO_HOST;
 const PORT = Number(env.STRATO_PORT || 22);
@@ -81,7 +91,7 @@ try {
       const key = item.name;
       if (!localSet.has(key) && !['.', '..'].includes(key)) {
         log(`removing stale ${REMOTE_DIR}/${key}`);
-        await sftp.delete(path.posix.join(REMOTE_DIR, key), true);
+        await removeRemote(sftp, path.posix.join(REMOTE_DIR, key));
       }
     }
   }
