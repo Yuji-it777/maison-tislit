@@ -1,0 +1,22 @@
+{
+  "name": "Maison Tislit",
+  "short_name": "Maison Tislit",
+  "description": "Luxury Moroccan fashion brand",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1c1917",
+  "theme_color": "#1c1917",
+  "icons": [
+    {
+      "src": "/favicon-48.webp",
+      "sizes": "48x48",
+      "type": "image/webp"
+    },
+    {
+      "src": "/favicon.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}
