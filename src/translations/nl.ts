@@ -260,7 +260,7 @@ const nl = {
   'contact.sunday': 'Zondag: Gesloten',
   'contact.appointment': 'Alleen op afspraak.',
   'contact.formTitle': 'Een Verzoek Versturen',
-  'contact.formDesc': 'Ons conciërgeteam reageert doorgaans binnen 24 uur.',
+  'contact.formDesc': 'Ons klantenserviceteam reageert doorgaans binnen 24 uur.',
   'contact.name': 'Uw Naam',
   'contact.emailLabel': 'E-mailadres',
   'contact.subject': 'Type Verzoek',
@@ -277,7 +277,7 @@ const nl = {
   'contact.wholesaleDesc': 'Wereldwijde retailpartnerschappen en boetiekcuratie.',
   'contact.press': 'Pers & Media',
   'contact.pressDesc': 'Redactionele verzoeken en samenwerkingen.',
-  'contact.concierge': 'Conciërge',
+  'contact.concierge': 'Klantenservice',
   'contact.conciergeDesc': 'Bestelondersteuning, retouren en productverzorging.',
 
   'badge.bestseller': 'Bestseller',

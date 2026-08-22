@@ -261,7 +261,7 @@ const en = {
   'contact.sunday': 'Sunday: Closed',
   'contact.appointment': 'By appointment only.',
   'contact.formTitle': 'Send an Inquiry',
-  'contact.formDesc': 'Our concierge team typically responds within 24 hours.',
+  'contact.formDesc': 'Our customer service team typically responds within 24 hours.',
   'contact.name': 'Your Name',
   'contact.emailLabel': 'Email Address',
   'contact.subject': 'Inquiry Type',
@@ -278,7 +278,7 @@ const en = {
   'contact.wholesaleDesc': 'Global retail partnerships and boutique curation.',
   'contact.press': 'Press & Media',
   'contact.pressDesc': 'Editorial inquiries and collaboration requests.',
-  'contact.concierge': 'Concierge',
+  'contact.concierge': 'Customer Service',
   'contact.conciergeDesc': 'Order support, returns, and product care.',
 
   'badge.bestseller': 'Bestseller',
