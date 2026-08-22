@@ -95,13 +95,13 @@ export default function ProductDetailPage() {
         <SEO title={t('product.notFound')} noindex />
         <div className="text-center">
           <p className="text-5xl mb-4 text-stone-300">—</p>
-          <h1 className="text-2xl font-bold text-stone-800 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-2xl font-bold text-stone-800 mb-2" style={{ fontFamily: "'Cinzel', serif" }}>
             {t('product.notFound')}
           </h1>
           <p className="text-stone-500 mb-6">{t('product.notFoundMessage')}</p>
           <button
             onClick={() => navigate(localizePath('/shop', locale))}
-            className="bg-stone-800 hover:bg-brand text-white text-sm px-8 py-3 rounded tracking-wider transition-colors"
+            className="bg-stone-800 hover:bg-brand text-white text-sm px-8 py-3 tracking-wider transition-colors"
           >
             {t('product.backToShop')}
           </button>
@@ -200,17 +200,17 @@ export default function ProductDetailPage() {
           <span className="text-stone-700">{productName}</span>
         </nav>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white rounded-2xl shadow-sm p-6 md:p-10">
-          <div className="relative aspect-[3/4] bg-stone-100 rounded-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 md:p-10">
+          <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
             <img src={product.image} alt={productName} width={600} height={800} className="w-full h-full object-cover" />
             {product.badge && (
-              <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1 rounded-full">
+              <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
                 {product.badge}
               </span>
             )}
             {outOfStock && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase rounded">
+                <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase">
                   {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
                 </span>
               </div>
@@ -218,10 +218,10 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex flex-col">
-            <span className="text-brand text-xs tracking-[0.3em] uppercase mb-2 capitalize" style={{ fontFamily: "'Raleway', sans-serif" }}>
+            <span className="text-brand text-xs tracking-[0.3em] uppercase mb-2 capitalize" style={{ fontFamily: "'EB Garamond', serif" }}>
               {product.category}
             </span>
-            <h1 className="text-3xl font-bold text-stone-800 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h1 className="text-3xl font-bold text-stone-800 mb-1" style={{ fontFamily: "'Cinzel', serif" }}>
               {productName}
             </h1>
 
@@ -250,7 +250,7 @@ export default function ProductDetailPage() {
                   <button
                     key={c}
                     onClick={() => setSelectedColor(c)}
-                    className={`px-3 py-1.5 text-xs rounded-full border transition-all ${
+                    className={`px-3 py-1.5 text-xs border transition-all ${
                       selectedColor === c
                         ? 'bg-stone-800 text-white border-stone-800'
                         : 'border-stone-300 text-stone-600 hover:border-stone-500'
@@ -279,7 +279,7 @@ export default function ProductDetailPage() {
                   <button
                     key={s}
                     onClick={() => setSelectedSize(s)}
-                    className={`min-w-[44px] h-11 px-2 text-xs font-semibold rounded border transition-all ${
+                    className={`min-w-[44px] h-11 px-2 text-xs font-semibold border transition-all ${
                       selectedSize === s
                         ? 'bg-stone-800 text-white border-stone-800'
                         : 'border-stone-300 text-stone-600 hover:border-stone-600'
@@ -291,7 +291,7 @@ export default function ProductDetailPage() {
               </div>
 
               {selectedSize === 'Custom' && (
-                <div className="mt-4 p-4 bg-stone-50 border border-stone-200 rounded-lg">
+                <div className="mt-4 p-4 bg-stone-50 border border-stone-200">
                   <p className="text-xs text-stone-500 mb-3">{locale === 'en' ? 'Please provide your measurements in cm:' : 'Geef uw maten in cm:'}</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {['shoulders', 'bust', 'waist', 'hips', 'length'].map(measure => (
@@ -301,7 +301,7 @@ export default function ProductDetailPage() {
                           type="number"
                           value={(customMeasurements as any)[measure]}
                           onChange={e => setCustomMeasurements(prev => ({ ...prev, [measure]: e.target.value }))}
-                          className="w-full border border-stone-300 rounded px-2 py-1.5 text-xs text-stone-800 focus:outline-none focus:border-brand"
+                          className="w-full border border-stone-300 px-2 py-1.5 text-xs text-stone-800 focus:outline-none focus:border-brand"
                           placeholder="cm"
                         />
                       </div>
@@ -313,7 +313,7 @@ export default function ProductDetailPage() {
 
             <div className="flex items-center gap-4 mb-6">
               <label className="text-xs font-semibold text-stone-700 tracking-widest uppercase">{t('modal.quantity')}</label>
-              <div className="flex items-center border border-stone-300 rounded overflow-hidden">
+              <div className="flex items-center border border-stone-300 overflow-hidden">
                 <button
                   onClick={() => setQuantity(q => Math.max(1, q - 1))}
                   className="w-10 h-10 flex items-center justify-center text-stone-600 hover:bg-stone-100 transition-colors"
@@ -332,10 +332,10 @@ export default function ProductDetailPage() {
             <button
               onClick={handleAdd}
               disabled={outOfStock}
-              className={`w-full py-4 text-sm tracking-widest uppercase font-medium transition-all duration-300 rounded ${
+              className={`w-full py-4 text-sm tracking-widest uppercase font-medium transition-all duration-300 ${
                 outOfStock
                   ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                  : 'bg-stone-800 hover:bg-brand text-white hover:shadow-lg'
+                  : 'bg-stone-800 hover:bg-brand text-white'
               }`}
             >
               {outOfStock
@@ -346,10 +346,10 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Reviews */}
-        <div className="mt-10 bg-white rounded-2xl shadow-sm p-8">
+        <div className="mt-10 bg-white p-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-sm font-semibold text-stone-700 tracking-wider uppercase" style={{ fontFamily: "'Raleway', sans-serif" }}>
+              <h2 className="text-sm font-semibold text-stone-700 tracking-wider uppercase" style={{ fontFamily: "'EB Garamond', serif" }}>
                 {t('review.sectionTitle')}
               </h2>
               {productReviews.length > 0 && (
@@ -363,21 +363,21 @@ export default function ProductDetailPage() {
             </div>
             <button
               onClick={() => setShowReviewForm(!showReviewForm)}
-              className="text-xs tracking-widest uppercase text-brand border border-brand px-4 py-2 rounded hover:bg-brand transition-all"
+              className="text-xs tracking-widest uppercase text-brand border border-brand px-4 py-2 hover:bg-brand transition-all"
             >
               {showReviewForm ? t('review.cancel') : t('review.write')}
             </button>
           </div>
 
           {showReviewForm && (
-            <div className="mb-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
+            <div className="mb-6 p-4 bg-stone-50 border border-stone-200">
               <label className="block text-xs font-semibold text-stone-700 mb-2 tracking-wider uppercase">
                 {t('review.yourName')}
               </label>
               <input
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
-                className="w-full border border-stone-300 rounded p-3 text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand"
+                className="w-full border-0 border-b border-stone-300 bg-transparent px-0 py-2 text-sm text-stone-700 focus:outline-none focus:border-brand"
                 placeholder={t('review.namePlaceholder')}
               />
               <label className="block text-xs font-semibold text-stone-700 mt-4 mb-2 tracking-wider uppercase">
@@ -391,14 +391,14 @@ export default function ProductDetailPage() {
                 value={newComment}
                 onChange={e => setNewComment(e.target.value)}
                 rows={3}
-                className="w-full border border-stone-300 rounded p-3 text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand resize-none"
+                className="w-full border border-stone-300 p-3 text-sm text-stone-700 focus:outline-none focus:border-brand resize-none"
                 placeholder={t('review.placeholder')}
               />
               <div className="flex justify-end mt-3">
                 <button
                   onClick={handleSubmitReview}
                   disabled={!newName.trim() || newRating === 0 || !newComment.trim()}
-                  className="text-xs tracking-widest uppercase bg-brand text-white px-6 py-2.5 rounded hover:bg-brand disabled:bg-stone-300 disabled:cursor-not-allowed transition-all"
+                  className="text-xs tracking-widest uppercase bg-brand text-white px-6 py-2.5 hover:bg-brand disabled:bg-stone-300 disabled:cursor-not-allowed transition-all"
                 >
                   {t('review.submit')}
                 </button>
@@ -429,7 +429,7 @@ export default function ProductDetailPage() {
         {/* Related */}
         {related.length > 0 && (
           <div className="mt-10">
-            <h2 className="text-sm font-semibold text-stone-700 mb-4 tracking-wider uppercase" style={{ fontFamily: "'Raleway', sans-serif" }}>
+            <h2 className="text-sm font-semibold text-stone-700 mb-4 tracking-wider uppercase" style={{ fontFamily: "'EB Garamond', serif" }}>
               {locale === 'en' ? 'You May Also Like' : 'Dit vindt u misschien ook leuk'}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -438,7 +438,7 @@ export default function ProductDetailPage() {
                   key={r.id}
                   to={localizePath(`/product/${r.slug}`, locale)}
                   onClick={() => setActiveCategory(r.category)}
-                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+                  className="group bg-white overflow-hidden transition-all duration-300"
                 >
                   <div className="aspect-[3/4] bg-stone-100 overflow-hidden">
                     <img src={r.image} alt={locale === 'en' && r.nameEn ? r.nameEn : r.name} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
