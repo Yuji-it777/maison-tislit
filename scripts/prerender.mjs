@@ -11,7 +11,7 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
 const LOCALES = ['en', 'nl'];
-const PAGES = ['', 'shop', 'about', 'contact', 'shipping', 'returns', 'tracking'];
+const PAGES = ['', 'shop', 'about', 'contact', 'shipping', 'returns'];
 const PAGE_META = {
   '':      { priority: 1.0, changefreq: 'weekly' },
   shop:    { priority: 0.9, changefreq: 'weekly' },
@@ -19,7 +19,6 @@ const PAGE_META = {
   contact: { priority: 0.5, changefreq: 'yearly' },
   shipping:{ priority: 0.4, changefreq: 'yearly' },
   returns: { priority: 0.4, changefreq: 'yearly' },
-  tracking:{ priority: 0.3, changefreq: 'yearly' },
 };
 
 function loadEnv() {

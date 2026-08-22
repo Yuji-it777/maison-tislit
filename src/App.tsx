@@ -21,7 +21,6 @@ const AccountPage     = lazy(() => import('./pages/AccountPage'));
 const AdminPage       = lazy(() => import('./pages/AdminPage'));
 const OrderDetailPage = lazy(() => import('./pages/OrderDetailPage'));
 const ContactPage     = lazy(() => import('./pages/ContactPage'));
-const OrderTrackingPage = lazy(() => import('./pages/OrderTrackingPage'));
 const ShippingPolicyPage = lazy(() => import('./pages/ShippingPolicyPage'));
 const ReturnsPolicyPage = lazy(() => import('./pages/ReturnsPolicyPage'));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
@@ -86,7 +85,6 @@ function AppContent() {
               <Route path="/checkout" element={<LocaleRedirect />} />
               <Route path="/confirmation" element={<LocaleRedirect />} />
               <Route path="/account" element={<LocaleRedirect />} />
-              <Route path="/tracking" element={<LocaleRedirect />} />
               <Route path="/shipping" element={<LocaleRedirect />} />
               <Route path="/returns" element={<LocaleRedirect />} />
 
@@ -102,7 +100,6 @@ function AppContent() {
                 <Route path="checkout" element={<CheckoutPage />} />
                 <Route path="confirmation" element={<ConfirmationPage />} />
                 <Route path="account" element={<AccountPage />} />
-                <Route path="tracking" element={<OrderTrackingPage />} />
                 <Route path="shipping" element={<ShippingPolicyPage />} />
                 <Route path="returns" element={<ReturnsPolicyPage />} />
               </Route>

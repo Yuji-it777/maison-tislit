@@ -12,7 +12,7 @@ const pageToPath: Record<Page, string> = {
   cart: '/cart', login: '/login',
   checkout: '/checkout', confirmation: '/confirmation',
   account: '/account', admin: '/admin', contact: '/contact',
-  shipping: '/shipping', returns: '/returns', tracking: '/tracking'
+  shipping: '/shipping', returns: '/returns'
 };
 
 const pathToPage: Record<string, Page> = Object.fromEntries(

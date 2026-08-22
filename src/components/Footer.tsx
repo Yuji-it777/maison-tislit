@@ -83,7 +83,6 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.serviceClient')}</h4>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => setCurrentPage('tracking')} className="hover:text-brand transition-colors">{t('footer.orderTracking')}</button></li>
               <li><button onClick={() => setCurrentPage('shipping')} className="hover:text-brand transition-colors">{t('footer.shipping')}</button></li>
               <li><button onClick={() => setCurrentPage('returns')} className="hover:text-brand transition-colors">{t('footer.returns')}</button></li>
               <li><button onClick={() => setCurrentPage('contact')} className="hover:text-brand transition-colors">{t('nav.contact')}</button></li>

@@ -61,7 +61,6 @@ const nl = {
   'footer.newsletterSubscribing': '...',
   'footer.newsletterSuccess': 'Ingeschreven!',
   'footer.serviceClient': 'Klantenservice',
-  'footer.orderTracking': 'Bestelling volgen',
   'footer.shipping': 'Verzending',
   'footer.returns': 'Retourneren & Ruilen',
 
@@ -299,8 +298,6 @@ const nl = {
   'seo.shippingDescription': 'Verzendtarieven en levertijden voor Maison Tislit bestellingen in Marokko en internationaal.',
   'seo.returnsTitle': 'Retourneren & Ruilen',
   'seo.returnsDescription': 'Het retourbeleid van Maison Tislit: 14 dagen retourrecht, voorwaarden en terugbetaling.',
-  'seo.trackingTitle': 'Bestelling Volgen',
-  'seo.trackingDescription': 'Volg de status van uw Maison Tislit bestelling in realtime van verwerking tot levering.',
   'seo.cartTitle': 'Uw Winkelmandje',
   'seo.cartDescription': 'Bekijk uw Maison Tislit winkelmandje en ga verder naar de kassa.',
   'seo.confirmationTitle': 'Orderbevestiging',

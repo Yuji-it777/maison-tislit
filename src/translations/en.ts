@@ -61,7 +61,6 @@ const en = {
   'footer.newsletterSubscribing': '...',
   'footer.newsletterSuccess': 'Subscribed successfully!',
   'footer.serviceClient': 'Customer Service',
-  'footer.orderTracking': 'Order Tracking',
   'footer.shipping': 'Shipping',
   'footer.returns': 'Returns & Exchanges',
 
@@ -300,8 +299,6 @@ const en = {
   'seo.shippingDescription': 'Shipping rates and delivery times for Maison Tislit orders within Morocco and internationally.',
   'seo.returnsTitle': 'Returns & Exchanges',
   'seo.returnsDescription': 'Maison Tislit return policy: 14-day returns, conditions, and refund process.',
-  'seo.trackingTitle': 'Order Tracking',
-  'seo.trackingDescription': 'Track your Maison Tislit order status in real time from processing to delivery.',
   'seo.cartTitle': 'Your Shopping Cart',
   'seo.cartDescription': 'Review your Maison Tislit cart and proceed to checkout.',
   'seo.confirmationTitle': 'Order Confirmation',

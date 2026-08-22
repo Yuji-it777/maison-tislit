@@ -17,7 +17,6 @@ RewriteRule ^login$ /en/login [R=301,L]
 RewriteRule ^checkout$ /en/checkout [R=301,L]
 RewriteRule ^confirmation$ /en/confirmation [R=301,L]
 RewriteRule ^account$ /en/account [R=301,L]
-RewriteRule ^tracking$ /en/tracking [R=301,L]
 RewriteRule ^shipping$ /en/shipping [R=301,L]
 RewriteRule ^returns$ /en/returns [R=301,L]
 
