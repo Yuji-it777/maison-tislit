@@ -11,7 +11,7 @@ const pageToPath: Record<Page, string> = {
   home: '/', shop: '/shop', about: '/about',
   cart: '/cart', login: '/login',
   checkout: '/checkout', confirmation: '/confirmation',
-  account: '/account', admin: '/admin', contact: '/contact',
+  account: '/account', favorites: '/favorites', admin: '/admin', contact: '/contact',
   shipping: '/shipping', returns: '/returns'
 };
 
@@ -230,8 +230,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setProfile(null);
     setCart([]);
     localStorage.removeItem('maison-tislit-cart');
-    localStorage.removeItem('maison-tislit-wishlist');
-    setWishlist([]);
     setCurrentPage('home');
     showToast(t('toast.loggedOut'), 'info');
   };

@@ -82,9 +82,9 @@ export default function Navbar() {
             {/* Wishlist */}
             <button
               data-target="wishlist-icon"
-              onClick={() => setCurrentPage('account')}
-              className="relative p-2 text-stone-700 hover:text-brand transition-colors hidden"
-              aria-label="Wishlist"
+              onClick={() => setCurrentPage('favorites')}
+              className="relative p-2 text-stone-700 hover:text-brand transition-colors"
+              aria-label={t('account.favorites')}
             >
               <Heart size={20} className={wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''} />
               {wishlist.length > 0 && (

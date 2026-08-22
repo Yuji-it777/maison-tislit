@@ -18,6 +18,7 @@ const LoginPage       = lazy(() => import('./pages/LoginPage'));
 const CheckoutPage    = lazy(() => import('./pages/CheckoutPage'));
 const ConfirmationPage = lazy(() => import('./pages/ConfirmationPage'));
 const AccountPage     = lazy(() => import('./pages/AccountPage'));
+const FavoritesPage   = lazy(() => import('./pages/FavoritesPage'));
 const AdminPage       = lazy(() => import('./pages/AdminPage'));
 const OrderDetailPage = lazy(() => import('./pages/OrderDetailPage'));
 const ContactPage     = lazy(() => import('./pages/ContactPage'));
@@ -85,6 +86,7 @@ function AppContent() {
               <Route path="/checkout" element={<LocaleRedirect />} />
               <Route path="/confirmation" element={<LocaleRedirect />} />
               <Route path="/account" element={<LocaleRedirect />} />
+              <Route path="/favorites" element={<LocaleRedirect />} />
               <Route path="/shipping" element={<LocaleRedirect />} />
               <Route path="/returns" element={<LocaleRedirect />} />
 
@@ -100,6 +102,7 @@ function AppContent() {
                 <Route path="checkout" element={<CheckoutPage />} />
                 <Route path="confirmation" element={<ConfirmationPage />} />
                 <Route path="account" element={<AccountPage />} />
+                <Route path="favorites" element={<FavoritesPage />} />
                 <Route path="shipping" element={<ShippingPolicyPage />} />
                 <Route path="returns" element={<ReturnsPolicyPage />} />
               </Route>

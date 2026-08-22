@@ -43,6 +43,6 @@ export interface Review {
   createdAt: string;
 }
 
-export type Page = 'home' | 'shop' | 'about' | 'cart' | 'login' | 'checkout' | 'confirmation' | 'account' | 'admin' | 'contact' | 'shipping' | 'returns';
+export type Page = 'home' | 'shop' | 'about' | 'cart' | 'login' | 'checkout' | 'confirmation' | 'account' | 'favorites' | 'admin' | 'contact' | 'shipping' | 'returns';
 
 export type Currency = 'MAD' | 'EUR' | 'USD';
