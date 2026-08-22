@@ -4,7 +4,6 @@ export interface ProductRow {
   name_en: string;
   category: string;
   price: number;
-  original_price: number | null;
   image: string;
   description: string;
   description_en: string;

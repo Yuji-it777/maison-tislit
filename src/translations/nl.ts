@@ -285,7 +285,6 @@ const nl = {
   'badge.nouveau': 'Nieuw',
   'badge.premium': 'Premium',
   'badge.collectionSpeciale': 'Speciale Collectie',
-  'badge.promo': 'Aanbieding',
 
   // SEO
   'seo.homeTitle': 'Maison Tislit – Marokkaanse Damesmode',

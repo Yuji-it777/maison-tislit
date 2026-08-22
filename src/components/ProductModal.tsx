@@ -118,9 +118,6 @@ export default function ProductModal({ product, onClose }: Props) {
 
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-bold text-stone-900">{formatPrice(product.price)}</span>
-                {product.originalPrice && (
-                  <span className="text-stone-400 line-through text-lg">{formatPrice(product.originalPrice)}</span>
-                )}
               </div>
 
               <p className="text-stone-600 text-sm leading-relaxed mb-6">

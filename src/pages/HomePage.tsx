@@ -12,7 +12,6 @@ const badgeKey = (badge: string): string => {
     'Nouveau': 'badge.nouveau',
     'Premium': 'badge.premium',
     'Collection Spéciale': 'badge.collectionSpeciale',
-    'Promo': 'badge.promo',
   };
   return map[badge] || badge;
 };
@@ -283,14 +282,9 @@ export default function HomePage() {
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  {product.badge && (
+                  {product.badge && product.badge !== 'Promo' && (
                     <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1 rounded-full tracking-wider">
                       {t(badgeKey(product.badge))}
-                    </span>
-                  )}
-                  {product.originalPrice && (
-                    <span className="absolute top-4 right-14 bg-[#B4A180] text-[#1a1208] text-xs font-bold px-2 py-1 rounded">
-                      -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                     </span>
                   )}
                   <button
@@ -321,11 +315,6 @@ export default function HomePage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-stone-900 font-bold text-xl">{formatPrice(product.price)}</span>
-                      {product.originalPrice && (
-                        <span className="text-stone-400 line-through text-sm ml-2">
-                          {formatPrice(product.originalPrice)}
-                        </span>
-                      )}
                     </div>
                     <button
                       onClick={() => setCurrentPage('shop')}

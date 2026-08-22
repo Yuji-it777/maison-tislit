@@ -286,7 +286,6 @@ const en = {
   'badge.nouveau': 'New',
   'badge.premium': 'Premium',
   'badge.collectionSpeciale': 'Special Collection',
-  'badge.promo': 'Sale',
 
   // SEO
   'seo.homeTitle': 'Maison Tislit – Moroccan Feminine Fashion',

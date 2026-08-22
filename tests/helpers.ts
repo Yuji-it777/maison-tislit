@@ -12,7 +12,6 @@ export const MOCK_CART_ITEM = {
   nameEn: 'Test Djellaba',
   category: 'djellaba' as const,
   price: 49.99,
-  originalPrice: 69.99,
   image: '/images/djellaba1.jpg',
   description: 'Une djellaba de test pour les tests e2e.',
   descriptionEn: 'A test djellaba for e2e testing.',

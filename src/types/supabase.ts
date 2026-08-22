@@ -173,7 +173,6 @@ export type Database = {
           image: string
           name: string
           name_en: string
-          original_price: number | null
           price: number
           sizes: string[]
           slug: string | null
@@ -190,7 +189,6 @@ export type Database = {
           image?: string
           name: string
           name_en: string
-          original_price?: number | null
           price: number
           sizes?: string[]
           slug?: string | null
@@ -207,7 +205,6 @@ export type Database = {
           image?: string
           name?: string
           name_en?: string
-          original_price?: number | null
           price?: number
           sizes?: string[]
           slug?: string | null

@@ -146,7 +146,6 @@ CREATE TABLE IF NOT EXISTS products (
   name_en TEXT NOT NULL,
   category TEXT NOT NULL CHECK (category IN ('djellaba', 'takchita', 'gandoura', 'Caftan', 'Jabador', 'Accessoire')),
   price NUMERIC(10,2) NOT NULL,
-  original_price NUMERIC(10,2),
   image TEXT NOT NULL DEFAULT '',
   description TEXT NOT NULL DEFAULT '',
   description_en TEXT NOT NULL DEFAULT '',

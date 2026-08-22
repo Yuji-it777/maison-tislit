@@ -79,7 +79,6 @@ function mapSupabaseProduct(row: any): Product {
     nameEn: row.name_en,
     category: row.category as Product['category'],
     price: row.price ?? 150,
-    originalPrice: row.original_price ?? undefined,
     image: (row.image || '').trim(),
     description: row.description || '',
     descriptionEn: row.description_en || '',

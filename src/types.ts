@@ -5,7 +5,6 @@ export interface Product {
   nameEn: string;
   category: 'djellaba' | 'takchita' | 'gandoura';
   price: number;
-  originalPrice?: number;
   image: string;
   description: string;
   descriptionEn: string;

@@ -19,7 +19,6 @@ function mapRow(row: ProductRow): Product {
     nameEn: row.name_en,
     category: row.category as Product['category'],
     price: row.price ?? 150,
-    originalPrice: row.original_price ?? undefined,
     image: (row.image || '').trim(),
     description: row.description || '',
     descriptionEn: row.description_en || '',
@@ -227,9 +226,6 @@ export default function ProductDetailPage() {
 
             <div className="flex items-baseline gap-3 mb-6">
               <span className="text-3xl font-bold text-stone-900">{formatPrice(product.price)}</span>
-              {product.originalPrice && (
-                <span className="text-stone-400 line-through text-lg">{formatPrice(product.originalPrice)}</span>
-              )}
             </div>
 
             {productReviews.length > 0 && (
