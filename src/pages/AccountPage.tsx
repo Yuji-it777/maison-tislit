@@ -73,9 +73,9 @@ export default function AccountPage() {
                     <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/40 transition-all flex items-center justify-center gap-2">
                       <button
                         onClick={() => { toggleWishlist(p.id); }}
-                        className="bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-red-50"
+                        className="bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-stone-100"
                       >
-                        <Heart size={16} className="fill-red-500 text-red-500" />
+                        <Heart size={16} className="fill-brand text-brand" />
                       </button>
                       <button
                         onClick={() => setCurrentPage('shop')}

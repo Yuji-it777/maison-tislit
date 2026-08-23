@@ -304,7 +304,7 @@ export default function HomePage() {
                     className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-sm transition-all z-10"
                     aria-label="Toggle wishlist"
                   >
-                    <Heart size={16} className={isInWishlist(product.id) ? 'fill-red-500 text-red-500' : 'text-stone-500'} />
+                    <Heart size={16} className={isInWishlist(product.id) ? 'fill-brand text-brand' : 'text-stone-500'} />
                   </button>
                 </div>
                 <div className="p-5">

@@ -86,9 +86,9 @@ export default function Navbar() {
               className="relative p-2 text-stone-700 hover:text-brand transition-colors"
               aria-label={t('account.favorites')}
             >
-              <Heart size={20} className={wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''} />
+              <Heart size={20} className={wishlist.length > 0 ? 'fill-brand text-brand' : ''} />
               {wishlist.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-brand text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {wishlist.length}
                 </span>
               )}
