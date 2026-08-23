@@ -68,6 +68,58 @@
   to = "/en/returns"
   status = 301
 
+# 301s: removed "-2" duplicate product pages -> real counterparts.
+# Rows were deleted from the DB (migration 00022); :locale covers en and nl.
+[[redirects]]
+  from = "/:locale/product/emerald-royal-djellaba-2"
+  to = "/:locale/product/emerald-royal-djellaba"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/blue-safira-djellaba-2"
+  to = "/:locale/product/blue-safira-djellaba"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/nour-al-qamar-takchita-2"
+  to = "/:locale/product/nour-al-qamar-takchita"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/enchanted-rosa-takchita-2"
+  to = "/:locale/product/enchanted-rosa-takchita"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/bordeaux-sultana-gandoura-2"
+  to = "/:locale/product/bordeaux-sultana-gandoura"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/white-jasmine-gandoura-2"
+  to = "/:locale/product/white-jasmine-gandoura"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/embroidered-royal-caftan-2"
+  to = "/:locale/product/embroidered-royal-caftan"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/fassi-takchita-2"
+  to = "/:locale/product/fassi-takchita"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/silk-jabador-2"
+  to = "/:locale/product/silk-jabador"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/golden-belt-2"
+  to = "/:locale/product/golden-belt"
+  status = 301
+
 # SPA fallback: only reached when no static file exists at the path
 # (static files take precedence over non-forced redirects)
 [[redirects]]

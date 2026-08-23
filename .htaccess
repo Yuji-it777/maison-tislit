@@ -20,6 +20,11 @@ RewriteRule ^account$ /en/account [R=301,L]
 RewriteRule ^shipping$ /en/shipping [R=301,L]
 RewriteRule ^returns$ /en/returns [R=301,L]
 
+# --- 301s: removed "-2" duplicate product pages -> real counterparts ---
+# Rows were deleted from the DB (migration 00022); keep old links working
+# for visitors and Google. Exact slugs only, both locales.
+RewriteRule ^(en|nl)/product/(emerald-royal-djellaba|blue-safira-djellaba|nour-al-qamar-takchita|enchanted-rosa-takchita|bordeaux-sultana-gandoura|white-jasmine-gandoura|embroidered-royal-caftan|fassi-takchita|silk-jabador|golden-belt)-2/?$ /$1/product/$2 [R=301,L]
+
 # --- SPA fallback: only reached when no static file/dir exists at the path ---
 # (prerendered dist/en/... snapshots exist on disk, so they win naturally)
 RewriteCond %{REQUEST_FILENAME} !-f
