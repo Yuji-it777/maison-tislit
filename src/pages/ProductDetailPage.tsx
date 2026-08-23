@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useApp } from '../context/AppContext';
+import { useApp, MAD_PER_EUR } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
 import { getProductBySlug } from '../supabase/queries';
 import type { ProductRow } from '../supabase/types';
@@ -132,8 +132,8 @@ export default function ProductDetailPage() {
     offers: {
       '@type': 'Offer',
       url: canonical,
-      priceCurrency: 'MAD',
-      price: product.price,
+      priceCurrency: 'EUR',
+      price: (product.price / MAD_PER_EUR).toFixed(2),
       availability: outOfStock ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
     },
     ...(productReviews.length > 0 ? {
@@ -186,7 +186,7 @@ export default function ProductDetailPage() {
         image={product.image}
         url={canonical}
         type="product"
-        productPrice={String(product.price)}
+        productPrice={(product.price / MAD_PER_EUR).toFixed(2)}
       />
       <HelmetScripts productJsonLd={productJsonLd} breadcrumbJsonLd={breadcrumbJsonLd} />
 

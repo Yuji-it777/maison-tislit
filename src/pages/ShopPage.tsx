@@ -29,7 +29,7 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function ShopPage() {
-  const { activeCategory, setActiveCategory, products } = useApp();
+  const { activeCategory, setActiveCategory, products, formatPrice } = useApp();
   const { t, locale } = useTranslation();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [sortBy, setSortBy] = useState('default');
@@ -165,7 +165,7 @@ export default function ShopPage() {
             </label>
 
             <div className="flex flex-col gap-1 border-l border-stone-200 pl-3 ml-1">
-              <span className="text-[10px] text-stone-500">Max: {maxPrice} MAD</span>
+              <span className="text-[10px] text-stone-500">Max: {formatPrice(maxPrice)}</span>
               <input 
                 type="range" 
                 min="0" 

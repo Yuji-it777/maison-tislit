@@ -173,7 +173,7 @@ function OverviewSection() {
     { label: 'Pending orders', value: pendingOrders, icon: icons.clock, colorKey: 'pending', trend: '+1', up: true },
     { label: 'New messages', value: unreadCount, icon: icons.mail, colorKey: 'messages', trend: '-2', up: false },
     { label: 'Total users', value: profiles.length, icon: icons.users, colorKey: 'users', trend: '+3', up: true },
-    { label: 'Revenue (month)', value: thisMonthRevenue.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }), icon: icons.revenue, colorKey: 'revenue', trend: '+12%', up: true },
+    { label: 'Revenue (month)', value: `${thisMonthRevenue.toLocaleString('fr-FR')} MAD`, icon: icons.revenue, colorKey: 'revenue', trend: '+12%', up: true },
   ];
 
   return (
@@ -253,7 +253,7 @@ function OverviewSection() {
                 <tr key={o.id} className="border-b border-stone-50 last:border-0">
                   <td className="py-2 pr-2 font-medium" style={{ color: '#555' }}>#{o.id}</td>
                   <td className="py-2 pr-2 text-sm" style={{ color: '#777' }}>{getCustomerName(o)}</td>
-                  <td className="py-2 pr-2 text-sm font-medium" style={{ color: '#555' }}>{Number(o.total).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</td>
+                  <td className="py-2 pr-2 text-sm font-medium" style={{ color: '#555' }}>{Number(o.total).toLocaleString('fr-FR')} MAD</td>
                   <td className="py-2 pr-2"><StatusBadge status={o.status} /></td>
                   <td className="py-2">
                     <div className="flex gap-1.5">
@@ -443,7 +443,7 @@ function StockSection() {
               <tr key={p.id} className="border-b border-stone-50 hover:bg-stone-50/50 transition-colors">
                 <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>{p.name}</td>
                 <td className="py-2.5 pr-3"><Badge variant="info">{p.category}</Badge></td>
-                <td className="py-2.5 pr-3" style={{ color: '#555' }}>{Number(p.price).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</td>
+                <td className="py-2.5 pr-3" style={{ color: '#555' }}>{Number(p.price).toLocaleString('fr-FR')} MAD</td>
                 <td className="py-2.5 pr-3 text-sm" style={{ color: '#777' }}>{p.stock}</td>
                 <td className="py-2.5 pr-3"><StockBadge stock={p.stock} /></td>
                 <td className="py-2.5">
@@ -474,7 +474,7 @@ function StockSection() {
                   {['djellaba', 'takchita', 'gandoura', 'Caftan', 'Jabador', 'Accessoire'].map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
-              <div><label className="text-xs" style={{ color: '#999' }}>Price (EUR)</label><input type="number" min={0} value={form.price} onChange={e => setForm({ ...form, price: +e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
+              <div><label className="text-xs" style={{ color: '#999' }}>Price (MAD)</label><input type="number" min={0} value={form.price} onChange={e => setForm({ ...form, price: +e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
             </div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Stock</label><input type="number" min={0} value={form.stock} onChange={e => setForm({ ...form, stock: +e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
@@ -584,7 +584,7 @@ function OrdersSection() {
                     <Badge variant="info">Carte</Badge>
                   )}
                 </td>
-                <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>{Number(o.total).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</td>
+                <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>{Number(o.total).toLocaleString('fr-FR')} MAD</td>
                 <td className="py-2.5 pr-3 text-xs" style={{ color: '#bbb' }}>{new Date(o.created_at).toLocaleDateString('fr-FR')}</td>
                 <td className="py-2.5 pr-3"><StatusBadge status={o.status} /></td>
                 <td className="py-2.5">

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
-import { useApp } from '../context/AppContext';
+import { useApp, MAD_PER_EUR } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
 import SizeGuide from './SizeGuide';
 import StarRating from './StarRating';
@@ -74,7 +74,7 @@ export default function ProductModal({ product, onClose }: Props) {
         description={locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description}
         image={product.image}
         type="product"
-        productPrice={String(product.price)}
+        productPrice={(product.price / MAD_PER_EUR).toFixed(2)}
       />
       <div
         className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm overflow-y-auto"

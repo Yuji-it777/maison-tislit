@@ -99,7 +99,7 @@ const nl = {
   'cart.subtotal': 'Subtotaal',
   'cart.shipping': 'Verzending',
   'cart.free': 'Gratis',
-  'cart.freeShippingNote': 'Gratis verzending vanaf 2.000 € aankoop',
+  'cart.freeShippingNote': 'Gratis verzending vanaf €185',
   'cart.total': 'Totaal',
   'cart.checkout': '✓ Nu Bestellen',
   'cart.continueShopping': '← Verder Winkelen',

@@ -39,8 +39,8 @@ export default function ShippingPolicyPage() {
                 : 'Voor berekende verzendtarieven: de verzendkosten van uw bestelling worden berekend en getoond bij het afrekenen.'}
             </p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>{locale === 'en' ? 'Standard Shipping (3-5 business days): 60 MAD' : 'Standaard verzending (3-5 werkdagen): 60 MAD'}</li>
-              <li>{locale === 'en' ? 'Free Standard Shipping on orders over 2000 MAD' : 'Gratis standaard verzending voor bestellingen boven 2000 MAD'}</li>
+              <li>{locale === 'en' ? 'Standard Shipping (3-5 business days): €6' : 'Standaard verzending (3-5 werkdagen): €6'}</li>
+              <li>{locale === 'en' ? 'Free Standard Shipping on orders over €185' : 'Gratis standaard verzending voor bestellingen boven €185'}</li>
             </ul>
           </section>
 
@@ -54,7 +54,7 @@ export default function ShippingPolicyPage() {
                 : 'Wij bieden internationale verzending naar de meeste landen in Europa (Frankrijk, België, Nederland, enz.).'}
             </p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>{locale === 'en' ? 'Flat Rate International Shipping: ~200 MAD' : 'Vast internationaal verzendtarief: ~200 MAD'}</li>
+              <li>{locale === 'en' ? 'Flat Rate International Shipping: ~€19' : 'Vast internationaal verzendtarief: ~€19'}</li>
             </ul>
             <p className="mt-2 text-xs italic">
               {locale === 'en' 

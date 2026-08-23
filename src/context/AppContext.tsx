@@ -7,6 +7,8 @@ import type { ProfileRow } from '../supabase/types';
 import { getProducts, getProfile, createReview, getProductReviews } from '../supabase/queries';
 import type { ReviewRow } from '../supabase/types';
 
+export const MAD_PER_EUR = 10.8;
+
 const pageToPath: Record<Page, string> = {
   home: '/', shop: '/shop', about: '/about',
   cart: '/cart', login: '/login',
@@ -61,6 +63,7 @@ interface AppContextType {
   currency: Currency;
   setCurrency: (currency: Currency) => void;
   formatPrice: (priceInMAD: number) => string;
+  formatShipping: (shippingInMAD: number) => string;
   subscribeToNewsletter: (email: string) => Promise<boolean>;
 
   toast: { message: string; type: 'success' | 'error' | 'info' } | null;
@@ -122,15 +125,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderDetails, setOrderDetails] = useState<{ id?: number; name: string; email?: string; address: string; city: string; phone: string; whatsappUrl?: string } | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
-  const [currency, setCurrency] = useState<Currency>('MAD');
+  const [currency, setCurrency] = useState<Currency>('EUR');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const formatPrice = (priceInMAD: number) => {
     if (currency === 'MAD') return `${Math.round(priceInMAD)} MAD`;
-    if (currency === 'EUR') return `€${(priceInMAD / 10.8).toFixed(2)}`;
+    if (currency === 'EUR') return `€${(priceInMAD / MAD_PER_EUR).toFixed(2)}`;
     if (currency === 'USD') return `$${(priceInMAD / 10.0).toFixed(2)}`;
     return `${priceInMAD} MAD`;
+  };
+
+  const formatShipping = (shippingInMAD: number) => {
+    if (currency === 'MAD') return `${Math.round(shippingInMAD)} MAD`;
+    if (currency === 'EUR') return `€${Math.round(shippingInMAD / MAD_PER_EUR)}`;
+    if (currency === 'USD') return `$${Math.round(shippingInMAD / 10.0)}`;
+    return `${shippingInMAD} MAD`;
   };
 
   const subscribeToNewsletter = async (email: string) => {
@@ -413,6 +423,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       reviews, fetchProductReviews, addReview,
       currency, setCurrency,
       formatPrice,
+      formatShipping,
       calculateShipping,
       subscribeToNewsletter,
 

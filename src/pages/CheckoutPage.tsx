@@ -13,7 +13,7 @@ const CITIES = [
 ];
 
 export default function CheckoutPage() {
-  const { cart, cartTotal, clearCart, setCurrentPage, setOrderPlaced, setOrderDetails, showToast, formatPrice } = useApp();
+  const { cart, cartTotal, clearCart, setCurrentPage, setOrderPlaced, setOrderDetails, showToast, formatPrice, formatShipping } = useApp();
   const { t, locale } = useTranslation();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between text-stone-500">
                   <span>{t('checkout.shipping')}</span>
                   <span className={shipping === 0 ? 'text-emerald-600 font-medium' : ''}>
-                    {shipping === 0 ? t('checkout.free') : formatPrice(shipping)}
+                    {shipping === 0 ? t('checkout.free') : formatShipping(shipping)}
                   </span>
                 </div>
                 <div className="flex justify-between font-bold text-stone-900 text-base pt-2 border-t border-stone-100">

@@ -3,7 +3,7 @@ import { useTranslation } from '../context/LanguageContext';
 import SEO from '../components/SEO';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, formatPrice, calculateShipping } = useApp();
+  const { cart, removeFromCart, updateQuantity, cartTotal, setCurrentPage, formatPrice, formatShipping, calculateShipping } = useApp();
   const { t, locale } = useTranslation();
 
   if (cart.length === 0) {
@@ -120,7 +120,7 @@ export default function CartPage() {
               <div className="flex justify-between text-sm text-stone-600">
                 <span>{t('cart.shipping')}</span>
                 <span className={shipping === 0 ? 'text-emerald-600 font-medium' : ''}>
-                  {shipping === 0 ? t('cart.free') : formatPrice(shipping)}
+                  {shipping === 0 ? t('cart.free') : formatShipping(shipping)}
                 </span>
               </div>
               {shipping > 0 && (

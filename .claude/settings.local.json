@@ -8,7 +8,9 @@
       "Bash(git add *)",
       "Bash(grep -E \"^\\\\.env$\")",
       "Bash(git commit -q -m 'Initial commit: Maison Tislit e-commerce site *)",
-      "PowerShell(npm run *)"
+      "PowerShell(npm run *)",
+      "PowerShell(git push *)",
+      "PowerShell($urls = @\\('https://maisontislit.com/site.webmanifest','https://maisontislit.com/favicon.webp','https://maisontislit.com/favicon-48.webp'\\); foreach \\($u in $urls\\) { try { $r = Invoke-WebRequest -Uri $u -UseBasicParsing -Method Head -TimeoutSec 20; $ct = $r.Headers['Content-Type']; if \\(-not $ct\\) { $ct = $r.Content.Headers.ContentType } ; Write-Output \"$u`t$status=$\\($r.StatusCode\\)`tcontent-type=$ct\" } catch { Write-Output \"$u`tERROR`t$\\($_.Exception.Message\\)\" } })"
     ]
   }
 }

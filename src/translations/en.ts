@@ -99,7 +99,7 @@ const en = {
   'cart.subtotal': 'Subtotal',
   'cart.shipping': 'Shipping',
   'cart.free': 'Free',
-  'cart.freeShippingNote': 'Free shipping on orders over 2,000 €',
+  'cart.freeShippingNote': 'Free shipping on orders over €185',
   'cart.total': 'Total',
   'cart.checkout': '✓ Order Now',
   'cart.continueShopping': '← Continue Shopping',

@@ -22,8 +22,8 @@ const MAX_LENGTHS = {
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://maison-tislit.com',
-  'https://www.maison-tislit.com',
+  'https://maisontislit.com',
+  'https://www.maisontislit.com',
 ];
 
 function getCorsHeaders(req: Request) {
@@ -67,10 +67,15 @@ Deno.serve(async (req) => {
 
     // Verify Turnstile token with Cloudflare
     const turnstileSecret = Deno.env.get('TURNSTILE_SECRET_KEY') || '';
+    const remoteIp = (req.headers.get('x-forwarded-for') || '').split(',')[0]?.trim();
     const verifyResp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ secret: turnstileSecret, response: body.captchaToken }),
+      body: new URLSearchParams({
+        secret: turnstileSecret,
+        response: body.captchaToken,
+        ...(remoteIp ? { remoteip: remoteIp } : {}),
+      }),
     });
     const verifyResult = await verifyResp.json();
 

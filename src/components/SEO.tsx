@@ -65,9 +65,10 @@ export default function SEO({
       <meta name="twitter:description" content={metaDescription} />
       <meta name="twitter:image" content={metaImage} />
 
-      {productPrice && (
-        <meta property="product:price:amount" content={productPrice} />
-      )}
+      {productPrice && [
+        <meta key="price-amount" property="product:price:amount" content={productPrice} />,
+        <meta key="price-currency" property="product:price:currency" content="EUR" />,
+      ]}
     </Helmet>
   );
 }
