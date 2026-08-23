@@ -11,13 +11,8 @@ UPDATE products SET slug = 'embroidered-royal-caftan' WHERE id = 7 AND slug IS N
 UPDATE products SET slug = 'fassi-takchita' WHERE id = 8 AND slug IS NULL;
 UPDATE products SET slug = 'silk-jabador' WHERE id = 9 AND slug IS NULL;
 UPDATE products SET slug = 'golden-belt' WHERE id = 10 AND slug IS NULL;
-UPDATE products SET slug = 'emerald-royal-djellaba-2' WHERE id = 11 AND slug IS NULL;
-UPDATE products SET slug = 'blue-safira-djellaba-2' WHERE id = 12 AND slug IS NULL;
-UPDATE products SET slug = 'nour-al-qamar-takchita-2' WHERE id = 13 AND slug IS NULL;
-UPDATE products SET slug = 'enchanted-rosa-takchita-2' WHERE id = 14 AND slug IS NULL;
-UPDATE products SET slug = 'bordeaux-sultana-gandoura-2' WHERE id = 15 AND slug IS NULL;
-UPDATE products SET slug = 'white-jasmine-gandoura-2' WHERE id = 16 AND slug IS NULL;
-UPDATE products SET slug = 'embroidered-royal-caftan-2' WHERE id = 17 AND slug IS NULL;
-UPDATE products SET slug = 'fassi-takchita-2' WHERE id = 18 AND slug IS NULL;
-UPDATE products SET slug = 'silk-jabador-2' WHERE id = 19 AND slug IS NULL;
-UPDATE products SET slug = 'golden-belt-2' WHERE id = 20 AND slug IS NULL;
+-- Note: this migration previously also backfilled slugs for manually-added
+-- duplicate test products with ids 11-20 ('*-2' slugs). Those rows were
+-- removed from the live database by 00022_remove_duplicate_test_products.sql,
+-- so those statements are gone. Fresh databases seeded by 00001 only ever
+-- create ids 1-10.
