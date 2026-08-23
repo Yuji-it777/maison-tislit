@@ -1,5 +1,9 @@
 # Maison Tislit — STRATO Hosting (Apache) configuration
 # 301 redirects for unprefixed URLs, HTTPS enforcement, SPA fallback.
+# Canonical URLs carry a trailing slash: mod_dir redirects slash-less
+# directory requests BEFORE .htaccess rules run on STRATO (cannot be
+# disabled from .htaccess), so prerender/sitemap/internal links all use
+# the slashed form and these redirects target it directly (single hop).
 
 # --- HTTPS enforcement (requires STRATO SSL cert to be active) ---
 RewriteEngine On
@@ -8,33 +12,22 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # --- 301s: unprefixed URLs -> default locale (server-side, passes link equity) ---
 RewriteRule ^$ /en/ [R=301,L]
-RewriteRule ^shop$ /en/shop [R=301,L]
-RewriteRule ^product/([^/]+)/?$ /en/product/$1 [R=301,L]
-RewriteRule ^about$ /en/about [R=301,L]
-RewriteRule ^contact$ /en/contact [R=301,L]
-RewriteRule ^cart$ /en/cart [R=301,L]
-RewriteRule ^login$ /en/login [R=301,L]
-RewriteRule ^checkout$ /en/checkout [R=301,L]
-RewriteRule ^confirmation$ /en/confirmation [R=301,L]
-RewriteRule ^account$ /en/account [R=301,L]
-RewriteRule ^shipping$ /en/shipping [R=301,L]
-RewriteRule ^returns$ /en/returns [R=301,L]
+RewriteRule ^shop$ /en/shop/ [R=301,L]
+RewriteRule ^product/([^/]+)/?$ /en/product/$1/ [R=301,L]
+RewriteRule ^about$ /en/about/ [R=301,L]
+RewriteRule ^contact$ /en/contact/ [R=301,L]
+RewriteRule ^cart$ /en/cart/ [R=301,L]
+RewriteRule ^login$ /en/login/ [R=301,L]
+RewriteRule ^checkout$ /en/checkout/ [R=301,L]
+RewriteRule ^confirmation$ /en/confirmation/ [R=301,L]
+RewriteRule ^account$ /en/account/ [R=301,L]
+RewriteRule ^shipping$ /en/shipping/ [R=301,L]
+RewriteRule ^returns$ /en/returns/ [R=301,L]
 
 # --- 301s: removed "-2" duplicate product pages -> real counterparts ---
 # Rows were deleted from the DB (migration 00022); keep old links working
 # for visitors and Google. Exact slugs only, both locales.
-RewriteRule ^(en|nl)/product/(emerald-royal-djellaba|blue-safira-djellaba|nour-al-qamar-takchita|enchanted-rosa-takchita|bordeaux-sultana-gandoura|white-jasmine-gandoura|embroidered-royal-caftan|fassi-takchita|silk-jabador|golden-belt)-2/?$ /$1/product/$2 [R=301,L]
-
-# --- Serve prerendered snapshots at their exact slash-less URLs ---
-# The prerender creates real directories (dist/en/shop/index.html), so
-# mod_dir's DirectorySlash otherwise 301s /en/shop -> /en/shop/. That
-# contradicts the slash-less URLs used by the sitemap, canonicals, hreflang
-# tags, and internal links (GSC "Redirect error"). Internal rewrite =
-# 200 directly, no redirect. Slashed URLs keep working; directories without
-# an index.html fall through to the SPA fallback below.
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_FILENAME}/index.html -f
-RewriteRule ^(.*[^/])$ $1/index.html [L]
+RewriteRule ^(en|nl)/product/(emerald-royal-djellaba|blue-safira-djellaba|nour-al-qamar-takchita|enchanted-rosa-takchita|bordeaux-sultana-gandoura|white-jasmine-gandoura|embroidered-royal-caftan|fassi-takchita|silk-jabador|golden-belt)-2/?$ /$1/product/$2/ [R=301,L]
 
 # --- SPA fallback: only reached when no static file/dir exists at the path ---
 # (prerendered dist/en/... snapshots exist on disk, so they win naturally)

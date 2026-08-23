@@ -111,7 +111,11 @@ function safeLocalStorageSet(key: string, value: string) {
 export function AppProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentPage: Page = pathToPage[stripLocale(location.pathname)] ?? 'home';
+  // Canonical URLs carry a trailing slash; strip it before the path->page lookup.
+  const normalizedPathname = location.pathname.length > 1 && location.pathname.endsWith('/')
+    ? location.pathname.slice(0, -1)
+    : location.pathname;
+  const currentPage: Page = pathToPage[stripLocale(normalizedPathname)] ?? 'home';
   const setCurrentPage = (page: Page) => navigate(localizePath(pageToPath[page], locale));
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<ProfileRow | null>(null);

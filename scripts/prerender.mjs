@@ -79,6 +79,14 @@ function escapeXml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// Canonical URLs carry a trailing slash: STRATO's Apache (mod_dir) redirects
+// slash-less directory requests before .htaccess rules run, so the slashed
+// form is the only one the server serves with 200. Sitemap and snapshots
+// must agree with it.
+function canonicalRoute(route) {
+  return route.endsWith('/') ? route : `${route}/`;
+}
+
 function buildSitemap(slugs) {
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
@@ -87,14 +95,14 @@ function buildSitemap(slugs) {
   ];
   for (const locale of LOCALES) {
     for (const p of PAGES) {
-      const route = p ? `/${locale}/${p}` : `/${locale}/`;
+      const route = canonicalRoute(p ? `/${locale}/${p}` : `/${locale}/`);
       lines.push('  <url>');
       lines.push(`    <loc>${escapeXml(SITE_URL + route)}</loc>`);
       for (const alt of ['en', 'nl']) {
-        const altRoute = p ? `/${alt}/${p}` : `/${alt}/`;
+        const altRoute = canonicalRoute(p ? `/${alt}/${p}` : `/${alt}/`);
         lines.push(`    <xhtml:link rel="alternate" hreflang="${alt}" href="${escapeXml(SITE_URL + altRoute)}"/>`);
       }
-      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + (p ? `/en/${p}` : '/en/'))}"/>`);
+      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + canonicalRoute(p ? `/en/${p}` : '/en/'))}"/>`);
       lines.push(`    <changefreq>${PAGE_META[p].changefreq}</changefreq>`);
       lines.push(`    <priority>${PAGE_META[p].priority}</priority>`);
       lines.push('  </url>');
@@ -102,13 +110,13 @@ function buildSitemap(slugs) {
   }
   for (const slug of slugs) {
     for (const locale of LOCALES) {
-      const route = `/${locale}/product/${slug}`;
+      const route = canonicalRoute(`/${locale}/product/${slug}`);
       lines.push('  <url>');
       lines.push(`    <loc>${escapeXml(SITE_URL + route)}</loc>`);
       for (const alt of ['en', 'nl']) {
-        lines.push(`    <xhtml:link rel="alternate" hreflang="${alt}" href="${escapeXml(SITE_URL + `/${alt}/product/${slug}`)}"/>`);
+        lines.push(`    <xhtml:link rel="alternate" hreflang="${alt}" href="${escapeXml(SITE_URL + canonicalRoute(`/${alt}/product/${slug}`))}"/>`);
       }
-      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + `/en/product/${slug}`)}"/>`);
+      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + canonicalRoute(`/en/product/${slug}`))}"/>`);
       lines.push('    <changefreq>weekly</changefreq>');
       lines.push('    <priority>0.8</priority>');
       lines.push('  </url>');
@@ -189,7 +197,9 @@ try {
 
   let ok = 0;
   for (const route of routes) {
-    await page.goto(`${BASE}${route}`, { waitUntil: 'networkidle', timeout: 45000 });
+    // Render the canonical (slashed) URL so SEO tags built from
+    // window.location.pathname carry the trailing slash.
+    await page.goto(`${BASE}${canonicalRoute(route)}`, { waitUntil: 'networkidle', timeout: 45000 });
     await page.waitForTimeout(600);
     // Wait for the canonical link to be ATTACHED (product pages render <head> after
     // async hydration). NOTE: must use state:'attached' — the default 'visible' never

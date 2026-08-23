@@ -23,7 +23,9 @@ export function stripLocale(pathname: string): string {
 export function localizePath(path: string, locale: Locale): string {
   if (path === '/admin' || path.startsWith('/admin/')) return path;
   const inner = path === '/' ? '' : path;
-  return `/${locale}${inner}`;
+  const localized = `/${locale}${inner}`;
+  // Trailing slash = canonical form (see prerender.mjs canonicalRoute).
+  return localized.endsWith('/') ? localized : `${localized}/`;
 }
 
 interface LanguageContextType {
