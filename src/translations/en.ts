@@ -22,7 +22,7 @@ const en = {
   'home.storyTitle': 'The Soul of Morocco, _Feminine_',
   'home.storyLine1': 'Founded in the heart of Fez, Maison Tislit was born from a deep passion for Moroccan craftsmanship.',
   'home.storyLine2': 'We collaborate with talented artisans to create clothing that honors traditions while embracing modernity.',
-  'home.storyLine3': 'Every djellaba, takchita, and gandoura tells a story — yours.',
+  'home.storyLine3': 'Every djellaba, takchita, kaftan, and gandoura tells a story — yours.',
   'home.ourCategories': 'Our Categories',
   'home.chooseStyle': 'Choose Your Style',
   'home.catDjellabaDesc': 'Traditional elegance reinvented',
@@ -288,9 +288,9 @@ const en = {
 
   // SEO
   'seo.homeTitle': 'Maison Tislit – Moroccan Feminine Fashion',
-  'seo.homeDescription': 'Maison Tislit celebrates the heritage of Moroccan feminine clothing — artisanal djellabas, takchitas, and gandouras. Discover our 2027 collection.',
+  'seo.homeDescription': 'Maison Tislit celebrates the heritage of Moroccan feminine clothing — artisanal djellabas, takchitas, caftans, and gandouras. Discover our 2027 collection.',
   'seo.shopTitle': 'Shop Our Collection',
-  'seo.shopDescription': 'Discover our curated collection of authentic Moroccan djellabas, takchitas, and gandouras — handmade by expert artisans.',
+  'seo.shopDescription': 'Discover our curated collection of authentic Moroccan djellabas, takchitas, caftans, and gandouras — handmade by expert artisans.',
   'seo.aboutTitle': 'About Maison Tislit',
   'seo.aboutDescription': 'Founded in Fez, Maison Tislit celebrates Moroccan craftsmanship through timeless feminine clothing.',
   'seo.contactTitle': 'Contact Us',
@@ -314,7 +314,7 @@ const en = {
   // About page
   'about.heroTagline': 'Woven in Tradition, Worn with Elegance',
   'about.heritageTitle': 'Our Heritage',
-  'about.heritageLine1': "Maison Tislit was born from the silent valleys of the Atlas Mountains, where the rhythm of the loom has echoed for generations. Our story is not merely about fashion; it is a sacred preservation of the Berber soul and the Andalusian artistry that has defined Moroccan luxury for centuries.",
+  'about.heritageLine1': "Maison Tislit was born from the silent valleys of the Atlas Mountains, where the rhythm of the loom has echoed for generations. Our story is not merely about fashion; it is a sacred preservation of the Berber soul and the Andalusian artistry behind garments as varied as the kaftan, djellaba, and takchita, which have defined Moroccan luxury for centuries.",
   'about.heritageLine2': "Every thread we pull is a link to an ancestor; every pattern we stitch is a map of our shared history. We work exclusively with master artisans who have inherited their secrets from their mothers and fathers, ensuring that the 'Slow Luxury' of the Maghreb continues to flourish in a modern world.",
   'about.craftTitle': 'The Art of the Craft',
   'about.stepEmbroideryTitle': 'Hand Embroidery',
