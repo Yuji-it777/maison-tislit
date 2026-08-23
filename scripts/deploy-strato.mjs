@@ -69,6 +69,13 @@ if (!HOST || !USER || (!PASS && !KEY)) {
   fail('deploy.env missing STRATO_HOST/STRATO_USER/STRATO_PASS (or STRATO_KEY_PATH). See deploy.env.example.');
 }
 
+const CONN = PASS
+  ? { host: HOST, port: PORT, username: USER, password: PASS }
+  : { host: HOST, port: PORT, username: USER, privateKey: readFileSync(KEY, 'utf8') };
+
+const MAX_RETRIES = 5;
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
 if (BUILD) {
   log('building (npm run build:seo)...');
   await run('npm', ['run', 'build:seo']);
@@ -79,9 +86,26 @@ const files = await walk(DIST);
 log(`uploading ${files.length} files from dist/ to ${USER}@${HOST}:${PORT}${REMOTE_DIR}/`);
 
 const sftp = new Client();
+
+async function putWithRetry(full, remotePath) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await sftp.mkdir(path.posix.dirname(remotePath), true);
+      await sftp.put(full, remotePath);
+      return;
+    } catch (err) {
+      if (attempt >= MAX_RETRIES) throw err;
+      const delay = Math.min(1000 * 2 ** attempt, 8000);
+      log(`put failed on ${path.basename(remotePath)} (${err.code || err.message}); reconnecting, retry ${attempt + 1}/${MAX_RETRIES} in ${delay}ms`);
+      await sftp.end().catch(() => {});
+      await sleep(delay);
+      await sftp.connect(CONN);
+    }
+  }
+}
+
 try {
-  const conn = PASS ? { host: HOST, port: PORT, username: USER, password: PASS } : { host: HOST, port: PORT, username: USER, privateKey: readFileSync(KEY, 'utf8') };
-  await sftp.connect(conn);
+  await sftp.connect(CONN);
   await sftp.mkdir(REMOTE_DIR, true);
 
   if (CLEAN) {
@@ -97,15 +121,13 @@ try {
   }
 
   for (const f of files) {
-    const remotePath = path.posix.join(REMOTE_DIR, f.rel);
-    await sftp.mkdir(path.posix.dirname(remotePath), true);
-    await sftp.put(f.full, remotePath);
+    await putWithRetry(f.full, path.posix.join(REMOTE_DIR, f.rel));
   }
   if (existsSync(HTACCESS)) {
-    await sftp.put(HTACCESS, path.posix.join(REMOTE_DIR, '.htaccess'));
+    await putWithRetry(HTACCESS, path.posix.join(REMOTE_DIR, '.htaccess'));
     log('uploaded .htaccess');
   }
   log(`done: ${files.length} files + .htaccess -> ${REMOTE_DIR}/`);
 } finally {
-  await sftp.end();
+  await sftp.end().catch(() => {});
 }
