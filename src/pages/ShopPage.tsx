@@ -7,6 +7,7 @@ import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
 import { ShoppingBag, Heart, Search } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
+import { productAlt } from '../utils/productAlt';
 import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 
@@ -232,7 +233,7 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
       <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
         <img
           src={product.image}
-          alt={product.name}
+          alt={productAlt(product, locale)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         {product.badge && product.badge !== 'Promo' && (

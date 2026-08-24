@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 import { Scissors, Leaf, Package, Gem, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
+import { productAlt } from '../utils/productAlt';
 import { useScrollReveal, useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 
@@ -278,7 +279,7 @@ export default function HomePage() {
                 <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
                   <img
                     src={product.image}
-                    alt={product.name}
+                    alt={productAlt(product, locale)}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />

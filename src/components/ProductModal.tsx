@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
 import { useApp, MAD_PER_EUR } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
+import { productAlt } from '../utils/productAlt';
 import SizeGuide from './SizeGuide';
 import StarRating from './StarRating';
 import SEO from './SEO';
@@ -84,7 +85,7 @@ export default function ProductModal({ product, onClose }: Props) {
         <div className="bg-white max-w-4xl w-full" onClick={e => e.stopPropagation()}>
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="relative aspect-[3/4] md:aspect-auto md:min-h-[500px] bg-stone-100 overflow-hidden">
-              <img src={product.image} alt={product.name} loading="lazy" width={600} height={800} className="w-full h-full object-cover" />
+              <img src={product.image} alt={productAlt(product, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-cover" />
               {product.badge && (
                 <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
                   {product.badge}
@@ -326,7 +327,7 @@ export default function ProductModal({ product, onClose }: Props) {
                     className="group text-left"
                   >
                     <div className="aspect-[3/4] bg-stone-100 overflow-hidden mb-2">
-                      <img src={r.image} alt={r.name} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && r.nameEn ? r.nameEn : r.name}</p>
                     <p className="text-xs text-stone-500">{formatPrice(r.price)}</p>

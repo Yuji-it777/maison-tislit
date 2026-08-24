@@ -10,6 +10,7 @@ import SEO from '../components/SEO';
 import SizeGuide from '../components/SizeGuide';
 import StarRating from '../components/StarRating';
 import { SITE_URL } from '../config';
+import { productAlt } from '../utils/productAlt';
 
 function mapRow(row: ProductRow): Product {
   return {
@@ -201,7 +202,7 @@ export default function ProductDetailPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 md:p-10">
           <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
-            <img src={product.image} alt={productName} width={600} height={800} className="w-full h-full object-cover" />
+            <img src={product.image} alt={productAlt(product, locale)} width={600} height={800} className="w-full h-full object-cover" />
             {product.badge && (
               <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
                 {product.badge}
@@ -437,7 +438,7 @@ export default function ProductDetailPage() {
                   className="group bg-white overflow-hidden transition-all duration-300"
                 >
                   <div className="aspect-[3/4] bg-stone-100 overflow-hidden">
-                    <img src={r.image} alt={locale === 'en' && r.nameEn ? r.nameEn : r.name} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-3">
                     <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && r.nameEn ? r.nameEn : r.name}</p>

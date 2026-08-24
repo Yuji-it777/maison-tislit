@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
+import { productAlt } from '../utils/productAlt';
 import { getOrdersByUser } from '../supabase/queries';
 import type { OrderRow } from '../supabase/types';
 import { Heart, Package } from 'lucide-react';
@@ -69,7 +70,7 @@ export default function AccountPage() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {wishlistProducts.map(p => (
                   <div key={p.id} className="relative group rounded-xl overflow-hidden border border-stone-100">
-                    <img src={p.image} alt={p.name} loading="lazy" width={600} height={800} className="w-full aspect-[3/4] object-cover" />
+                    <img src={p.image} alt={productAlt(p, locale)} loading="lazy" width={600} height={800} className="w-full aspect-[3/4] object-cover" />
                     <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/40 transition-all flex items-center justify-center gap-2">
                       <button
                         onClick={() => { toggleWishlist(p.id); }}
@@ -183,7 +184,7 @@ export default function AccountPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {wishlistProducts.map(p => (
                 <div key={p.id} className="relative group rounded-xl overflow-hidden border border-stone-100">
-                  <img src={p.image} alt={p.name} loading="lazy" width={600} height={800} className="w-full aspect-[3/4] object-cover" />
+                  <img src={p.image} alt={productAlt(p, locale)} loading="lazy" width={600} height={800} className="w-full aspect-[3/4] object-cover" />
                   <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/40 transition-all flex items-center justify-center gap-2">
                     <button
                       onClick={() => { toggleWishlist(p.id); }}

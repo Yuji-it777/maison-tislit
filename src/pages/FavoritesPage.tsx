@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
+import { productAlt } from '../utils/productAlt';
 import SEO from '../components/SEO';
 
 export default function FavoritesPage() {
@@ -48,7 +49,7 @@ export default function FavoritesPage() {
 
                 return (
                   <div key={p.id} className="relative group rounded-xl overflow-hidden border border-stone-100">
-                    <img src={p.image} alt={productName} loading="lazy" width={600} height={800} className="w-full aspect-[3/4] object-cover" />
+                    <img src={p.image} alt={productAlt(p, locale)} loading="lazy" width={600} height={800} className="w-full aspect-[3/4] object-cover" />
                     <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/40 transition-all flex items-center justify-center gap-2">
                       <button
                         onClick={() => { toggleWishlist(p.id); }}
