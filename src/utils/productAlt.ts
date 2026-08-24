@@ -12,5 +12,7 @@ export function productName(p: Pick<Product, 'name' | 'nameEn'>, locale: Locale)
 }
 
 export function productAlt(p: Pick<Product, 'name' | 'nameEn' | 'category'>, locale: Locale): string {
-  return `${productName(p, locale)} – ${CATEGORY_ALT[p.category][locale]}`;
+  const desc = CATEGORY_ALT[p.category]?.[locale]
+    ?? (locale === 'en' ? 'handmade Moroccan piece' : 'handgemaakt Marokkaans kledingstuk');
+  return `${productName(p, locale)} – ${desc}`;
 }
