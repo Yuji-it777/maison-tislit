@@ -27,7 +27,9 @@ export default function SEO({
   const siteName = 'Maison Tislit';
   const fullTitle = title ? `${title} | ${siteName}` : t('seo.homeTitle');
   const metaDescription = description || t('seo.homeDescription');
-  const metaImage = image || '/images/hero-bg.webp';
+  const toAbsoluteUrl = (path: string) =>
+    /^https?:\/\//i.test(path) ? path : `${SITE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+  const metaImage = toAbsoluteUrl(image || '/images/hero-bg.webp');
 
   const canonical =
     url || (typeof window !== 'undefined'
