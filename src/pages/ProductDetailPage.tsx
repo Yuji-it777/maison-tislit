@@ -11,6 +11,7 @@ import SizeGuide from '../components/SizeGuide';
 import StarRating from '../components/StarRating';
 import { SITE_URL } from '../config';
 import { categoryByDbValue } from '../config/categories';
+import { productMaterial } from '../utils/productMaterial';
 import { productAlt } from '../utils/productAlt';
 
 function mapRow(row: ProductRow): Product {
@@ -123,6 +124,7 @@ export default function ProductDetailPage() {
   const productPath = localizePath(`/product/${product.slug}`, locale);
   const canonical = `${SITE_URL}${productPath}`;
   const category = categoryByDbValue(product.category);
+  const material = productMaterial(product);
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -132,6 +134,10 @@ export default function ProductDetailPage() {
     description: productDesc,
     sku: String(product.id),
     brand: { '@type': 'Brand', name: 'Maison Tislit' },
+    color: product.colors,
+    // only emitted when the copy actually names a fabric (see productMaterial)
+    ...(material ? { material } : {}),
+    countryOfOrigin: 'MA',
     offers: {
       '@type': 'Offer',
       url: canonical,
