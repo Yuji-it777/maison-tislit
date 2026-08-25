@@ -20,6 +20,10 @@ const PAGE_META = {
   shipping:{ priority: 0.4, changefreq: 'yearly' },
   returns: { priority: 0.4, changefreq: 'yearly' },
 };
+// Indexable category collections (/:locale/shop/:slug). Keep in sync with
+// src/config/categories.ts (CATEGORY_PAGES) — same slugs, lowercase.
+const CATEGORY_PAGES = ['djellaba', 'takchita', 'gandoura', 'caftan', 'jabador'];
+const CATEGORY_META = { priority: 0.7, changefreq: 'weekly' };
 
 function loadEnv() {
   const env = { ...process.env };
@@ -93,35 +97,35 @@ function buildSitemap(slugs) {
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
     '        xmlns:xhtml="http://www.w3.org/1999/xhtml">',
   ];
-  for (const locale of LOCALES) {
-    for (const p of PAGES) {
-      const route = canonicalRoute(p ? `/${locale}/${p}` : `/${locale}/`);
+
+  // innerPath is locale-relative without surrounding slashes:
+  //   '' -> '/<locale>/', 'shop' -> '/<locale>/shop/', 'shop/djellaba' -> '/<locale>/shop/djellaba/'
+  // Emits one <url> per locale, each with en/nl/x-default hreflang alternates.
+  const addUrl = (innerPath, { priority, changefreq }) => {
+    const routeFor = locale => canonicalRoute(innerPath ? `/${locale}/${innerPath}` : `/${locale}/`);
+    for (const locale of LOCALES) {
       lines.push('  <url>');
-      lines.push(`    <loc>${escapeXml(SITE_URL + route)}</loc>`);
-      for (const alt of ['en', 'nl']) {
-        const altRoute = canonicalRoute(p ? `/${alt}/${p}` : `/${alt}/`);
-        lines.push(`    <xhtml:link rel="alternate" hreflang="${alt}" href="${escapeXml(SITE_URL + altRoute)}"/>`);
+      lines.push(`    <loc>${escapeXml(SITE_URL + routeFor(locale))}</loc>`);
+      for (const alt of LOCALES) {
+        lines.push(`    <xhtml:link rel="alternate" hreflang="${alt}" href="${escapeXml(SITE_URL + routeFor(alt))}"/>`);
       }
-      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + canonicalRoute(p ? `/en/${p}` : '/en/'))}"/>`);
-      lines.push(`    <changefreq>${PAGE_META[p].changefreq}</changefreq>`);
-      lines.push(`    <priority>${PAGE_META[p].priority}</priority>`);
+      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + routeFor('en'))}"/>`);
+      lines.push(`    <changefreq>${changefreq}</changefreq>`);
+      lines.push(`    <priority>${priority}</priority>`);
       lines.push('  </url>');
     }
+  };
+
+  for (const p of PAGES) {
+    addUrl(p, PAGE_META[p]);
+  }
+  for (const cat of CATEGORY_PAGES) {
+    addUrl(`shop/${cat}`, CATEGORY_META);
   }
   for (const slug of slugs) {
-    for (const locale of LOCALES) {
-      const route = canonicalRoute(`/${locale}/product/${slug}`);
-      lines.push('  <url>');
-      lines.push(`    <loc>${escapeXml(SITE_URL + route)}</loc>`);
-      for (const alt of ['en', 'nl']) {
-        lines.push(`    <xhtml:link rel="alternate" hreflang="${alt}" href="${escapeXml(SITE_URL + canonicalRoute(`/${alt}/product/${slug}`))}"/>`);
-      }
-      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(SITE_URL + canonicalRoute(`/en/product/${slug}`))}"/>`);
-      lines.push('    <changefreq>weekly</changefreq>');
-      lines.push('    <priority>0.8</priority>');
-      lines.push('  </url>');
-    }
+    addUrl(`product/${slug}`, { priority: 0.8, changefreq: 'weekly' });
   }
+
   lines.push('</urlset>');
   return lines.join('\n') + '\n';
 }
@@ -192,6 +196,7 @@ try {
   const routes = [];
   for (const locale of LOCALES) {
     for (const p of PAGES) routes.push(p ? `/${locale}/${p}` : `/${locale}/`);
+    for (const cat of CATEGORY_PAGES) routes.push(`/${locale}/shop/${cat}`);
     for (const slug of slugs) routes.push(`/${locale}/product/${slug}`);
   }
 

@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation, useParams, Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AppProvider } from './context/AppContext';
-import { LanguageProvider, DEFAULT_LOCALE } from './context/LanguageContext';
+import { LanguageProvider, DEFAULT_LOCALE, localizePath } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -33,10 +33,12 @@ function ScrollToTop() {
   return null;
 }
 
-/** Redirects an unprefixed path to the same path under the default locale */
+/** Redirects an unprefixed path to the same path under the default locale.
+ *  localizePath appends the trailing slash so the landing URL matches the
+ *  canonical (slashed) form even where no server-side redirect runs (dev). */
 function LocaleRedirect() {
   const { pathname } = useLocation();
-  return <Navigate to={`/${DEFAULT_LOCALE}${pathname}`} replace />;
+  return <Navigate to={localizePath(pathname, DEFAULT_LOCALE)} replace />;
 }
 
 /** Validates the locale segment; anything other than en/nl falls back to the default locale */
@@ -78,6 +80,7 @@ function AppContent() {
               {/* Unprefixed public paths redirect to the default locale */}
               <Route path="/" element={<Navigate to={`/${DEFAULT_LOCALE}/`} replace />} />
               <Route path="/shop" element={<LocaleRedirect />} />
+              <Route path="/shop/:categorySlug" element={<LocaleRedirect />} />
               <Route path="/product/:slug" element={<LocaleRedirect />} />
               <Route path="/about" element={<LocaleRedirect />} />
               <Route path="/contact" element={<LocaleRedirect />} />
@@ -94,6 +97,8 @@ function AppContent() {
               <Route path="/:locale" element={<LocaleGate />}>
                 <Route index element={<HomePage />} />
                 <Route path="shop" element={<ShopPage />} />
+                {/* Indexable category pages: /en/shop/djellaba, /nl/shop/takchita, ... */}
+                <Route path="shop/:categorySlug" element={<ShopPage />} />
                 <Route path="product/:slug" element={<ProductDetailPage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="contact" element={<ContactPage />} />

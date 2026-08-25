@@ -16,7 +16,7 @@ interface Props {
 
 export default function ProductModal({ product, onClose }: Props) {
   const navigate = useNavigate();
-  const { addToCart, setActiveCategory, products, reviews, fetchProductReviews, addReview, showToast, formatPrice } = useApp();
+  const { addToCart, products, reviews, fetchProductReviews, addReview, showToast, formatPrice } = useApp();
   const { t, locale } = useTranslation();
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || '');
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
@@ -321,7 +321,6 @@ export default function ProductModal({ product, onClose }: Props) {
                     key={r.id}
                     onClick={() => {
                       onClose();
-                      setActiveCategory(r.category);
                       navigate(localizePath(`/product/${r.slug}`, locale));
                     }}
                     className="group text-left"

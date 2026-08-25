@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
+import { localizePath } from '../context/LanguageContext';
 import { Scissors, Leaf, Package, Gem, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
 import { productAlt } from '../utils/productAlt';
@@ -18,7 +20,7 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function HomePage() {
-  const { setCurrentPage, setActiveCategory, products, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
+  const { setCurrentPage, products, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
   const { t, locale } = useTranslation();
   const storyRef = useScrollReveal<HTMLDivElement>();
   const categoriesRef = useStaggerReveal<HTMLDivElement>(0.15);
@@ -64,18 +66,22 @@ export default function HomePage() {
     setVideoBlocked(false);
   };
 
+  // Tiles link to the indexable category pages (/en/shop/djellaba, ...)
   const categories = [
     {
+      slug: 'djellaba',
       name: 'Djellaba',
       description: t('home.catDjellabaDesc'),
       image: '/images/djellaba1.jpg',
     },
     {
+      slug: 'takchita',
       name: 'Takchita',
       description: t('home.catTakchitaDesc'),
       image: '/images/takchita1.jpg',
     },
     {
+      slug: 'gandoura',
       name: 'Gandoura',
       description: t('home.catGandouraDesc'),
       image: '/images/gandoura1.jpg',
@@ -225,12 +231,9 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6" ref={categoriesRef}>
             {categories.map(cat => (
-              <button
-                key={cat.name}
-                onClick={() => {
-                  setActiveCategory(cat.name.toLowerCase());
-                  setCurrentPage('shop');
-                }}
+              <Link
+                key={cat.slug}
+                to={localizePath(`/shop/${cat.slug}`, locale)}
                 className="relative overflow-hidden rounded-lg p-10 text-left group hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-xl"
                 style={{ minHeight: '280px' }}
               >
@@ -253,7 +256,7 @@ export default function HomePage() {
                     {t('home.explore')}
                   </span>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>

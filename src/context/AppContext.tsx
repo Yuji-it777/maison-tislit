@@ -53,9 +53,6 @@ interface AppContextType {
   loadingProducts: boolean;
   refreshProducts: () => Promise<void>;
 
-  activeCategory: string;
-  setActiveCategory: (cat: string) => void;
-
   reviews: Review[];
   fetchProductReviews: (productId: number) => Promise<void>;
   addReview: (productId: number, rating: number, comment: string, name: string) => void;
@@ -128,7 +125,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderDetails, setOrderDetails] = useState<{ id?: number; name: string; email?: string; address: string; city: string; phone: string; whatsappUrl?: string } | null>(null);
-  const [activeCategory, setActiveCategory] = useState('all');
   const [currency, setCurrency] = useState<Currency>('EUR');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -423,7 +419,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       orderPlaced, setOrderPlaced,
       orderDetails, setOrderDetails,
       products, loadingProducts, refreshProducts,
-      activeCategory, setActiveCategory,
       reviews, fetchProductReviews, addReview,
       currency, setCurrency,
       formatPrice,

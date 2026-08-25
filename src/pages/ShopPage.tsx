@@ -1,8 +1,11 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 import { localizePath, type Locale } from '../context/LanguageContext';
+import { SITE_URL } from '../config';
+import { CATEGORY_PAGES, categoryBySlug } from '../config/categories';
 import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
 import { ShoppingBag, Heart, Search } from 'lucide-react';
@@ -11,13 +14,11 @@ import { productAlt } from '../utils/productAlt';
 import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 
-const CATEGORIES = ['all', 'djellaba', 'takchita', 'gandoura'];
-const CAT_LABELS: Record<string, string> = {
-  all: 'shop.catAll',
-  djellaba: 'Djellaba',
-  takchita: 'Takchita',
-  gandoura: 'Gandoura',
-};
+// Filter chips: "all" (the /shop view) + one link per indexable category page
+const FILTER_CHIPS: Array<{ slug: string; label: string }> = [
+  { slug: 'all', label: 'shop.catAll' },
+  ...CATEGORY_PAGES.map(c => ({ slug: c.slug, label: c.name })),
+];
 
 const badgeKey = (badge: string): string => {
   const map: Record<string, string> = {
@@ -30,8 +31,9 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function ShopPage() {
-  const { activeCategory, setActiveCategory, products, formatPrice } = useApp();
+  const { products, formatPrice } = useApp();
   const { t, locale } = useTranslation();
+  const { categorySlug } = useParams();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [sortBy, setSortBy] = useState('default');
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,6 +42,12 @@ export default function ShopPage() {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [maxPrice, setMaxPrice] = useState(5000);
   const gridRef = useStaggerReveal<HTMLDivElement>(0.1);
+
+  // Category comes from the URL: /shop = everything, /shop/:slug = one collection.
+  // Unknown slugs fall back to the all-products view instead of a soft 404
+  // (the actual redirect happens after all hooks, see the guard below).
+  const category = categorySlug ? categoryBySlug(categorySlug) : undefined;
+  const dbCategory = category?.dbValue ?? 'all';
 
   const availableColors = useMemo(() => {
     const colors = new Set<string>();
@@ -56,7 +64,7 @@ export default function ShopPage() {
   const filtered = useMemo(() => {
     const q = searchQuery.toLowerCase();
     return products
-      .filter(p => (activeCategory === 'all' || p.category === activeCategory))
+      .filter(p => (dbCategory === 'all' || p.category === dbCategory))
       .filter(p => selectedColor === 'all' || p.colors.includes(selectedColor))
       .filter(p => selectedSize === 'all' || p.sizes.includes(selectedSize))
       .filter(p => !inStockOnly || p.stock > 0)
@@ -72,11 +80,53 @@ export default function ShopPage() {
         if (sortBy === 'price-desc') return b.price - a.price;
         return 0;
       });
-  }, [products, activeCategory, sortBy, searchQuery, selectedColor, selectedSize, inStockOnly, maxPrice]);
+  }, [products, dbCategory, sortBy, searchQuery, selectedColor, selectedSize, inStockOnly, maxPrice]);
+
+  // Guard AFTER all hooks: unknown category slugs never render a soft-404 page
+  if (categorySlug && !category) {
+    return <Navigate to={localizePath('/shop', locale)} replace />;
+  }
+
+  // SEO copy: unique per-category title/description/H1, generic on /shop
+  const catSuffix = category?.name ?? ''; // e.g. 'Djellaba' -> keys seo.catDjellabaTitle / shop.catDjellabaH1
+  const pageTitle = category ? t(`seo.cat${catSuffix}Title`) : t('seo.shopTitle');
+  const pageDescription = category ? t(`seo.cat${catSuffix}Description`) : t('seo.shopDescription');
+  const heading = category ? t(`shop.cat${catSuffix}H1`) : t('shop.ourBoutique');
+  const subheading = category ? t(`shop.cat${catSuffix}Intro`) : t('shop.subtitle');
+
+  const canonicalPath = localizePath(category ? `/shop/${category.slug}` : '/shop', locale);
+  const canonical = `${SITE_URL}${canonicalPath}`;
+
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: filtered.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: locale === 'en' && p.nameEn ? p.nameEn : p.name,
+      url: `${SITE_URL}${localizePath(`/product/${p.slug}`, locale)}`,
+    })),
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: t('nav.shop'), item: `${SITE_URL}${localizePath('/shop', locale)}` },
+      ...(category
+        ? [{ '@type': 'ListItem', position: 3, name: category.name, item: canonical }]
+        : []),
+    ],
+  };
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50">
-      <SEO title={t('seo.shopTitle')} description={t('seo.shopDescription')} />
+      <SEO title={pageTitle} description={pageDescription} />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(itemListJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
+      </Helmet>
       {/* Page Header */}
       <div className="bg-stone-800 text-white py-16 px-6 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10"
@@ -91,10 +141,10 @@ export default function ShopPage() {
             <div className="h-px w-12 bg-brand" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-            {t('shop.ourBoutique')}
+            {heading}
           </h1>
-          <p className="text-stone-300 text-lg" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-            {t('shop.subtitle')}
+          <p className="text-stone-300 text-lg max-w-3xl mx-auto" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            {subheading}
           </p>
         </div>
       </div>
@@ -103,20 +153,25 @@ export default function ShopPage() {
       <div className="bg-white border-b border-stone-200 sticky top-20 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 text-xs font-medium tracking-wider uppercase rounded-full transition-all duration-200
-                  ${activeCategory === cat
-                    ? 'bg-stone-800 text-white'
-                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
-                  }`}
-                style={{ fontFamily: "'Raleway', sans-serif" }}
-              >
-                {cat === 'all' ? t(CAT_LABELS[cat]) : CAT_LABELS[cat]}
-              </button>
-            ))}
+            {FILTER_CHIPS.map(chip => {
+              const active = chip.slug === 'all' ? !category : category?.slug === chip.slug;
+              const to = localizePath(chip.slug === 'all' ? '/shop' : `/shop/${chip.slug}`, locale);
+              return (
+                <Link
+                  key={chip.slug}
+                  to={to}
+                  aria-current={active ? 'page' : undefined}
+                  className={`px-5 py-2 text-xs font-medium tracking-wider uppercase rounded-full transition-all duration-200
+                    ${active
+                      ? 'bg-stone-800 text-white'
+                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                    }`}
+                  style={{ fontFamily: "'Raleway', sans-serif" }}
+                >
+                  {chip.slug === 'all' ? t(chip.label) : chip.label}
+                </Link>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-3">
@@ -195,7 +250,7 @@ export default function ShopPage() {
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <p className="text-stone-500 text-sm mb-8">{filtered.length} {t('shop.itemsFound')}</p>
-        <div key={activeCategory + searchQuery + sortBy} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
+        <div key={(categorySlug ?? 'all') + searchQuery + sortBy} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
           {filtered.map(product => (
             <ProductCard key={product.id} product={product} onOpen={() => setSelectedProduct(product)} t={t} locale={locale} />
           ))}

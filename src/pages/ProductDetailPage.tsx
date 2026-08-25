@@ -10,6 +10,7 @@ import SEO from '../components/SEO';
 import SizeGuide from '../components/SizeGuide';
 import StarRating from '../components/StarRating';
 import { SITE_URL } from '../config';
+import { categoryByDbValue } from '../config/categories';
 import { productAlt } from '../utils/productAlt';
 
 function mapRow(row: ProductRow): Product {
@@ -33,7 +34,7 @@ function mapRow(row: ProductRow): Product {
 export default function ProductDetailPage() {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
-  const { products, addToCart, reviews, fetchProductReviews, addReview, showToast, formatPrice, setActiveCategory } = useApp();
+  const { products, addToCart, reviews, fetchProductReviews, addReview, showToast, formatPrice } = useApp();
   const { t, locale } = useTranslation();
 
   const [product, setProduct] = useState<Product | null>(() => {
@@ -121,6 +122,7 @@ export default function ProductDetailPage() {
   const productDesc = locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description;
   const productPath = localizePath(`/product/${product.slug}`, locale);
   const canonical = `${SITE_URL}${productPath}`;
+  const category = categoryByDbValue(product.category);
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -152,7 +154,10 @@ export default function ProductDetailPage() {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
       { '@type': 'ListItem', position: 2, name: t('nav.shop'), item: `${SITE_URL}${localizePath('/shop', locale)}` },
-      { '@type': 'ListItem', position: 3, name: productName, item: canonical },
+      ...(category
+        ? [{ '@type': 'ListItem', position: 3, name: category.name, item: `${SITE_URL}${localizePath(`/shop/${category.slug}`, locale)}` }]
+        : []),
+      { '@type': 'ListItem', position: category ? 4 : 3, name: productName, item: canonical },
     ],
   };
 
@@ -196,6 +201,12 @@ export default function ProductDetailPage() {
           <button onClick={() => navigate(localizePath('/', locale))} className="hover:text-brand transition-colors">{t('nav.home')}</button>
           <span>/</span>
           <button onClick={() => navigate(localizePath('/shop', locale))} className="hover:text-brand transition-colors">{t('nav.shop')}</button>
+          {category && (
+            <>
+              <span>/</span>
+              <button onClick={() => navigate(localizePath(`/shop/${category.slug}`, locale))} className="hover:text-brand transition-colors">{category.name}</button>
+            </>
+          )}
           <span>/</span>
           <span className="text-stone-700">{productName}</span>
         </nav>
@@ -434,7 +445,6 @@ export default function ProductDetailPage() {
                 <Link
                   key={r.id}
                   to={localizePath(`/product/${r.slug}`, locale)}
-                  onClick={() => setActiveCategory(r.category)}
                   className="group bg-white overflow-hidden transition-all duration-300"
                 >
                   <div className="aspect-[3/4] bg-stone-100 overflow-hidden">

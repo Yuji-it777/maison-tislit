@@ -13,6 +13,8 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 # --- 301s: unprefixed URLs -> default locale (server-side, passes link equity) ---
 RewriteRule ^$ /en/ [R=301,L]
 RewriteRule ^shop$ /en/shop/ [R=301,L]
+# Unprefixed category pages -> default locale (slugs mirror src/config/categories.ts)
+RewriteRule ^shop/(djellaba|takchita|gandoura|caftan|jabador)/?$ /en/shop/$1/ [R=301,L]
 RewriteRule ^product/([^/]+)/?$ /en/product/$1/ [R=301,L]
 RewriteRule ^about$ /en/about/ [R=301,L]
 RewriteRule ^contact$ /en/contact/ [R=301,L]

@@ -12,7 +12,7 @@ test.describe('Admin flow', () => {
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
+      await page.waitForURL(url => !/\/login\/?$/.test(url.pathname), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
@@ -29,7 +29,7 @@ test.describe('Admin flow', () => {
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
+      await page.waitForURL(url => !/\/login\/?$/.test(url.pathname), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
@@ -50,7 +50,7 @@ test.describe('Admin flow', () => {
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
+      await page.waitForURL(url => !/\/login\/?$/.test(url.pathname), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
@@ -70,7 +70,7 @@ test.describe('Admin flow', () => {
     await page.click('button[type="submit"]');
 
     try {
-      await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 10000 });
+      await page.waitForURL(url => !/\/login\/?$/.test(url.pathname), { timeout: 10000 });
     } catch {
       test.skip(true, 'Admin login requires valid Supabase credentials');
     }
