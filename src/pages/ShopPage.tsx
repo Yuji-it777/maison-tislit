@@ -13,6 +13,7 @@ import flyHeartToCart from '../utils/flyHeartToCart';
 import { productAlt } from '../utils/productAlt';
 import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
+import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
 
 // Filter chips: "all" (the /shop view) + one link per indexable category page
 const FILTER_CHIPS: Array<{ slug: string; label: string }> = [
@@ -88,14 +89,12 @@ export default function ShopPage() {
   }
 
   // SEO copy: unique per-category title/description/H1, generic on /shop
-  const catSuffix = category?.name ?? ''; // e.g. 'Djellaba' -> keys seo.catDjellabaTitle / shop.catDjellabaH1
-  const pageTitle = category ? t(`seo.cat${catSuffix}Title`) : t('seo.shopTitle');
-  const pageDescription = category ? t(`seo.cat${catSuffix}Description`) : t('seo.shopDescription');
-  const heading = category ? t(`shop.cat${catSuffix}H1`) : t('shop.ourBoutique');
-  const subheading = category ? t(`shop.cat${catSuffix}Intro`) : t('shop.subtitle');
-
-  const canonicalPath = localizePath(category ? `/shop/${category.slug}` : '/shop', locale);
-  const canonical = `${SITE_URL}${canonicalPath}`;
+  // Use slug (stable) for i18n keys, not name (human-readable, may change)
+  const catKey = category?.slug ?? '';
+  const pageTitle = category ? t(`seo.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}Title`) : t('seo.shopTitle');
+  const pageDescription = category ? t(`seo.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}Description`) : t('seo.shopDescription');
+  const heading = category ? t(`shop.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}H1`) : t('shop.ourBoutique');
+  const subheading = category ? t(`shop.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}Intro`) : t('shop.subtitle');
 
   const itemListJsonLd = {
     '@context': 'https://schema.org',
@@ -108,17 +107,7 @@ export default function ShopPage() {
     })),
   };
 
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: t('nav.shop'), item: `${SITE_URL}${localizePath('/shop', locale)}` },
-      ...(category
-        ? [{ '@type': 'ListItem', position: 3, name: category.name, item: canonical }]
-        : []),
-    ],
-  };
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(locale, category);
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50">
@@ -191,6 +180,7 @@ export default function ShopPage() {
               <select
                 value={selectedColor}
                 onChange={e => setSelectedColor(e.target.value)}
+                aria-label="Filter by color"
                 className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-24"
               >
                 <option value="all">Toutes</option>
@@ -203,6 +193,7 @@ export default function ShopPage() {
               <select
                 value={selectedSize}
                 onChange={e => setSelectedSize(e.target.value)}
+                aria-label="Filter by size"
                 className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-24"
               >
                 <option value="all">Toutes</option>
@@ -229,6 +220,7 @@ export default function ShopPage() {
                 step="500" 
                 value={maxPrice} 
                 onChange={e => setMaxPrice(Number(e.target.value))}
+                aria-label="Maximum price"
                 className="w-24 accent-brand"
               />
             </div>
@@ -237,6 +229,7 @@ export default function ShopPage() {
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
+              aria-label={t('shop.sortBy')}
               className="text-xs text-stone-700 border border-stone-200 rounded px-3 py-2 bg-white focus:outline-none focus:border-brand"
             >
               <option value="default">{t('shop.sortDefault')}</option>
@@ -289,6 +282,7 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
         <img
           src={product.image}
           alt={productAlt(product, locale)}
+          loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         {product.badge && product.badge !== 'Promo' && (
@@ -349,9 +343,9 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
         <span className="text-brand text-xs tracking-widest uppercase mb-1 block capitalize" style={{ fontFamily: "'Raleway', sans-serif" }}>
           {product.category}
         </span>
-        <h3 className="text-stone-800 font-semibold text-lg mb-1 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h2 className="text-stone-800 font-semibold text-lg mb-1 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
           {locale === 'en' && product.nameEn ? product.nameEn : product.name}
-        </h3>
+        </h2>
         <p className="text-stone-500 text-xs mb-3 line-clamp-2">{locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description}</p>
 
         <div className="flex items-center gap-1 mb-3">

@@ -13,6 +13,7 @@ import { SITE_URL } from '../config';
 import { categoryByDbValue } from '../config/categories';
 import { productMaterial } from '../utils/productMaterial';
 import { productAlt } from '../utils/productAlt';
+import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
 
 function mapRow(row: ProductRow): Product {
   return {
@@ -154,18 +155,7 @@ export default function ProductDetailPage() {
     } : {}),
   };
 
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: t('nav.shop'), item: `${SITE_URL}${localizePath('/shop', locale)}` },
-      ...(category
-        ? [{ '@type': 'ListItem', position: 3, name: category.name, item: `${SITE_URL}${localizePath(`/shop/${category.slug}`, locale)}` }]
-        : []),
-      { '@type': 'ListItem', position: category ? 4 : 3, name: productName, item: canonical },
-    ],
-  };
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(locale, category, productName, canonical);
 
   const handleSubmitReview = () => {
     if (!newName.trim() || newRating === 0 || !newComment.trim()) return;
