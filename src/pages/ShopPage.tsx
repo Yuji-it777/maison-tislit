@@ -163,45 +163,45 @@ export default function ShopPage() {
             })}
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="relative">
+          <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
+            <div className="relative w-full md:w-44 lg:w-56">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t('shop.search')}
-                className="w-44 lg:w-56 pl-9 pr-3 py-2 text-xs border border-stone-200 rounded-lg focus:outline-none focus:border-brand bg-stone-50"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-stone-200 rounded-lg focus:outline-none focus:border-brand bg-stone-50"
               />
             </div>
             
-            <div className="flex items-center gap-2 border-l border-stone-200 pl-3 ml-1">
+            <div className="flex items-center gap-2 border-l border-stone-200 pl-3 ml-1 w-full md:w-auto">
               <span className="text-xs text-stone-500 hidden md:inline">Couleur:</span>
               <select
                 value={selectedColor}
                 onChange={e => setSelectedColor(e.target.value)}
                 aria-label="Filter by color"
-                className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-24"
+                className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-full md:w-24"
               >
                 <option value="all">Toutes</option>
                 {availableColors.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
 
-            <div className="flex items-center gap-2 border-l border-stone-200 pl-3 ml-1">
+            <div className="flex items-center gap-2 border-l border-stone-200 pl-3 ml-1 w-full md:w-auto">
               <span className="text-xs text-stone-500 hidden md:inline">Taille:</span>
               <select
                 value={selectedSize}
                 onChange={e => setSelectedSize(e.target.value)}
                 aria-label="Filter by size"
-                className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-24"
+                className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-full md:w-24"
               >
                 <option value="all">Toutes</option>
                 {availableSizes.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
 
-            <label className="flex items-center gap-1.5 border-l border-stone-200 pl-3 ml-1 cursor-pointer">
+            <label className="flex items-center gap-1.5 border-l border-stone-200 pl-3 ml-1 cursor-pointer w-full md:w-auto">
               <input
                 type="checkbox"
                 checked={inStockOnly}
@@ -211,7 +211,7 @@ export default function ShopPage() {
               <span className="text-xs text-stone-500 whitespace-nowrap">En stock</span>
             </label>
 
-            <div className="flex flex-col gap-1 border-l border-stone-200 pl-3 ml-1">
+            <div className="flex flex-col gap-1 border-l border-stone-200 pl-3 ml-1 w-full md:w-auto">
               <span className="text-[10px] text-stone-500">Max: {formatPrice(maxPrice)}</span>
               <input 
                 type="range" 
@@ -221,7 +221,7 @@ export default function ShopPage() {
                 value={maxPrice} 
                 onChange={e => setMaxPrice(Number(e.target.value))}
                 aria-label="Maximum price"
-                className="w-24 accent-brand"
+                className="w-full md:w-24 accent-brand"
               />
             </div>
 
@@ -230,7 +230,7 @@ export default function ShopPage() {
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
               aria-label={t('shop.sortBy')}
-              className="text-xs text-stone-700 border border-stone-200 rounded px-3 py-2 bg-white focus:outline-none focus:border-brand"
+              className="text-xs text-stone-700 border border-stone-200 rounded px-3 py-2 bg-white focus:outline-none focus:border-brand w-full md:w-auto"
             >
               <option value="default">{t('shop.sortDefault')}</option>
               <option value="price-asc">{t('shop.sortPriceAsc')}</option>
