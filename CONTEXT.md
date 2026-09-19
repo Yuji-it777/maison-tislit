@@ -4,7 +4,7 @@ This document defines the core domain vocabulary, concepts, and rules for the Ma
 
 ## Core Entities
 
-- **Product**: A garment for sale (djellaba, takchita, gandoura, caftan, jabador). Has `id`, `slug`, `name`, `description`, `price_eur`, `images`, `category`, `color`, `material`, `countryOfOrigin`.
+- **Product**: A garment for sale (djellaba, gandoura, caftan). Has `id`, `slug`, `name`, `description`, `price_eur`, `images`, `category`, `color`, `material`, `countryOfOrigin`. Takchita and jabador were removed as categories; legacy DB rows may still carry those values and are excluded from category pages.
 - **Category**: A garment type (one of the five above). Used for SEO category pages.
 - **Order**: A customer purchase. Has `id`, `items[]`, `total_eur`, `status`, `customer_email`, `shipping_address`.
 - **Customer**: A site visitor who may place orders. Identified by email; no account system (guest checkout only).

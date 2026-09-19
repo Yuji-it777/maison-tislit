@@ -18,7 +18,10 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 RewriteRule ^$ /en/ [R=301,L]
 RewriteRule ^shop$ /en/shop/ [R=301,L]
 # Unprefixed category pages -> default locale (slugs mirror src/config/categories.ts)
-RewriteRule ^shop/(djellaba|takchita|gandoura|caftan|jabador)/?$ /en/shop/$1/ [R=301,L]
+RewriteRule ^shop/(djellaba|gandoura|caftan)/?$ /en/shop/$1/ [R=301,L]
+# Removed category collections: takchita + jabador -> closest surviving collection
+RewriteRule ^(en|nl)/shop/takchita/?$ /$1/shop/caftan/ [R=301,L]
+RewriteRule ^(en|nl)/shop/jabador/?$ /$1/shop/djellaba/ [R=301,L]
 RewriteRule ^product/([^/]+)/?$ /en/product/$1/ [R=301,L]
 RewriteRule ^about$ /en/about/ [R=301,L]
 RewriteRule ^contact$ /en/contact/ [R=301,L]

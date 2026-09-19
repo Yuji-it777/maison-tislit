@@ -22,7 +22,7 @@ const PAGE_META = {
 };
 // Indexable category collections (/:locale/shop/:slug). Keep in sync with
 // src/config/categories.ts (CATEGORY_PAGES) — same slugs, lowercase.
-const CATEGORY_PAGES = ['djellaba', 'takchita', 'gandoura', 'caftan', 'jabador'];
+const CATEGORY_PAGES = ['djellaba', 'gandoura', 'caftan'];
 const CATEGORY_META = { priority: 0.7, changefreq: 'weekly' };
 
 function loadEnv() {

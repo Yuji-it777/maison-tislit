@@ -3,19 +3,27 @@ import { test, expect } from '@playwright/test';
 test.describe('Category pages', () => {
   test('category page renders unique SEO tags and filters products', async ({ page }) => {
     // trailing slash = canonical form (STRATO mod_dir adds it in prod; dev has no redirect)
-    await page.goto('/en/shop/takchita/');
+    await page.goto('/en/shop/gandoura/');
 
-    await expect(page).toHaveTitle(/Takchita/);
-    await expect(page.locator('h1')).toContainText('Takchita');
+    await expect(page).toHaveTitle(/Gandoura/);
+    await expect(page.locator('h1')).toContainText('Gandoura');
     // canonical + hreflang trio, same contract the prerender validates
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/en\/shop\/takchita\/$/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/en\/shop\/gandoura\/$/);
     await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(3);
-    // only takchita products are shown (3 in the live catalogue)
+    // only gandoura products are shown
     const cards = page.locator('main .grid > div');
     await expect(cards.first()).toBeVisible();
     expect(await cards.count()).toBeGreaterThanOrEqual(1);
     // ItemList JSON-LD present
     await expect(page.locator('script[type="application/ld+json"]').first()).toBeAttached();
+  });
+
+  test('removed category slugs redirect to the shop view', async ({ page }) => {
+    // takchita/jabador pages were removed; the SPA guard falls back to /shop
+    await page.goto('/en/shop/takchita');
+    await expect(page).toHaveURL(/\/en\/shop\/$/);
+    await page.goto('/en/shop/jabador');
+    await expect(page).toHaveURL(/\/en\/shop\/$/);
   });
 
   test('homepage category tile links to its indexable URL', async ({ page }) => {

@@ -75,9 +75,9 @@ export default function HomePage() {
       image: '/images/djellaba1.jpg',
     },
     {
-      slug: 'takchita',
-      name: 'Takchita',
-      description: t('home.catTakchitaDesc'),
+      slug: 'caftan',
+      name: 'Caftan',
+      description: t('home.catCaftanDesc'),
       image: '/images/takchita1.jpg',
     },
     {

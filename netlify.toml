@@ -120,6 +120,18 @@
   to = "/:locale/product/golden-belt/"
   status = 301
 
+# Removed category collections: takchita + jabador 301 to the closest
+# surviving collection so old links (and Google equity) don't 404.
+[[redirects]]
+  from = "/:locale/shop/takchita"
+  to = "/:locale/shop/caftan/"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/shop/jabador"
+  to = "/:locale/shop/djellaba/"
+  status = 301
+
 # Rewrites: Return 200 OK directly for /en and /nl (no redirect chain)
 [[redirects]]
   from = "/en"

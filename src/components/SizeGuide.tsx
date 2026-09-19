@@ -13,7 +13,7 @@ const MEASUREMENTS: Record<string, { bust: number[]; waist: number[]; hips: numb
     hips: [88, 94, 100, 106, 114, 122],
     length: [140, 142, 144, 146, 148, 150],
   },
-  takchita: {
+  caftan: {
     bust: [80, 86, 92, 98, 106, 114],
     waist: [62, 68, 74, 80, 88, 96],
     hips: [86, 92, 98, 104, 112, 120],

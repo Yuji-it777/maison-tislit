@@ -3,7 +3,7 @@ export interface Product {
   slug: string;
   name: string;
   nameEn: string;
-  category: 'djellaba' | 'takchita' | 'gandoura';
+  category: 'djellaba' | 'takchita' | 'gandoura' | 'Caftan' | 'Jabador' | 'Accessoire';
   price: number;
   image: string;
   description: string;

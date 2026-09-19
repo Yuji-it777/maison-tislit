@@ -97,7 +97,7 @@ function AppContent() {
               <Route path="/:locale" element={<LocaleGate />}>
                 <Route index element={<HomePage />} />
                 <Route path="shop" element={<ShopPage />} />
-                {/* Indexable category pages: /en/shop/djellaba, /nl/shop/takchita, ... */}
+                {/* Indexable category pages: /en/shop/djellaba, /nl/shop/caftan, ... */}
                 <Route path="shop/:categorySlug" element={<ShopPage />} />
                 <Route path="product/:slug" element={<ProductDetailPage />} />
                 <Route path="about" element={<AboutPage />} />

@@ -424,7 +424,7 @@ function StockSection() {
           <input placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)} className="max-w-[220px] px-3 py-2 text-sm rounded-lg focus:outline-none" style={{ border: '1px solid #e5e5e5' }} />
           <select value={catFilter} onChange={e => setCatFilter(e.target.value)} className="max-w-[140px] px-3 py-2 text-sm rounded-lg focus:outline-none" style={{ border: '1px solid #e5e5e5', background: '#fff' }}>
             <option value="">All categories</option>
-            {['djellaba', 'takchita', 'gandoura', 'Caftan', 'Jabador', 'Accessoire'].map(c => <option key={c} value={c}>{c}</option>)}
+            {['djellaba', 'gandoura', 'Caftan'].map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <table className="w-full text-sm">
@@ -471,7 +471,7 @@ function StockSection() {
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Category</label>
                 <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5', background: '#fff' }}>
-                  {['djellaba', 'takchita', 'gandoura', 'Caftan', 'Jabador', 'Accessoire'].map(c => <option key={c} value={c}>{c}</option>)}
+                  {['djellaba', 'gandoura', 'Caftan'].map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div><label className="text-xs" style={{ color: '#999' }}>Price (MAD)</label><input type="number" min={0} value={form.price} onChange={e => setForm({ ...form, price: +e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>

@@ -1,6 +1,6 @@
 # Maison Tislit
 
-> Maison Tislit is a luxury e-commerce website for a Moroccan feminine fashion brand based in Hoofddorp, Netherlands. It specializes in artisanal Moroccan garments — djellabas, takchitas, gandouras, caftans and jabadors — reinvented for the modern woman. The site is bilingual (English and Dutch), uses Supabase for the backend, and offers ordering via WhatsApp, by appointment, or by email.
+> Maison Tislit is a luxury e-commerce website for a Moroccan feminine fashion brand based in Hoofddorp, Netherlands. It specializes in artisanal Moroccan garments — djellabas, gandouras and caftans — reinvented for the modern woman. The site is bilingual (English and Dutch), uses Supabase for the backend, and offers ordering via WhatsApp, by appointment, or by email.
 
 The site is served at https://maisontislit.com. It supports two locales: English (`/en/`) and Dutch (`/nl/`). All content pages exist under both locale prefixes.
 
@@ -19,9 +19,7 @@ The site is served at https://maisontislit.com. It supports two locales: English
 ## Product Categories
 
 - [Djellaba](https://maisontislit.com/en/shop/djellaba): Traditional Moroccan djellabas.
-- [Takchita](https://maisontislit.com/en/shop/takchita): Formal two-piece Moroccan takchitas.
 - [Gandoura](https://maisontislit.com/en/shop/gandoura): Graceful Moroccan gandouras.
 - [Caftan](https://maisontislit.com/en/shop/caftan): Embroidered Moroccan caftans.
-- [Jabador](https://maisontislit.com/en/shop/jabador): Jabador garments.
 
 > Note: Individual product pages share the pattern `/en/product/<slug>` (e.g. `/en/product/emerald-royal-djellaba`). The full product catalog and slugs are served dynamically from Supabase and are also indexed in the [XML sitemap](https://maisontislit.com/sitemap.xml).
