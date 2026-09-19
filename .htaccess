@@ -5,9 +5,13 @@
 # disabled from .htaccess), so prerender/sitemap/internal links all use
 # the slashed form and these redirects target it directly (single hop).
 
-# --- HTTPS enforcement (requires STRATO SSL cert to be active) ---
 RewriteEngine On
-RewriteCond %{HTTPS} !=on
+
+# --- HTTPS enforcement — global, runs before every other rule ---
+# Covers every path including /en/shop, /en/*, and bare roots.
+# Two conditions handle both native TLS and reverse-proxy/CDN setups.
+RewriteCond %{HTTPS} off [NC]
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # --- 301s: unprefixed URLs -> default locale (server-side, passes link equity) ---

@@ -150,16 +150,16 @@ export default function CheckoutPage() {
                   <input value={form.address} onChange={e => update('address', e.target.value)} required className={inputClass} placeholder={t('checkout.addressPlaceholder')} />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">{t('checkout.country')}</label>
-                  <select value={form.country} onChange={e => update('country', e.target.value)} required className={inputClass}>
+                  <label htmlFor="checkout-country" className="block text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">{t('checkout.country')}</label>
+                  <select id="checkout-country" value={form.country} onChange={e => update('country', e.target.value)} required className={inputClass}>
                     <option value="">{t('checkout.countryPlaceholder')}</option>
                     {(locale === 'nl' ? COUNTRIES_NL : COUNTRIES_EN).map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">{t('checkout.city')}</label>
+                  <label htmlFor="checkout-city" className="block text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">{t('checkout.city')}</label>
                   {isMorocco ? (
-                    <select value={form.city} onChange={e => update('city', e.target.value)} required className={inputClass}>
+                    <select id="checkout-city" value={form.city} onChange={e => update('city', e.target.value)} required className={inputClass}>
                       <option value="">{t('checkout.cityPlaceholder')}</option>
                       {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>

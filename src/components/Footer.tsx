@@ -40,11 +40,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
           
           <div className="lg:col-span-1">
-            <h3 className="text-white text-2xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Maison Tislit</h3>
+            <h2 className="text-white text-2xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Maison Tislit</h2>
             <p className="text-xs tracking-[0.3em] text-brand mb-4">MAROKKAANSE DAMESMODE</p>
             <p className="text-sm leading-relaxed mb-6">{t('footer.tagline')}</p>
             
-            <h4 className="text-white font-semibold mb-3 text-sm tracking-widest uppercase">{t('footer.newsletterTitle')}</h4>
+            <h3 className="text-white font-semibold mb-3 text-sm tracking-widest uppercase">{t('footer.newsletterTitle')}</h3>
             {subscribed ? (
               <div className="flex items-center gap-2 text-green-400 text-sm py-2">
                 <CheckCircle className="w-4 h-4" />
@@ -72,7 +72,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.navigation')}</h4>
+            <h3 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.navigation')}</h3>
             <ul className="space-y-2 text-sm">
               <li><button onClick={() => setCurrentPage('home')} className="hover:text-brand transition-colors">{t('footer.home')}</button></li>
               <li><button onClick={() => setCurrentPage('shop')} className="hover:text-brand transition-colors">{t('footer.shop')}</button></li>
@@ -81,7 +81,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.serviceClient')}</h4>
+            <h3 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.serviceClient')}</h3>
             <ul className="space-y-2 text-sm">
               <li><button onClick={() => setCurrentPage('shipping')} className="hover:text-brand transition-colors">{t('footer.shipping')}</button></li>
               <li><button onClick={() => setCurrentPage('returns')} className="hover:text-brand transition-colors">{t('footer.returns')}</button></li>
@@ -90,7 +90,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.contact')}</h4>
+            <h3 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.contact')}</h3>
             <ul className="space-y-3 text-sm mb-6">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-brand shrink-0 mt-0.5" />
@@ -106,7 +106,7 @@ export default function Footer() {
               </li>
             </ul>
             
-            <h4 className="text-white font-semibold mb-3 text-sm tracking-widest uppercase">{t('footer.followUs')}</h4>
+            <h3 className="text-white font-semibold mb-3 text-sm tracking-widest uppercase">{t('footer.followUs')}</h3>
             <div className="flex gap-3">
               {/* Instagram */}
               <a

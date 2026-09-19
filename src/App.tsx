@@ -120,9 +120,9 @@ function AppContent() {
             </Routes>
           </Suspense>
         </div>
+        {showNavFooter && <WhatsAppButton />}
       </main>
       {showNavFooter && <Footer />}
-      {showNavFooter && <WhatsAppButton />}
       <Toast />
     </div>
   );

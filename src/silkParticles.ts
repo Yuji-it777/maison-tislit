@@ -13,6 +13,7 @@ export function initSilkParticles(): () => void {
 
   const canvas = renderer.domElement;
   canvas.id = 'silk-particles-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
   Object.assign(canvas.style, {
     position: 'fixed',
     top: '0',

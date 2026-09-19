@@ -4,12 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
-// Swap deferred (media="print") stylesheets to "all" once the window loads
-window.addEventListener('load', () => {
-  document.querySelectorAll<HTMLLinkElement>('link[media="print"]').forEach(link => {
-    link.media = 'all';
-  });
-});
+// Fonts now use onload attribute in HTML, no manual swap needed
 
 // Defer Three.js silk particle background so it doesn't block initial render.
 // Skip entirely for users who prefer reduced motion (saves CPU/GPU + a11y).

@@ -13,9 +13,9 @@ export default function CartPage() {
         <SEO title={t('seo.cartTitle')} description={t('seo.cartDescription')} />
         <div className="text-center">
           <div className="text-6xl mb-6">/</div>
-          <h2 className="text-3xl font-bold text-stone-800 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-3xl font-bold text-stone-800 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
             {t('cart.emptyTitle')}
-          </h2>
+          </h1>
           <p className="text-stone-500 mb-8" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.1rem' }}>
             {t('cart.emptyText')}
           </p>

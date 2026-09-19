@@ -208,6 +208,7 @@ export default function ContactPage() {
                   <select
                     name="subject"
                     required
+                    aria-label={t('contact.subject')}
                     className="w-full border-b-2 border-stone-200 bg-transparent py-2 text-sm text-stone-800 focus:outline-none focus:border-brand transition-colors appearance-none cursor-pointer"
                   >
                     <option value="">—</option>

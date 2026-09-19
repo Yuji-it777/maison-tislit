@@ -35,7 +35,7 @@ export default function Navbar() {
           >
             <img
               src="/images/logo.webp"
-              alt="Maison Tislit"
+              alt=""
               width={256}
               height={256}
               className="h-[140px] w-auto object-contain drop-shadow-sm transition-all duration-300"
@@ -72,6 +72,7 @@ export default function Navbar() {
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value as any)}
+              aria-label="Currency"
               className="text-xs font-bold tracking-wider uppercase px-2 py-1.5 border border-stone-300 rounded text-stone-600 bg-transparent hover:border-brand hover:text-brand transition-colors focus:outline-none cursor-pointer"
             >
               <option value="MAD">MAD</option>

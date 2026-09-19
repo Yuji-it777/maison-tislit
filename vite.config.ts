@@ -18,13 +18,18 @@ export default defineConfig({
   build: {
     target: "esnext",
     cssCodeSplit: true,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {
           // Three.js – deferred via requestIdleCallback, safe to split
           if (id.includes("three")) return "vendor-three";
-          // Stripe – only used on the checkout page (lazy route)
-          if (id.includes("@stripe")) return "vendor-stripe";
           // Supabase – large but needed everywhere; split so React core loads first
           if (id.includes("@supabase")) return "vendor-supabase";
           // React + React-DOM core
@@ -35,7 +40,12 @@ export default defineConfig({
             return "vendor-react";
           // GSAP – dynamically imported in animations.ts & flyHeartToCart.ts
           if (id.includes("gsap")) return "vendor-gsap";
+          // Motion library
+          if (id.includes("motion")) return "vendor-motion";
         },
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
   },
