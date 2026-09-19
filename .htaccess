@@ -38,6 +38,14 @@ RewriteRule ^returns$ /en/returns/ [R=301,L]
 # for visitors and Google. Exact slugs only, both locales.
 RewriteRule ^(en|nl)/product/(emerald-royal-djellaba|blue-safira-djellaba|nour-al-qamar-takchita|enchanted-rosa-takchita|bordeaux-sultana-gandoura|white-jasmine-gandoura|embroidered-royal-caftan|fassi-takchita|silk-jabador|golden-belt)-2/?$ /$1/product/$2/ [R=301,L]
 
+# --- 301s: renamed product slugs (migration 00026) -> new slugs ---
+# Takchita/jabador products were recategorized and renamed; keep old
+# product links (and sitemap history) working for visitors and Google.
+RewriteRule ^(en|nl)/product/nour-al-qamar-takchita/?$ /$1/product/nour-al-qamar-caftan/ [R=301,L]
+RewriteRule ^(en|nl)/product/enchanted-rosa-takchita/?$ /$1/product/enchanted-rosa-caftan/ [R=301,L]
+RewriteRule ^(en|nl)/product/fassi-takchita/?$ /$1/product/fassi-caftan/ [R=301,L]
+RewriteRule ^(en|nl)/product/silk-jabador/?$ /$1/product/silk-gandoura/ [R=301,L]
+
 # --- SPA fallback: only reached when no static file/dir exists at the path ---
 # (prerendered dist/en/... snapshots exist on disk, so they win naturally)
 RewriteCond %{REQUEST_FILENAME} !-f

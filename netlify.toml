@@ -132,6 +132,27 @@
   to = "/:locale/shop/djellaba/"
   status = 301
 
+# Renamed product slugs (migration 00026): old product URLs -> new slugs.
+[[redirects]]
+  from = "/:locale/product/nour-al-qamar-takchita"
+  to = "/:locale/product/nour-al-qamar-caftan/"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/enchanted-rosa-takchita"
+  to = "/:locale/product/enchanted-rosa-caftan/"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/fassi-takchita"
+  to = "/:locale/product/fassi-caftan/"
+  status = 301
+
+[[redirects]]
+  from = "/:locale/product/silk-jabador"
+  to = "/:locale/product/silk-gandoura/"
+  status = 301
+
 # Rewrites: Return 200 OK directly for /en and /nl (no redirect chain)
 [[redirects]]
   from = "/en"
