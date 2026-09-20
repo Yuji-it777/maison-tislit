@@ -120,7 +120,7 @@ export default function ConfirmationPage() {
 
         <div className="mt-6 text-center text-stone-500 text-sm">
           {t('confirmation.support')}
-          <a href="mailto:maisontislit@gmail.com" className="text-brand font-medium">maisontislit@gmail.com</a>
+          <a href="mailto:maisontislit20@gmail.com" className="text-brand font-medium">maisontislit20@gmail.com</a>
           <a href={WHATSAPP_LINK()} target="_blank" rel="noopener noreferrer" className="text-[#128C7E] font-medium hover:underline">
             {t('confirmation.orWhatsApp')}
           </a>

@@ -130,8 +130,8 @@ export default function ContactPage() {
                     <Mail size={18} />
                   </div>
                   <div>
-                    <a href="mailto:maisontislit@gmail.com" className="text-brand font-medium text-sm hover:underline">
-                      maisontislit@gmail.com
+                    <a href="mailto:maisontislit20@gmail.com" className="text-brand font-medium text-sm hover:underline">
+                      maisontislit20@gmail.com
                     </a>
                   </div>
                 </div>
@@ -267,11 +267,11 @@ export default function ContactPage() {
               </div>
               <p className="text-sm mb-3" style={{ color: '#45381e' }}>{t('contact.wholesaleDesc')}</p>
               <a
-                href="mailto:maisontislit@gmail.com"
+                href="mailto:maisontislit20@gmail.com"
                 className="text-sm font-medium border-b transition-all"
                 style={{ color: '#45381e', borderColor: '#45381e' }}
               >
-                maisontislit@gmail.com
+                maisontislit20@gmail.com
               </a>
             </div>
 
@@ -284,11 +284,11 @@ export default function ContactPage() {
               </div>
               <p className="text-sm mb-3" style={{ color: '#45381e' }}>{t('contact.pressDesc')}</p>
               <a
-                href="mailto:maisontislit@gmail.com"
+                href="mailto:maisontislit20@gmail.com"
                 className="text-sm font-medium border-b transition-all"
                 style={{ color: '#45381e', borderColor: '#45381e' }}
               >
-                maisontislit@gmail.com
+                maisontislit20@gmail.com
               </a>
             </div>
 
@@ -301,11 +301,11 @@ export default function ContactPage() {
               </div>
               <p className="text-sm mb-3" style={{ color: '#45381e' }}>{t('contact.conciergeDesc')}</p>
               <a
-                href="mailto:maisontislit@gmail.com"
+                href="mailto:maisontislit20@gmail.com"
                 className="text-sm font-medium border-b transition-all"
                 style={{ color: '#45381e', borderColor: '#45381e' }}
               >
-                maisontislit@gmail.com
+                maisontislit20@gmail.com
               </a>
             </div>
           </div>

@@ -50,7 +50,7 @@ export default function ReturnsPolicyPage() {
               {locale === 'en' ? 'How to Return' : 'Hoe retourneert u een artikel'}
             </h2>
             <ol className="list-decimal pl-5 space-y-2">
-              <li>{locale === 'en' ? <>Contact our customer service at <a href="mailto:maisontislit@gmail.com" className="text-brand hover:underline">maisontislit@gmail.com</a> with your order number.</> : <>Neem contact op met onze klantenservice via <a href="mailto:maisontislit@gmail.com" className="text-brand hover:underline">maisontislit@gmail.com</a> met uw bestelnummer.</>}</li>
+              <li>{locale === 'en' ? <>Contact our customer service at <a href="mailto:maisontislit20@gmail.com" className="text-brand hover:underline">maisontislit20@gmail.com</a> with your order number.</> : <>Neem contact op met onze klantenservice via <a href="mailto:maisontislit20@gmail.com" className="text-brand hover:underline">maisontislit20@gmail.com</a> met uw bestelnummer.</>}</li>
               <li>{locale === 'en' ? 'Pack the item securely in its original packaging.' : 'Verpak het artikel veilig in de oorspronkelijke verpakking.'}</li>
               <li>{locale === 'en' ? 'Ship to the address provided by our support team.' : 'Verstuur naar het adres dat door ons supportteam is verstrekt.'}</li>
             </ol>
