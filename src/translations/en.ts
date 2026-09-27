@@ -69,11 +69,6 @@ const en = {
   'shop.ourBoutique': 'Our Boutique',
   'shop.subtitle': 'Discover our collection of authentic Moroccan clothing',
   'shop.catAll': 'View All',
-  'shop.search': 'Search products...',
-  'shop.sortBy': 'Sort by:',
-  'shop.sortDefault': 'Default',
-  'shop.sortPriceAsc': 'Price ascending',
-  'shop.sortPriceDesc': 'Price descending',
   'shop.itemsFound': 'item(s) found',
   'shop.noItems': 'No items in this category',
   // Category page headers (/shop/djellaba etc.) — key suffix matches CategoryPage.name

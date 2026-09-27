@@ -8,15 +8,15 @@ import { SITE_URL } from '../config';
 import { CATEGORY_PAGES, categoryBySlug } from '../config/categories';
 import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
-import { ShoppingBag, Heart, Search } from 'lucide-react';
+import { ShoppingBag, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
 import { productAlt } from '../utils/productAlt';
 import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
 
-// Filter chips: "all" (the /shop view) + one link per indexable category page
-const FILTER_CHIPS: Array<{ slug: string; label: string }> = [
+// Category chips: "all" (the /shop view) + one link per indexable category page
+const CATEGORY_CHIPS: Array<{ slug: string; label: string }> = [
   { slug: 'all', label: 'shop.catAll' },
   ...CATEGORY_PAGES.map(c => ({ slug: c.slug, label: c.name })),
 ];
@@ -32,16 +32,10 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function ShopPage() {
-  const { products, formatPrice } = useApp();
+  const { products } = useApp();
   const { t, locale } = useTranslation();
   const { categorySlug } = useParams();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [sortBy, setSortBy] = useState('default');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedColor, setSelectedColor] = useState('all');
-  const [selectedSize, setSelectedSize] = useState('all');
-  const [inStockOnly, setInStockOnly] = useState(false);
-  const [maxPrice, setMaxPrice] = useState(5000);
   const gridRef = useStaggerReveal<HTMLDivElement>(0.1);
 
   // Category comes from the URL: /shop = everything, /shop/:slug = one collection.
@@ -50,38 +44,10 @@ export default function ShopPage() {
   const category = categorySlug ? categoryBySlug(categorySlug) : undefined;
   const dbCategory = category?.dbValue ?? 'all';
 
-  const availableColors = useMemo(() => {
-    const colors = new Set<string>();
-    products.forEach(p => p.colors.forEach(c => colors.add(c)));
-    return Array.from(colors).sort();
-  }, [products]);
-
-  const availableSizes = useMemo(() => {
-    const sizes = new Set<string>();
-    products.forEach(p => p.sizes.forEach(s => sizes.add(s)));
-    return Array.from(sizes).sort();
-  }, [products]);
-
-  const filtered = useMemo(() => {
-    const q = searchQuery.toLowerCase();
-    return products
-      .filter(p => (dbCategory === 'all' || p.category === dbCategory))
-      .filter(p => selectedColor === 'all' || p.colors.includes(selectedColor))
-      .filter(p => selectedSize === 'all' || p.sizes.includes(selectedSize))
-      .filter(p => !inStockOnly || p.stock > 0)
-      .filter(p => p.price <= maxPrice)
-      .filter(p =>
-        !q || p.name.toLowerCase().includes(q) ||
-        (p.nameEn && p.nameEn.toLowerCase().includes(q)) ||
-        p.description.toLowerCase().includes(q) ||
-        (p.descriptionEn && p.descriptionEn.toLowerCase().includes(q))
-      )
-      .sort((a, b) => {
-        if (sortBy === 'price-asc') return a.price - b.price;
-        if (sortBy === 'price-desc') return b.price - a.price;
-        return 0;
-      });
-  }, [products, dbCategory, sortBy, searchQuery, selectedColor, selectedSize, inStockOnly, maxPrice]);
+  const filtered = useMemo(
+    () => products.filter(p => dbCategory === 'all' || p.category === dbCategory),
+    [products, dbCategory]
+  );
 
   // Guard AFTER all hooks: unknown category slugs never render a soft-404 page
   if (categorySlug && !category) {
@@ -138,11 +104,11 @@ export default function ShopPage() {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Category navigation */}
       <div className="bg-white border-b border-stone-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-wrap gap-2">
-            {FILTER_CHIPS.map(chip => {
+            {CATEGORY_CHIPS.map(chip => {
               const active = chip.slug === 'all' ? !category : category?.slug === chip.slug;
               const to = localizePath(chip.slug === 'all' ? '/shop' : `/shop/${chip.slug}`, locale);
               return (
@@ -162,88 +128,13 @@ export default function ShopPage() {
               );
             })}
           </div>
-
-          <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
-            <div className="relative w-full md:w-44 lg:w-56">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder={t('shop.search')}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-stone-200 rounded-lg focus:outline-none focus:border-brand bg-stone-50"
-              />
-            </div>
-            
-            <div className="flex items-center gap-2 border-l border-stone-200 pl-3 ml-1 w-full md:w-auto">
-              <span className="text-xs text-stone-500 hidden md:inline">Couleur:</span>
-              <select
-                value={selectedColor}
-                onChange={e => setSelectedColor(e.target.value)}
-                aria-label="Filter by color"
-                className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-full md:w-24"
-              >
-                <option value="all">Toutes</option>
-                {availableColors.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2 border-l border-stone-200 pl-3 ml-1 w-full md:w-auto">
-              <span className="text-xs text-stone-500 hidden md:inline">Taille:</span>
-              <select
-                value={selectedSize}
-                onChange={e => setSelectedSize(e.target.value)}
-                aria-label="Filter by size"
-                className="text-xs text-stone-700 border border-stone-200 rounded px-2 py-2 bg-white focus:outline-none focus:border-brand w-full md:w-24"
-              >
-                <option value="all">Toutes</option>
-                {availableSizes.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-
-            <label className="flex items-center gap-1.5 border-l border-stone-200 pl-3 ml-1 cursor-pointer w-full md:w-auto">
-              <input
-                type="checkbox"
-                checked={inStockOnly}
-                onChange={e => setInStockOnly(e.target.checked)}
-                className="accent-brand w-3.5 h-3.5 rounded"
-              />
-              <span className="text-xs text-stone-500 whitespace-nowrap">En stock</span>
-            </label>
-
-            <div className="flex flex-col gap-1 border-l border-stone-200 pl-3 ml-1 w-full md:w-auto">
-              <span className="text-[10px] text-stone-500">Max: {formatPrice(maxPrice)}</span>
-              <input 
-                type="range" 
-                min="0" 
-                max="10000" 
-                step="500" 
-                value={maxPrice} 
-                onChange={e => setMaxPrice(Number(e.target.value))}
-                aria-label="Maximum price"
-                className="w-full md:w-24 accent-brand"
-              />
-            </div>
-
-            <span className="text-xs text-stone-500 border-l border-stone-200 pl-3 ml-1 hidden md:inline">{t('shop.sortBy')}</span>
-            <select
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value)}
-              aria-label={t('shop.sortBy')}
-              className="text-xs text-stone-700 border border-stone-200 rounded px-3 py-2 bg-white focus:outline-none focus:border-brand w-full md:w-auto"
-            >
-              <option value="default">{t('shop.sortDefault')}</option>
-              <option value="price-asc">{t('shop.sortPriceAsc')}</option>
-              <option value="price-desc">{t('shop.sortPriceDesc')}</option>
-            </select>
-          </div>
         </div>
       </div>
 
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <p className="text-stone-500 text-sm mb-8">{filtered.length} {t('shop.itemsFound')}</p>
-        <div key={(categorySlug ?? 'all') + searchQuery + sortBy} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
+        <div key={categorySlug ?? 'all'} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
           {filtered.map(product => (
             <ProductCard key={product.id} product={product} onOpen={() => setSelectedProduct(product)} t={t} locale={locale} />
           ))}

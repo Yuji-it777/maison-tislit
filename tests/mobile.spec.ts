@@ -17,31 +17,21 @@ test.describe('Mobile responsive', () => {
     await expect(page.getByRole('heading', { name: /Our Boutique/i })).toBeVisible();
   });
 
-  test('shop filter bar does not overflow on mobile', async ({ page }) => {
+  test('shop category bar does not overflow on mobile', async ({ page }) => {
     await page.goto('/shop');
     await page.waitForLoadState('networkidle');
     
-    // Check that the filter container is not overflowing
-    const filterContainer = page.locator('.sticky.top-20').first();
-    await expect(filterContainer).toBeVisible();
+    // Check that the sticky category bar is not overflowing
+    const categoryBar = page.locator('.sticky.top-20').first();
+    await expect(categoryBar).toBeVisible();
     
-    // Check that key filter elements are visible (not cut off)
-    const searchInput = page.locator('input[placeholder*="search" i], input[placeholder*="Search" i]').first();
-    await expect(searchInput).toBeVisible();
+    // Check that category chips are visible
+    await expect(page.getByRole('link', { name: /View All/i }).first()).toBeVisible();
     
-    const colorSelect = page.locator('select').filter({ hasText: 'Toutes' }).first();
-    await expect(colorSelect).toBeVisible();
-    
-    const sizeSelect = page.locator('select').filter({ hasText: 'Toutes' }).nth(1);
-    await expect(sizeSelect).toBeVisible();
-    
-    const sortSelect = page.locator('select').filter({ hasText: /default|Price/i }).first();
-    await expect(sortSelect).toBeVisible();
-    
-    // Verify no horizontal scrollbar on the filter bar
-    const filterBar = page.locator('.max-w-7xl.mx-auto.px-6.py-4').first();
-    const scrollWidth = await filterBar.evaluate(el => el.scrollWidth);
-    const clientWidth = await filterBar.evaluate(el => el.clientWidth);
+    // Verify no horizontal scrollbar on the category bar
+    const barInner = page.locator('.max-w-7xl.mx-auto.px-6.py-4').first();
+    const scrollWidth = await barInner.evaluate(el => el.scrollWidth);
+    const clientWidth = await barInner.evaluate(el => el.clientWidth);
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1); // Allow 1px rounding
   });
 

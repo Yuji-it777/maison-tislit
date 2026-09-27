@@ -69,11 +69,6 @@ const nl = {
   'shop.ourBoutique': 'Onze Boetiek',
   'shop.subtitle': 'Ontdek onze collectie authentieke Marokkaanse kleding',
   'shop.catAll': 'Alles bekijken',
-  'shop.search': 'Zoek een product...',
-  'shop.sortBy': 'Sorteren op:',
-  'shop.sortDefault': 'Standaard',
-  'shop.sortPriceAsc': 'Prijs oplopend',
-  'shop.sortPriceDesc': 'Prijs aflopend',
   'shop.itemsFound': 'artikel(en) gevonden',
   'shop.noItems': 'Geen artikelen in deze categorie',
   // Categoriepagina-headers (/shop/djellaba enz.) — sleutelachtervoegsel volgt CategoryPage.name
