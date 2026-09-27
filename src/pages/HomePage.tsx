@@ -74,8 +74,8 @@ export default function HomePage() {
       slug: 'djellaba',
       name: 'Djellaba',
       description: t('home.catDjellabaDesc'),
-      image: '/images/djellaba1.jpg',
-      objectPosition: '50% 15%',
+      image: '/images/jellaba.jpeg',
+      objectPosition: '50% 20%',
     },
     {
       slug: 'caftan',
