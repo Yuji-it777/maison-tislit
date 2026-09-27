@@ -3,6 +3,8 @@ export interface Product {
   slug: string;
   name: string;
   nameEn: string;
+  /** Dutch name — auto-translated by the admin on save. */
+  nameNl: string;
   category: 'djellaba' | 'takchita' | 'gandoura' | 'Caftan' | 'Jabador' | 'Accessoire';
   price: number;
   /** Cover photo — used by shop cards, cart, checkout, wishlist and og:image. */
@@ -13,6 +15,8 @@ export interface Product {
   videos?: string[];
   description: string;
   descriptionEn: string;
+  /** Dutch description — auto-translated by the admin on save. */
+  descriptionNl: string;
   sizes: string[];
   colors: string[];
   badge?: string;

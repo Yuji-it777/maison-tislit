@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 import { createOrder, createOrderItems } from '../supabase/queries';
 import { buildWhatsAppOrderUrl } from '../utils/whatsappOrder';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName } from '../utils/productAlt';
 import SEO from '../components/SEO';
 
 const COUNTRIES_NL = ['Marokko', 'Frankrijk', 'België', 'Zwitserland', 'Spanje', 'Italië', 'Duitsland', 'Nederland', 'Verenigd Koninkrijk'];
@@ -220,7 +220,7 @@ export default function CheckoutPage() {
                   <div key={`${item.id}-${item.selectedSize}`} className="flex items-center gap-3 text-sm">
                     <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={48} height={56} className="w-12 h-14 object-contain flex-shrink-0 bg-stone-100" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-stone-700 truncate">{item.name}</p>
+                      <p className="text-xs font-semibold text-stone-700 truncate">{productName(item, locale)}</p>
                       <p className="text-xs text-stone-400">{item.selectedSize} • {item.selectedColor} × {item.quantity}</p>
                     </div>
                     <p className="text-sm font-bold text-stone-800">{formatPrice(item.price * item.quantity)}</p>
@@ -300,7 +300,7 @@ export default function CheckoutPage() {
                 <div key={`${item.id}-${item.selectedSize}`} className="flex gap-3">
                   <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={56} height={64} className="w-14 h-16 object-contain flex-shrink-0 bg-stone-100" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-stone-700 truncate">{item.name}</p>
+                    <p className="text-xs font-semibold text-stone-700 truncate">{productName(item, locale)}</p>
                     <p className="text-xs text-stone-400">{item.selectedSize} • {item.selectedColor}</p>
                     <p className="text-xs text-stone-400">Qté: {item.quantity}</p>
                     <p className="text-sm font-bold text-stone-800">{formatPrice(item.price * item.quantity)}</p>

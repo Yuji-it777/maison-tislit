@@ -1,6 +1,6 @@
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName } from '../utils/productAlt';
 import SEO from '../components/SEO';
 
 export default function CartPage() {
@@ -57,7 +57,7 @@ export default function CartPage() {
                         {item.category}
                       </span>
                       <h3 className="text-stone-800 font-semibold text-base leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        {item.name}
+                        {productName(item, locale)}
                       </h3>
                     </div>
                     <button

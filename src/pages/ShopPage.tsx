@@ -10,7 +10,7 @@ import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
 import { ShoppingBag, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName, productDescription } from '../utils/productAlt';
 import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
@@ -68,7 +68,7 @@ export default function ShopPage() {
     itemListElement: filtered.map((p, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      name: locale === 'en' && p.nameEn ? p.nameEn : p.name,
+      name: productName(p, locale),
       url: `${SITE_URL}${localizePath(`/product/${p.slug}`, locale)}`,
     })),
   };
@@ -235,9 +235,9 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
           {product.category}
         </span>
         <h2 className="text-stone-800 font-semibold text-lg mb-1 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
-          {locale === 'en' && product.nameEn ? product.nameEn : product.name}
+          {productName(product, locale)}
         </h2>
-        <p className="text-stone-500 text-xs mb-3 line-clamp-2">{locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description}</p>
+        <p className="text-stone-500 text-xs mb-3 line-clamp-2">{productDescription(product, locale)}</p>
 
         <div className="flex items-center gap-1 mb-3">
           {product.colors.slice(0, 3).map(c => (

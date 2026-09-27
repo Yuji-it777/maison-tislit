@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useRef, useCallback, Re
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CartItem, User, Page, Product, Review, Currency } from '../types';
 import { useTranslation, localizePath, stripLocale } from './LanguageContext';
+import { productName } from '../utils/productAlt';
 import { supabase } from '../supabase/client';
 import type { ProfileRow } from '../supabase/types';
 import { getProducts, getProfile, createReview, getProductReviews } from '../supabase/queries';
@@ -77,6 +78,7 @@ function mapSupabaseProduct(row: any): Product {
     slug: row.slug || '',
     name: row.name,
     nameEn: row.name_en,
+    nameNl: row.name_nl || '',
     category: row.category as Product['category'],
     price: row.price ?? 150,
     image: (row.image || '').trim(),
@@ -84,6 +86,7 @@ function mapSupabaseProduct(row: any): Product {
     videos: Array.isArray(row.videos) ? row.videos.filter(Boolean) : [],
     description: row.description || '',
     descriptionEn: row.description_en || '',
+    descriptionNl: row.description_nl || '',
     sizes: row.sizes || [],
     colors: row.colors || [],
     badge: row.badge || undefined,
@@ -314,8 +317,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { ...product, quantity: qty, selectedSize: size, selectedColor: color }];
     });
-    const productName = locale === 'en' ? product.nameEn : product.name;
-    showToast(`${productName}${t('toast.addedToCart')}`, 'success');
+    const addedName = productName(product, locale);
+    showToast(`${addedName}${t('toast.addedToCart')}`, 'success');
   };
 
   const removeFromCart = (id: number, size: string, color: string) => {

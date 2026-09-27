@@ -2,6 +2,8 @@ export interface ProductRow {
   id: number;
   name: string;
   name_en: string;
+  /** Dutch name — auto-translated by the admin (migration 00031). */
+  name_nl: string;
   category: string;
   price: number;
   image: string;
@@ -10,6 +12,8 @@ export interface ProductRow {
   videos: string[] | null;
   description: string;
   description_en: string;
+  /** Dutch description — auto-translated by the admin (migration 00031). */
+  description_nl: string;
   sizes: string[];
   colors: string[];
   badge: string | null;

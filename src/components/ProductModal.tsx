@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
 import { useApp, MAD_PER_EUR } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName, productDescription } from '../utils/productAlt';
 import { productMedia, mediaKindIndexes } from '../utils/productMedia';
 import { Play } from 'lucide-react';
 import SizeGuide from './SizeGuide';
@@ -79,8 +79,8 @@ export default function ProductModal({ product, onClose }: Props) {
   return createPortal(
     <>
       <SEO
-        title={locale === 'en' && product.nameEn ? product.nameEn : product.name}
-        description={locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description}
+        title={productName(product, locale)}
+        description={productDescription(product, locale)}
         image={product.image}
         type="product"
         productPrice={(product.price / MAD_PER_EUR).toFixed(2)}
@@ -129,8 +129,8 @@ export default function ProductModal({ product, onClose }: Props) {
                       type="button"
                       onClick={() => setMediaIndex(i)}
                       aria-label={item.type === 'video'
-                        ? `${t('product.videoLabel')} ${mediaNumbers[i]}: ${locale === 'en' && product.nameEn ? product.nameEn : product.name}`
-                        : `${t('product.photoLabel')} ${mediaNumbers[i]}: ${locale === 'en' && product.nameEn ? product.nameEn : product.name}`}
+                        ? `${t('product.videoLabel')} ${mediaNumbers[i]}: ${productName(product, locale)}`
+                        : `${t('product.photoLabel')} ${mediaNumbers[i]}: ${productName(product, locale)}`}
                       aria-current={i === mediaIndex}
                       className={`relative w-14 aspect-[3/4] flex-shrink-0 overflow-hidden border transition-all ${
                         i === mediaIndex
@@ -168,7 +168,7 @@ export default function ProductModal({ product, onClose }: Props) {
                 {product.category}
               </span>
               <h2 className="text-2xl font-bold text-stone-800 mb-1" style={{ fontFamily: "'Cinzel', serif" }}>
-                {locale === 'en' && product.nameEn ? product.nameEn : product.name}
+                {productName(product, locale)}
               </h2>
 
               <div className="flex items-baseline gap-3 mb-6">
@@ -176,7 +176,7 @@ export default function ProductModal({ product, onClose }: Props) {
               </div>
 
               <p className="text-stone-600 text-sm leading-relaxed mb-6">
-                {locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description}
+                {productDescription(product, locale)}
               </p>
 
               <div className="mb-5">
@@ -382,7 +382,7 @@ export default function ProductModal({ product, onClose }: Props) {
                     <div className="aspect-[3/4] bg-stone-100 overflow-hidden mb-2">
                       <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                     </div>
-                    <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && r.nameEn ? r.nameEn : r.name}</p>
+                    <p className="text-xs font-medium text-stone-700 truncate">{productName(r, locale)}</p>
                     <p className="text-xs text-stone-500">{formatPrice(r.price)}</p>
                   </button>
                 ))}

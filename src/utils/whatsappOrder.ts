@@ -1,5 +1,6 @@
 import { WHATSAPP_LINK } from '../config';
 import type { CartItem } from '../types';
+import { productName } from './productAlt';
 
 export interface DeliveryForm {
   name: string;
@@ -37,7 +38,7 @@ export function buildWhatsAppOrderUrl(params: {
   lines.push('──────────────');
 
   cart.forEach((item, i) => {
-    const name = isEn && item.nameEn ? item.nameEn : item.name;
+    const name = productName(item, isEn ? 'en' : 'nl');
     const opts = [item.selectedSize, item.selectedColor].filter(Boolean).join(', ');
     lines.push(`${i + 1}. ${name}${opts ? ` — ${opts}` : ''} ×${item.quantity}`);
     if (item.customMeasurements) {

@@ -1,7 +1,6 @@
 import type { Locale } from '../context/LanguageContext';
-import type { Product } from '../types';
 
-const CATEGORY_ALT: Partial<Record<Product['category'], Record<Locale, string>>> = {
+const CATEGORY_ALT: Partial<Record<string, Record<Locale, string>>> = {
   djellaba: { en: 'handmade Moroccan djellaba', nl: 'handgemaakte Marokkaanse djellaba' },
   takchita: { en: 'handmade Moroccan takchita', nl: 'handgemaakte Marokkaanse takchita' },
   gandoura: { en: 'handmade Moroccan gandoura', nl: 'handgemaakte Marokkaanse gandoura' },
@@ -10,11 +9,41 @@ const CATEGORY_ALT: Partial<Record<Product['category'], Record<Locale, string>>>
   Accessoire: { en: 'handmade Moroccan accessory', nl: 'handgemaakt Marokkaans accessoire' },
 };
 
-export function productName(p: Pick<Product, 'name' | 'nameEn'>, locale: Locale): string {
-  return locale === 'en' && p.nameEn ? p.nameEn : p.name;
+/**
+ * Minimal shape needed to localize a product name. Optional translations so
+ * legacy cart items in localStorage (saved before nameNl existed) still work.
+ */
+interface LocalizableName {
+  name: string;
+  nameEn?: string | null;
+  nameNl?: string | null;
 }
 
-export function productAlt(p: Pick<Product, 'name' | 'nameEn' | 'category'>, locale: Locale): string {
+interface LocalizableDescription {
+  description: string;
+  descriptionEn?: string | null;
+  descriptionNl?: string | null;
+}
+
+/**
+ * Localized product name. EN uses nameEn, NL uses nameNl (added by migration
+ * 00031); falls back to the French base text when a translation is missing.
+ */
+export function productName(p: LocalizableName, locale: Locale): string {
+  if (locale === 'nl') return p.nameNl || p.name;
+  return p.nameEn || p.name;
+}
+
+/** Localized product description — same fallback chain as productName. */
+export function productDescription(p: LocalizableDescription, locale: Locale): string {
+  if (locale === 'nl') return p.descriptionNl || p.description;
+  return p.descriptionEn || p.description;
+}
+
+export function productAlt(
+  p: LocalizableName & { category: string },
+  locale: Locale
+): string {
   const desc = CATEGORY_ALT[p.category]?.[locale]
     ?? (locale === 'en' ? 'handmade Moroccan piece' : 'handgemaakt Marokkaans kledingstuk');
   return `${productName(p, locale)} – ${desc}`;

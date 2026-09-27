@@ -5,7 +5,7 @@ import { useTranslation } from '../context/LanguageContext';
 import { localizePath } from '../context/LanguageContext';
 import { Scissors, Leaf, Package, Gem, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName } from '../utils/productAlt';
 import { useScrollReveal, useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 
@@ -320,7 +320,7 @@ export default function HomePage() {
                 <div className="p-5">
                   <span className="text-brand text-xs tracking-widest uppercase mb-1 block">{product.category}</span>
                   <h3 className="text-stone-800 font-semibold text-lg mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    {locale === 'en' && product.nameEn ? product.nameEn : product.name}
+                    {productName(product, locale)}
                   </h3>
                   <div className="flex items-center justify-between">
                     <div>

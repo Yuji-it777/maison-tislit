@@ -169,10 +169,12 @@ export type Database = {
           created_at: string
           description: string
           description_en: string
+          description_nl: string
           id: number
           image: string
           name: string
           name_en: string
+          name_nl: string
           price: number
           sizes: string[]
           slug: string | null
@@ -185,10 +187,12 @@ export type Database = {
           created_at?: string
           description?: string
           description_en?: string
+          description_nl?: string
           id?: number
           image?: string
           name: string
           name_en: string
+          name_nl?: string
           price: number
           sizes?: string[]
           slug?: string | null
@@ -201,10 +205,12 @@ export type Database = {
           created_at?: string
           description?: string
           description_en?: string
+          description_nl?: string
           id?: number
           image?: string
           name?: string
           name_en?: string
+          name_nl?: string
           price?: number
           sizes?: string[]
           slug?: string | null

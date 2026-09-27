@@ -359,7 +359,9 @@ function StockSection() {
   const [uploading, setUploading] = useState(false);
   const [galleryInput, setGalleryInput] = useState('');
   const [videoInput, setVideoInput] = useState('');
-  const [form, setForm] = useState({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '', gallery: [] as string[], videos: [] as string[] });
+  const [form, setForm] = useState({ name: '', category: 'djellaba', price: 0, stock: 0, description: '', sizes: '', colors: '', badge: '', image: '', gallery: [] as string[], videos: [] as string[] });
+  const [saving, setSaving] = useState(false);
+  const [translatingAll, setTranslatingAll] = useState(false);
 
   useEffect(() => { getProducts().then(setProducts).catch(() => {}); }, []);
 
@@ -415,31 +417,89 @@ function StockSection() {
     return products.filter(p => p.name.toLowerCase().includes(q) && (!catFilter || p.category === catFilter));
   }, [products, search, catFilter]);
 
-  const openAdd = () => { setEditId(null); setGalleryInput(''); setVideoInput(''); setForm({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '', gallery: [], videos: [] }); setShowModal(true); };
-  const openEdit = (p: ProductRow) => { setEditId(p.id); setGalleryInput(''); setVideoInput(''); setForm({ name: p.name, name_en: p.name_en, category: p.category, price: p.price, stock: p.stock, description: p.description, description_en: p.description_en, sizes: p.sizes.join(', '), colors: p.colors.join(', '), badge: p.badge || '', image: p.image, gallery: Array.isArray(p.gallery) ? p.gallery : [], videos: Array.isArray(p.videos) ? p.videos : [] }); setShowModal(true); };
+  const openAdd = () => { setEditId(null); setGalleryInput(''); setVideoInput(''); setForm({ name: '', category: 'djellaba', price: 0, stock: 0, description: '', sizes: '', colors: '', badge: '', image: '', gallery: [], videos: [] }); setShowModal(true); };
+  const openEdit = (p: ProductRow) => { setEditId(p.id); setGalleryInput(''); setVideoInput(''); setForm({ name: p.name, category: p.category, price: p.price, stock: p.stock, description: p.description, sizes: p.sizes.join(', '), colors: p.colors.join(', '), badge: p.badge || '', image: p.image, gallery: Array.isArray(p.gallery) ? p.gallery : [], videos: Array.isArray(p.videos) ? p.videos : [] }); setShowModal(true); };
+
+  type Translations = { name_en: string; name_nl: string; description_en: string; description_nl: string };
+  const EMPTY_TRANSLATIONS: Translations = { name_en: '', name_nl: '', description_en: '', description_nl: '' };
+
+  // FR -> EN + NL machine translation via the translate-product Edge Function.
+  // The admin has no translation fields: every save overwrites name_en/nl and
+  // description_en/nl from the French text (deployment: supabase functions
+  // deploy translate-product).
+  const translateProduct = async (name: string, description: string): Promise<Translations> => {
+    const { data, error } = await supabase.functions.invoke('translate-product', {
+      body: { name, description },
+    });
+    if (error) throw new Error(error.message || 'translate-product function unavailable');
+    if (data?.error) throw new Error(data.error);
+    return {
+      name_en: data.name_en || '',
+      name_nl: data.name_nl || '',
+      description_en: data.description_en || '',
+      description_nl: data.description_nl || '',
+    };
+  };
 
   const saveProduct = async () => {
     if (!form.name.trim()) return alert('Nom requis');
-    const data = { ...form, price: Number(form.price), stock: Number(form.stock), sizes: form.sizes.split(',').map(s => s.trim()).filter(Boolean), colors: form.colors.split(',').map(s => s.trim()).filter(Boolean), badge: form.badge || null, gallery: form.gallery.map(s => s.trim()).filter(Boolean), videos: form.videos.map(s => s.trim()).filter(Boolean) };
+    setSaving(true);
     try {
+      let translations: Translations;
+      try {
+        translations = await translateProduct(form.name.trim(), form.description);
+      } catch (trErr: any) {
+        if (!confirm(`Translation failed: ${trErr?.message || trErr}\n\nSave anyway? EN and NL stay empty and the site falls back to the French text.`)) return;
+        translations = EMPTY_TRANSLATIONS;
+      }
+      const data = { ...form, ...translations, price: Number(form.price), stock: Number(form.stock), sizes: form.sizes.split(',').map(s => s.trim()).filter(Boolean), colors: form.colors.split(',').map(s => s.trim()).filter(Boolean), badge: form.badge || null, gallery: form.gallery.map(s => s.trim()).filter(Boolean), videos: form.videos.map(s => s.trim()).filter(Boolean) };
       if (editId !== null) {
         const existing = products.find(p => p.id === editId);
-        const nameChanged = existing && (form.name !== existing.name || form.name_en !== existing.name_en);
-        const dataWithSlug = { ...data, slug: nameChanged || !existing?.slug ? buildUniqueSlug(form.name_en || form.name, products.filter(p => p.id !== editId)) : existing.slug };
+        const nameChanged = existing && form.name !== existing.name;
+        const dataWithSlug = { ...data, slug: nameChanged || !existing?.slug ? buildUniqueSlug(form.name, products.filter(p => p.id !== editId)) : existing.slug };
         await updateProduct(editId, dataWithSlug);
         setProducts(prev => prev.map(p => p.id === editId ? { ...p, ...dataWithSlug } : p));
       } else {
-        const created = await createProduct({ ...data, slug: buildUniqueSlug(form.name_en || form.name, products) } as any);
+        const created = await createProduct({ ...data, slug: buildUniqueSlug(form.name, products) } as any);
         setProducts(prev => [...prev, created]);
       }
       setShowModal(false);
     } catch (err: any) {
       const message: string = err?.message || 'Save failed';
-      // Migrations 00029 (gallery) and 00030 (videos) add product columns;
-      // PostgREST reports a missing column as a cryptic schema-cache error, so
-      alert(/gallery|video/i.test(message) && /schema cache|does not exist/i.test(message)
-        ? `${message}\n\nRun ${/video/i.test(message) ? 'supabase/migrations/00030_product_videos.sql' : 'supabase/migrations/00029_product_gallery.sql'} in the Supabase SQL Editor, then save again.`
+      // Migrations 00029 (gallery), 00030 (videos) and 00031 (NL translations)
+      // add product columns; PostgREST reports a missing column as a cryptic
+      // schema-cache error, so map the column name to its migration file.
+      const migration = /video/i.test(message) ? 'supabase/migrations/00030_product_videos.sql'
+        : /gallery/i.test(message) ? 'supabase/migrations/00029_product_gallery.sql'
+        : /name_nl|description_nl/i.test(message) ? 'supabase/migrations/00031_product_translations_nl.sql'
+        : null;
+      alert(migration && /schema cache|does not exist/i.test(message)
+        ? `${message}\n\nRun ${migration} in the Supabase SQL Editor, then save again.`
         : message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Bulk re-translate every product (used to backfill NL after migration 00031
+  // and whenever the French copy changed outside the admin).
+  const translateAll = async () => {
+    if (!products.length) return;
+    if (!confirm(`Machine-translate ${products.length} products to English + Dutch?\n\nThis OVERWRITES the current name_en / name_nl / description_en / description_nl with fresh translations of the French text.`)) return;
+    setTranslatingAll(true);
+    let done = 0;
+    try {
+      for (const p of products) {
+        const translations = await translateProduct(p.name, p.description);
+        await updateProduct(p.id, translations);
+        setProducts(prev => prev.map(x => x.id === p.id ? { ...x, ...translations } : x));
+        done += 1;
+      }
+      alert(`Translated ${done} products to EN + NL.`);
+    } catch (err: any) {
+      alert(`Stopped after ${done}/${products.length} products: ${err?.message || err}\n\nCheck that the Edge Function is deployed (supabase functions deploy translate-product) and migration 00031 has been run.`);
+    } finally {
+      setTranslatingAll(false);
     }
   };
 
@@ -453,7 +513,12 @@ function StockSection() {
     <>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-lg font-semibold" style={{ color: DARK }}>Stock management</h1>
-        <button onClick={openAdd} className="flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg transition-colors hover:opacity-90" style={{ background: DARK, color: GOLD, border: 'none' }}><I d={icons.plus} size={15} color={GOLD} /> Add product</button>
+        <div className="flex items-center gap-2">
+          <button onClick={translateAll} disabled={translatingAll} className="text-xs font-medium px-4 py-2 rounded-lg transition-colors hover:opacity-90 disabled:opacity-60" style={{ border: '1px solid #e5e5e5', color: '#666', background: '#fff' }}>
+            {translatingAll ? 'Translating…' : 'Translate all (EN + NL)'}
+          </button>
+          <button onClick={openAdd} className="flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg transition-colors hover:opacity-90" style={{ background: DARK, color: GOLD, border: 'none' }}><I d={icons.plus} size={15} color={GOLD} /> Add product</button>
+        </div>
       </div>
       <div className="rounded-xl p-5" style={{ background: '#fff', border: '0.5px solid rgba(0,0,0,0.06)' }}>
         <div className="flex gap-2 mb-4">
@@ -508,9 +573,8 @@ function StockSection() {
               <div className="text-sm font-semibold" style={{ color: '#444' }}>{editId !== null ? 'Edit product' : 'Add product'}</div>
               <button onClick={() => setShowModal(false)} className="hover:opacity-70" style={{ color: '#999' }}><I d={icons.x} size={18} /></button>
             </div>
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <div><label className="text-xs" style={{ color: '#999' }}>Name *</label><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
-              <div><label className="text-xs" style={{ color: '#999' }}>Name (EN)</label><input value={form.name_en} onChange={e => setForm({ ...form, name_en: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
+            <div className="mb-3">
+              <label className="text-xs" style={{ color: '#999' }}>Name * — auto-translated to EN + NL on save</label><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} />
             </div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Category</label>
@@ -610,14 +674,14 @@ function StockSection() {
               </div>
               <p className="mt-1.5 text-[10px]" style={{ color: '#bbb' }}>Keep clips short (10-20s, under 20 MB). They play in the big frame with a play badge on the thumbnail.</p>
             </div>
-            <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Description (FR)</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none resize-y" style={{ border: '1px solid #e5e5e5' }} /></div>
+            <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Description (FR) — auto-translated to EN + NL on save</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none resize-y" style={{ border: '1px solid #e5e5e5' }} /></div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Sizes (comma separated)</label><input value={form.sizes} onChange={e => setForm({ ...form, sizes: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
               <div><label className="text-xs" style={{ color: '#999' }}>Colors (comma separated)</label><input value={form.colors} onChange={e => setForm({ ...form, colors: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
             </div>
             <div className="flex gap-2 justify-end mt-4 pt-4" style={{ borderTop: '1px solid #f0f0f0' }}>
               <button onClick={() => setShowModal(false)} className="px-4 py-2 text-xs rounded-lg" style={{ border: '1px solid #e5e5e5', color: '#666' }}>Cancel</button>
-              <button onClick={saveProduct} className="px-4 py-2 text-xs rounded-lg" style={{ background: DARK, color: GOLD, border: 'none' }}>{editId !== null ? 'Update' : 'Save'}</button>
+              <button onClick={saveProduct} disabled={saving} className="px-4 py-2 text-xs rounded-lg disabled:opacity-60" style={{ background: DARK, color: GOLD, border: 'none' }}>{saving ? 'Translating…' : (editId !== null ? 'Update' : 'Save')}</button>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName } from '../utils/productAlt';
 import SEO from '../components/SEO';
 
 export default function FavoritesPage() {
@@ -45,7 +45,7 @@ export default function FavoritesPage() {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {wishlistProducts.map(p => {
-                const productName = locale === 'en' && p.nameEn ? p.nameEn : p.name;
+                const name = productName(p, locale);
 
                 return (
                   <div key={p.id} className="relative group rounded-xl overflow-hidden border border-stone-100">
@@ -66,7 +66,7 @@ export default function FavoritesPage() {
                       </button>
                     </div>
                     <div className="p-2">
-                      <p className="text-xs font-medium text-stone-700 truncate">{productName}</p>
+                      <p className="text-xs font-medium text-stone-700 truncate">{name}</p>
                       <p className="text-xs text-stone-500">{formatPrice(p.price)}</p>
                     </div>
                   </div>

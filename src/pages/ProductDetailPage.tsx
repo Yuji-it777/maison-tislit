@@ -12,7 +12,7 @@ import StarRating from '../components/StarRating';
 import { SITE_URL } from '../config';
 import { categoryByDbValue } from '../config/categories';
 import { productMaterial } from '../utils/productMaterial';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName as localizeProductName, productDescription } from '../utils/productAlt';
 import { productPhotos, absolutePhotoUrl } from '../utils/productPhotos';
 import { productMedia, mediaKindIndexes } from '../utils/productMedia';
 import { Play } from 'lucide-react';
@@ -24,6 +24,7 @@ function mapRow(row: ProductRow): Product {
     slug: row.slug || '',
     name: row.name,
     nameEn: row.name_en,
+    nameNl: row.name_nl || '',
     category: row.category as Product['category'],
     price: row.price ?? 150,
     image: (row.image || '').trim(),
@@ -31,6 +32,7 @@ function mapRow(row: ProductRow): Product {
     videos: Array.isArray(row.videos) ? row.videos.filter(Boolean) : [],
     description: row.description || '',
     descriptionEn: row.description_en || '',
+    descriptionNl: row.description_nl || '',
     sizes: row.sizes || [],
     colors: row.colors || [],
     badge: row.badge || undefined,
@@ -131,8 +133,8 @@ export default function ProductDetailPage() {
     : 0;
   const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
-  const productName = locale === 'en' && product.nameEn ? product.nameEn : product.name;
-  const productDesc = locale === 'en' && product.descriptionEn ? product.descriptionEn : product.description;
+  const productName = localizeProductName(product, locale);
+  const productDesc = productDescription(product, locale);
   const productPath = localizePath(`/product/${product.slug}`, locale);
   const canonical = `${SITE_URL}${productPath}`;
   const category = categoryByDbValue(product.category);
@@ -508,7 +510,7 @@ export default function ProductDetailPage() {
                     <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-3">
-                    <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && r.nameEn ? r.nameEn : r.name}</p>
+                    <p className="text-xs font-medium text-stone-700 truncate">{localizeProductName(r, locale)}</p>
                     <p className="text-xs text-stone-500">{formatPrice(r.price)}</p>
                   </div>
                 </Link>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
-import { productAlt } from '../utils/productAlt';
+import { productAlt, productName } from '../utils/productAlt';
 import { getOrdersByUser } from '../supabase/queries';
 import type { OrderRow } from '../supabase/types';
 import { Heart, Package } from 'lucide-react';
@@ -86,7 +86,7 @@ export default function AccountPage() {
                       </button>
                     </div>
                     <div className="p-2">
-                      <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && p.nameEn ? p.nameEn : p.name}</p>
+                      <p className="text-xs font-medium text-stone-700 truncate">{productName(p, locale)}</p>
                       <p className="text-xs text-stone-500">{formatPrice(p.price)}</p>
                     </div>
                   </div>
@@ -200,7 +200,7 @@ export default function AccountPage() {
                     </button>
                   </div>
                   <div className="p-2">
-                    <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && p.nameEn ? p.nameEn : p.name}</p>
+                    <p className="text-xs font-medium text-stone-700 truncate">{productName(p, locale)}</p>
                     <p className="text-xs text-stone-500">{formatPrice(p.price)}</p>
                   </div>
                 </div>
