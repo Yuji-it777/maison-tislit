@@ -1,11 +1,10 @@
 import type { Product } from '../types';
-import { productPhotos } from './productPhotos';
+import { productPhotos, cleanMediaList } from './productPhotos';
 
-/** Video URLs stored on the product, blank entries dropped. */
+/** Video URLs stored on the product; a scalar/wrong-type value yields no videos. */
 export function productVideos(product: Pick<Product, 'videos'>): string[] {
-  return (product.videos ?? [])
-    .map(src => (src || '').trim())
-    .filter(Boolean);
+  if (!Array.isArray(product.videos)) return [];
+  return cleanMediaList(product.videos);
 }
 
 export interface ProductMediaItem {

@@ -249,7 +249,7 @@ export default function HomePage() {
                   loading="lazy"
                   width={600}
                   height={400}
-                  className="absolute inset-0 w-full h-full object-cover object-[50%_20%]"
+                  className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectPosition: cat.objectPosition }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/50 to-stone-900/30 group-hover:from-stone-950/90 transition-all duration-300" />

@@ -1,6 +1,12 @@
 import { SITE_URL } from '../config';
 import type { Product } from '../types';
 
+/** Drop blanks: trim every entry, drop empty strings. Shared by photos/videos. */
+export function cleanMediaList(paths: unknown): string[] {
+  const list = Array.isArray(paths) ? paths : paths ? [paths] : [];
+  return list.map(path => (typeof path === 'string' ? path : String(path ?? '')).trim()).filter(Boolean);
+}
+
 /**
  * Every photo for a product, cover first.
  *
@@ -9,9 +15,7 @@ import type { Product } from '../types';
  * without a gallery still yields exactly one photo.
  */
 export function productPhotos(product: Pick<Product, 'image' | 'gallery'>): string[] {
-  return [product.image, ...(product.gallery ?? [])]
-    .map(path => (path || '').trim())
-    .filter(Boolean);
+  return cleanMediaList([product.image, ...(product.gallery ?? [])]);
 }
 
 /**

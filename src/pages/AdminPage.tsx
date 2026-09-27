@@ -389,27 +389,26 @@ function StockSection() {
     }
   };
 
-  const addGalleryImage = (value?: string) => {
-    const url = (value ?? galleryInput).trim();
+  const addMediaUrl = (kind: 'gallery' | 'videos', value?: string) => {
+    const raw = kind === 'gallery' ? (value ?? galleryInput) : (value ?? videoInput);
+    const url = raw.trim();
     if (!url) return;
-    setForm(f => (f.gallery.includes(url) ? f : { ...f, gallery: [...f.gallery, url] }));
-    setGalleryInput('');
+    setForm(f => (f[kind].includes(url) ? f : { ...f, [kind]: [...f[kind], url] }));
+    if (kind === 'gallery') setGalleryInput('');
+    else setVideoInput('');
   };
 
-  const removeGalleryImage = (index: number) => {
-    setForm(f => ({ ...f, gallery: f.gallery.filter((_, i) => i !== index) }));
+  const removeMediaUrl = (kind: 'gallery' | 'videos', index: number) => {
+    setForm(f => ({ ...f, [kind]: f[kind].filter((_, i) => i !== index) }));
   };
 
-  const addVideo = (value?: string) => {
-    const url = (value ?? videoInput).trim();
-    if (!url) return;
-    setForm(f => (f.videos.includes(url) ? f : { ...f, videos: [...f.videos, url] }));
-    setVideoInput('');
-  };
+  const addGalleryImage = (value?: string) => addMediaUrl('gallery', value);
 
-  const removeVideo = (index: number) => {
-    setForm(f => ({ ...f, videos: f.videos.filter((_, i) => i !== index) }));
-  };
+  const removeGalleryImage = (index: number) => removeMediaUrl('gallery', index);
+
+  const addVideo = (value?: string) => addMediaUrl('videos', value);
+
+  const removeVideo = (index: number) => removeMediaUrl('videos', index);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
