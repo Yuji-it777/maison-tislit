@@ -80,6 +80,8 @@ function mapSupabaseProduct(row: any): Product {
     category: row.category as Product['category'],
     price: row.price ?? 150,
     image: (row.image || '').trim(),
+    gallery: Array.isArray(row.gallery) ? row.gallery.filter(Boolean) : [],
+    videos: Array.isArray(row.videos) ? row.videos.filter(Boolean) : [],
     description: row.description || '',
     descriptionEn: row.description_en || '',
     sizes: row.sizes || [],

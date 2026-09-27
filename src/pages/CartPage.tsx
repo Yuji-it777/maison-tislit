@@ -47,7 +47,7 @@ export default function CartPage() {
             <div key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
               className="bg-white rounded-xl overflow-hidden shadow-sm flex gap-0">
               <div className="w-28 sm:w-36 flex-shrink-0">
-                <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={224} height={280} className="w-full h-full object-cover" style={{ minHeight: 140 }} />
+                <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={224} height={280} className="w-full h-full object-contain" style={{ minHeight: 140 }} />
               </div>
               <div className="flex-1 p-5 flex flex-col justify-between">
                 <div>

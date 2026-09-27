@@ -357,20 +357,30 @@ function StockSection() {
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [form, setForm] = useState({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' });
+  const [galleryInput, setGalleryInput] = useState('');
+  const [videoInput, setVideoInput] = useState('');
+  const [form, setForm] = useState({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '', gallery: [] as string[], videos: [] as string[] });
 
   useEffect(() => { getProducts().then(setProducts).catch(() => {}); }, []);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: 'image' | 'gallery' | 'video' = 'image') => {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
     setUploading(true);
     try {
-      const path = `products/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-      const { error } = await supabase.storage.from('product-images').upload(path, file, { upsert: false });
-      if (error) throw error;
-      const { data } = supabase.storage.from('product-images').getPublicUrl(path);
-      setForm(f => ({ ...f, image: data.publicUrl }));
+      const urls: string[] = [];
+      for (const [index, file] of files.entries()) {
+        const path = `products/${Date.now()}-${index}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+        const { error } = await supabase.storage.from('product-images').upload(path, file, { upsert: false });
+        if (error) throw error;
+        const { data } = supabase.storage.from('product-images').getPublicUrl(path);
+        urls.push(data.publicUrl);
+      }
+      setForm(f => target === 'gallery'
+        ? { ...f, gallery: [...f.gallery, ...urls] }
+        : target === 'video'
+          ? { ...f, videos: [...f.videos, ...urls] }
+          : { ...f, image: urls[0] });
     } catch (err: any) {
       alert(err.message || 'Upload failed');
     } finally {
@@ -379,17 +389,39 @@ function StockSection() {
     }
   };
 
+  const addGalleryImage = (value?: string) => {
+    const url = (value ?? galleryInput).trim();
+    if (!url) return;
+    setForm(f => (f.gallery.includes(url) ? f : { ...f, gallery: [...f.gallery, url] }));
+    setGalleryInput('');
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setForm(f => ({ ...f, gallery: f.gallery.filter((_, i) => i !== index) }));
+  };
+
+  const addVideo = (value?: string) => {
+    const url = (value ?? videoInput).trim();
+    if (!url) return;
+    setForm(f => (f.videos.includes(url) ? f : { ...f, videos: [...f.videos, url] }));
+    setVideoInput('');
+  };
+
+  const removeVideo = (index: number) => {
+    setForm(f => ({ ...f, videos: f.videos.filter((_, i) => i !== index) }));
+  };
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     return products.filter(p => p.name.toLowerCase().includes(q) && (!catFilter || p.category === catFilter));
   }, [products, search, catFilter]);
 
-  const openAdd = () => { setEditId(null); setForm({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '' }); setShowModal(true); };
-  const openEdit = (p: ProductRow) => { setEditId(p.id); setForm({ name: p.name, name_en: p.name_en, category: p.category, price: p.price, stock: p.stock, description: p.description, description_en: p.description_en, sizes: p.sizes.join(', '), colors: p.colors.join(', '), badge: p.badge || '', image: p.image }); setShowModal(true); };
+  const openAdd = () => { setEditId(null); setGalleryInput(''); setVideoInput(''); setForm({ name: '', name_en: '', category: 'djellaba', price: 0, stock: 0, description: '', description_en: '', sizes: '', colors: '', badge: '', image: '', gallery: [], videos: [] }); setShowModal(true); };
+  const openEdit = (p: ProductRow) => { setEditId(p.id); setGalleryInput(''); setVideoInput(''); setForm({ name: p.name, name_en: p.name_en, category: p.category, price: p.price, stock: p.stock, description: p.description, description_en: p.description_en, sizes: p.sizes.join(', '), colors: p.colors.join(', '), badge: p.badge || '', image: p.image, gallery: Array.isArray(p.gallery) ? p.gallery : [], videos: Array.isArray(p.videos) ? p.videos : [] }); setShowModal(true); };
 
   const saveProduct = async () => {
     if (!form.name.trim()) return alert('Nom requis');
-    const data = { ...form, price: Number(form.price), stock: Number(form.stock), sizes: form.sizes.split(',').map(s => s.trim()).filter(Boolean), colors: form.colors.split(',').map(s => s.trim()).filter(Boolean), badge: form.badge || null };
+    const data = { ...form, price: Number(form.price), stock: Number(form.stock), sizes: form.sizes.split(',').map(s => s.trim()).filter(Boolean), colors: form.colors.split(',').map(s => s.trim()).filter(Boolean), badge: form.badge || null, gallery: form.gallery.map(s => s.trim()).filter(Boolean), videos: form.videos.map(s => s.trim()).filter(Boolean) };
     try {
       if (editId !== null) {
         const existing = products.find(p => p.id === editId);
@@ -403,7 +435,12 @@ function StockSection() {
       }
       setShowModal(false);
     } catch (err: any) {
-      alert(err.message || 'Save failed');
+      const message: string = err?.message || 'Save failed';
+      // Migrations 00029 (gallery) and 00030 (videos) add product columns;
+      // PostgREST reports a missing column as a cryptic schema-cache error, so
+      alert(/gallery|video/i.test(message) && /schema cache|does not exist/i.test(message)
+        ? `${message}\n\nRun ${/video/i.test(message) ? 'supabase/migrations/00030_product_videos.sql' : 'supabase/migrations/00029_product_gallery.sql'} in the Supabase SQL Editor, then save again.`
+        : message);
     }
   };
 
@@ -441,7 +478,15 @@ function StockSection() {
           <tbody>
             {filtered.map(p => (
               <tr key={p.id} className="border-b border-stone-50 hover:bg-stone-50/50 transition-colors">
-                <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>{p.name}</td>
+                <td className="py-2.5 pr-3 font-medium" style={{ color: '#555' }}>
+                  {p.name}
+                  {(p.gallery?.length ?? 0) > 0 && (
+                    <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded" style={{ background: '#faf8f5', color: GOLD, border: '0.5px solid #e8e2d8' }}>+{p.gallery?.length}</span>
+                  )}
+                  {(p.videos?.length ?? 0) > 0 && (
+                    <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded" style={{ background: '#faf8f5', color: GOLD, border: '0.5px solid #e8e2d8' }}>&#9654; {p.videos?.length}</span>
+                  )}
+                </td>
                 <td className="py-2.5 pr-3"><Badge variant="info">{p.category}</Badge></td>
                 <td className="py-2.5 pr-3" style={{ color: '#555' }}>{Number(p.price).toLocaleString('fr-FR')} MAD</td>
                 <td className="py-2.5 pr-3 text-sm" style={{ color: '#777' }}>{p.stock}</td>
@@ -489,8 +534,82 @@ function StockSection() {
                 </label>
               </div>
               {form.image && (
-                <img src={form.image} alt="preview" className="mt-2 w-16 h-20 object-cover rounded-lg" />
+                <img src={form.image} alt="preview" className="mt-2 w-16 h-20 object-contain bg-stone-100 rounded-lg" />
               )}
+            </div>
+            <div className="mb-3">
+              <label className="text-xs" style={{ color: '#999' }}>Gallery — extra photos ({form.gallery.length})</label>
+              {form.gallery.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                  {form.gallery.map((src, i) => (
+                    <div key={`${src}-${i}`} className="relative">
+                      <img src={src} alt="" className="w-16 h-20 object-contain bg-stone-100 rounded-lg" style={{ border: '1px solid #f0f0f0' }} />
+                      <button
+                        type="button"
+                        onClick={() => removeGalleryImage(i)}
+                        aria-label={`Remove gallery image ${i + 1}`}
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center shadow-sm hover:opacity-90"
+                        style={{ background: DARK, border: 'none' }}
+                      >
+                        <I d={icons.x} size={11} color={GOLD} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex items-center gap-2 mt-1.5">
+                <input
+                  value={galleryInput}
+                  onChange={e => setGalleryInput(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addGalleryImage(); } }}
+                  className="flex-1 px-3 py-2 text-sm rounded-lg focus:outline-none"
+                  style={{ border: '1px solid #e5e5e5' }}
+                  placeholder="/images/your-image.jpg"
+                />
+                <button type="button" onClick={() => addGalleryImage()} className="flex-shrink-0 px-3 py-2 text-xs rounded-lg transition-colors hover:opacity-80" style={{ border: '1px solid #e5e5e5', color: '#666', background: '#fff' }}>Add</button>
+                <label className="flex-shrink-0 px-3 py-2 text-xs rounded-lg cursor-pointer transition-colors hover:opacity-90" style={{ background: DARK, color: GOLD, border: 'none' }}>
+                  {uploading ? 'Uploading...' : 'Upload'}
+                  <input type="file" accept="image/*" multiple onChange={e => handleUpload(e, 'gallery')} disabled={uploading} className="hidden" />
+                </label>
+              </div>
+              <p className="mt-1.5 text-[10px]" style={{ color: '#bbb' }}>Shown as a thumbnail strip on the product page, after the cover image.</p>
+            </div>
+            <div className="mb-3">
+              <label className="text-xs" style={{ color: '#999' }}>Videos — mp4 clips ({form.videos.length})</label>
+              {form.videos.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                  {form.videos.map((src, i) => (
+                    <div key={`${src}-${i}`} className="relative">
+                      <video src={`${src}#t=0.1`} preload="metadata" muted playsInline className="w-16 h-20 object-contain bg-stone-100 rounded-lg" style={{ border: '1px solid #f0f0f0' }} />
+                      <button
+                        type="button"
+                        onClick={() => removeVideo(i)}
+                        aria-label={`Remove video ${i + 1}`}
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center shadow-sm hover:opacity-90"
+                        style={{ background: DARK, border: 'none' }}
+                      >
+                        <I d={icons.x} size={11} color={GOLD} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex items-center gap-2 mt-1.5">
+                <input
+                  value={videoInput}
+                  onChange={e => setVideoInput(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addVideo(); } }}
+                  className="flex-1 px-3 py-2 text-sm rounded-lg focus:outline-none"
+                  style={{ border: '1px solid #e5e5e5' }}
+                  placeholder="/images/HERO.mp4 or a Storage URL"
+                />
+                <button type="button" onClick={() => addVideo()} className="flex-shrink-0 px-3 py-2 text-xs rounded-lg transition-colors hover:opacity-80" style={{ border: '1px solid #e5e5e5', color: '#666', background: '#fff' }}>Add</button>
+                <label className="flex-shrink-0 px-3 py-2 text-xs rounded-lg cursor-pointer transition-colors hover:opacity-90" style={{ background: DARK, color: GOLD, border: 'none' }}>
+                  {uploading ? 'Uploading...' : 'Upload video'}
+                  <input type="file" accept="video/mp4,video/webm" multiple onChange={e => handleUpload(e, 'video')} disabled={uploading} className="hidden" />
+                </label>
+              </div>
+              <p className="mt-1.5 text-[10px]" style={{ color: '#bbb' }}>Keep clips short (10-20s, under 20 MB). They play in the big frame with a play badge on the thumbnail.</p>
             </div>
             <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Description (FR)</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none resize-y" style={{ border: '1px solid #e5e5e5' }} /></div>
             <div className="grid grid-cols-2 gap-3 mb-3">

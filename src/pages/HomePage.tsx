@@ -284,7 +284,7 @@ export default function HomePage() {
                     src={product.image}
                     alt={productAlt(product, locale)}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                   />
                   {product.badge && product.badge !== 'Promo' && (
                     <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1 rounded-full tracking-wider">

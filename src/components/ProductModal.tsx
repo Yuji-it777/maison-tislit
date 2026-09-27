@@ -5,6 +5,8 @@ import { Product } from '../types';
 import { useApp, MAD_PER_EUR } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
 import { productAlt } from '../utils/productAlt';
+import { productMedia, mediaKindIndexes } from '../utils/productMedia';
+import { Play } from 'lucide-react';
 import SizeGuide from './SizeGuide';
 import StarRating from './StarRating';
 import SEO from './SEO';
@@ -22,6 +24,7 @@ export default function ProductModal({ product, onClose }: Props) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [quantity, setQuantity] = useState(1);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [mediaIndex, setMediaIndex] = useState(0);
   const [customMeasurements, setCustomMeasurements] = useState({
     shoulders: '', bust: '', waist: '', hips: '', length: ''
   });
@@ -34,7 +37,12 @@ export default function ProductModal({ product, onClose }: Props) {
 
   useEffect(() => { fetchProductReviews(product.id); }, [product.id, fetchProductReviews]);
 
+  useEffect(() => { setMediaIndex(0); }, [product.id]);
+
   const outOfStock = product.stock <= 0;
+  const media = productMedia(product);
+  const mediaNumbers = mediaKindIndexes(media);
+  const activeMedia = media[mediaIndex] ?? { type: 'photo' as const, src: product.image };
 
   const avgRating = productReviews.length
     ? Math.round((productReviews.reduce((s, r) => s + r.rating, 0) / productReviews.length) * 10) / 10
@@ -84,18 +92,64 @@ export default function ProductModal({ product, onClose }: Props) {
         <div className="min-h-full flex items-center justify-center p-4 py-8">
         <div className="bg-white max-w-4xl w-full" onClick={e => e.stopPropagation()}>
           <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="relative aspect-[3/4] md:aspect-auto md:min-h-[500px] bg-stone-100 overflow-hidden">
-              <img src={product.image} alt={productAlt(product, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-cover" />
-              {product.badge && (
-                <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
-                  {product.badge}
-                </span>
-              )}
-              {outOfStock && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase">
-                    {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
+            <div className="bg-stone-100 md:min-h-[500px] flex flex-col">
+              <div className="relative flex-1 aspect-[3/4] md:aspect-auto overflow-hidden">
+                {activeMedia.type === 'video' ? (
+                  <video
+                    key={activeMedia.src}
+                    src={activeMedia.src}
+                    controls
+                    autoPlay
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <img src={activeMedia.src} alt={productAlt(product, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-contain" />
+                )}
+                {product.badge && (
+                  <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
+                    {product.badge}
                   </span>
+                )}
+                {outOfStock && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase">
+                      {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {media.length > 1 && (
+                <div role="group" aria-label={t('product.mediaGroup')} className="flex gap-2 p-3 overflow-x-auto">
+                  {media.map((item, i) => (
+                    <button
+                      key={`${item.src}-${i}`}
+                      type="button"
+                      onClick={() => setMediaIndex(i)}
+                      aria-label={item.type === 'video'
+                        ? `${t('product.videoLabel')} ${mediaNumbers[i]}: ${locale === 'en' && product.nameEn ? product.nameEn : product.name}`
+                        : `${t('product.photoLabel')} ${mediaNumbers[i]}: ${locale === 'en' && product.nameEn ? product.nameEn : product.name}`}
+                      aria-current={i === mediaIndex}
+                      className={`relative w-14 aspect-[3/4] flex-shrink-0 overflow-hidden border transition-all ${
+                        i === mediaIndex
+                          ? 'border-brand ring-1 ring-brand'
+                          : 'border-stone-200 opacity-80 hover:opacity-100 hover:border-stone-400'
+                      }`}
+                    >
+                      {item.type === 'video' ? (
+                        <>
+                          <video src={`${item.src}#t=0.1`} preload="metadata" muted playsInline className="w-full h-full object-contain bg-stone-100" />
+                          <span className="absolute inset-0 flex items-center justify-center bg-stone-900/30" aria-hidden="true">
+                            <Play size={14} className="text-white" />
+                          </span>
+                        </>
+                      ) : (
+                        <img src={item.src} alt="" width={56} height={75} loading="lazy" className="w-full h-full object-contain bg-stone-100" />
+                      )}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -326,7 +380,7 @@ export default function ProductModal({ product, onClose }: Props) {
                     className="group text-left"
                   >
                     <div className="aspect-[3/4] bg-stone-100 overflow-hidden mb-2">
-                      <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && r.nameEn ? r.nameEn : r.name}</p>
                     <p className="text-xs text-stone-500">{formatPrice(r.price)}</p>

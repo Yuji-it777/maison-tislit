@@ -323,6 +323,10 @@ const nl = {
   'product.notFound': 'Product niet gevonden',
   'product.notFoundMessage': 'Dit product is mogelijk verwijderd of de link is onjuist.',
   'product.backToShop': 'Terug naar de winkel',
+  'product.mediaGroup': "Productfoto's en video's",
+  'product.photoLabel': 'Foto',
+  'product.videosGroup': "Productvideo's",
+  'product.videoLabel': 'Video',
 
   // About page
   'about.heroTagline': 'Geweven in traditie, gedragen met elegantie',

@@ -324,6 +324,10 @@ const en = {
   'product.notFound': 'Product not found',
   'product.notFoundMessage': 'This product may have been removed or the link is incorrect.',
   'product.backToShop': 'Back to shop',
+  'product.mediaGroup': 'Product photos and videos',
+  'product.photoLabel': 'Photo',
+  'product.videosGroup': 'Product videos',
+  'product.videoLabel': 'Video',
 
   // About page
   'about.heroTagline': 'Woven in Tradition, Worn with Elegance',

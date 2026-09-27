@@ -5,7 +5,12 @@ export interface Product {
   nameEn: string;
   category: 'djellaba' | 'takchita' | 'gandoura' | 'Caftan' | 'Jabador' | 'Accessoire';
   price: number;
+  /** Cover photo — used by shop cards, cart, checkout, wishlist and og:image. */
   image: string;
+  /** Additional photos beyond the cover, shown as a thumbnail strip. */
+  gallery?: string[];
+  /** Short product clips (mp4/webm), shown after the photos in the same strip. */
+  videos?: string[];
   description: string;
   descriptionEn: string;
   sizes: string[];

@@ -218,7 +218,7 @@ export default function CheckoutPage() {
               <div className="border-t border-stone-100 pt-4 mb-6 space-y-3">
                 {cart.map(item => (
                   <div key={`${item.id}-${item.selectedSize}`} className="flex items-center gap-3 text-sm">
-                    <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={48} height={56} className="w-12 h-14 object-cover flex-shrink-0" />
+                    <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={48} height={56} className="w-12 h-14 object-contain flex-shrink-0 bg-stone-100" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-semibold text-stone-700 truncate">{item.name}</p>
                       <p className="text-xs text-stone-400">{item.selectedSize} • {item.selectedColor} × {item.quantity}</p>
@@ -298,7 +298,7 @@ export default function CheckoutPage() {
             <div className="space-y-4 mb-5">
               {cart.map(item => (
                 <div key={`${item.id}-${item.selectedSize}`} className="flex gap-3">
-                  <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={56} height={64} className="w-14 h-16 object-cover flex-shrink-0" />
+                  <img src={item.image} alt={productAlt(item, locale)} loading="lazy" width={56} height={64} className="w-14 h-16 object-contain flex-shrink-0 bg-stone-100" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold text-stone-700 truncate">{item.name}</p>
                     <p className="text-xs text-stone-400">{item.selectedSize} • {item.selectedColor}</p>

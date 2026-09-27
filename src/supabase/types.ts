@@ -5,6 +5,9 @@ export interface ProductRow {
   category: string;
   price: number;
   image: string;
+  gallery: string[];
+  /** Nullable: migration 00030 adds the column without a NOT NULL default. */
+  videos: string[] | null;
   description: string;
   description_en: string;
   sizes: string[];

@@ -13,6 +13,9 @@ import { SITE_URL } from '../config';
 import { categoryByDbValue } from '../config/categories';
 import { productMaterial } from '../utils/productMaterial';
 import { productAlt } from '../utils/productAlt';
+import { productPhotos, absolutePhotoUrl } from '../utils/productPhotos';
+import { productMedia, mediaKindIndexes } from '../utils/productMedia';
+import { Play } from 'lucide-react';
 import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
 
 function mapRow(row: ProductRow): Product {
@@ -24,6 +27,8 @@ function mapRow(row: ProductRow): Product {
     category: row.category as Product['category'],
     price: row.price ?? 150,
     image: (row.image || '').trim(),
+    gallery: Array.isArray(row.gallery) ? row.gallery.filter(Boolean) : [],
+    videos: Array.isArray(row.videos) ? row.videos.filter(Boolean) : [],
     description: row.description || '',
     descriptionEn: row.description_en || '',
     sizes: row.sizes || [],
@@ -67,6 +72,7 @@ export default function ProductDetailPage() {
   const [customMeasurements, setCustomMeasurements] = useState({
     shoulders: '', bust: '', waist: '', hips: '', length: ''
   });
+  const [mediaIndex, setMediaIndex] = useState(0);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [newRating, setNewRating] = useState(0);
   const [newComment, setNewComment] = useState('');
@@ -76,6 +82,7 @@ export default function ProductDetailPage() {
     if (product) {
       setSelectedSize(product.sizes[0] || '');
       setSelectedColor(product.colors[0]);
+      setMediaIndex(0);
       fetchProductReviews(product.id);
     }
   }, [product?.id]);
@@ -114,6 +121,10 @@ export default function ProductDetailPage() {
   }
 
   const outOfStock = product.stock <= 0;
+  const photos = productPhotos(product);
+  const media = productMedia(product);
+  const mediaNumbers = mediaKindIndexes(media);
+  const activeMedia = media[mediaIndex] ?? { type: 'photo' as const, src: product.image };
   const productReviews = reviews.filter(r => r.productId === product.id);
   const avgRating = productReviews.length
     ? Math.round((productReviews.reduce((s, r) => s + r.rating, 0) / productReviews.length) * 10) / 10
@@ -131,7 +142,7 @@ export default function ProductDetailPage() {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: productName,
-    image: [`${SITE_URL}${product.image}`],
+    image: photos.map(absolutePhotoUrl),
     description: productDesc,
     sku: String(product.id),
     brand: { '@type': 'Brand', name: 'Maison Tislit' },
@@ -208,18 +219,68 @@ export default function ProductDetailPage() {
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 md:p-10">
-          <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
-            <img src={product.image} alt={productAlt(product, locale)} width={600} height={800} className="w-full h-full object-cover" />
-            {product.badge && (
-              <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
-                {product.badge}
-              </span>
-            )}
-            {outOfStock && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase">
-                  {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
+          <div>
+            <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
+              {activeMedia.type === 'video' ? (
+                <video
+                  key={activeMedia.src}
+                  src={activeMedia.src}
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <img src={activeMedia.src} alt={productAlt(product, locale)} width={600} height={800} className="w-full h-full object-contain" />
+              )}
+              {product.badge && (
+                <span className="absolute top-4 left-4 bg-brand text-white text-xs font-semibold px-3 py-1">
+                  {product.badge}
                 </span>
+              )}
+              {outOfStock && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <span className="bg-white text-stone-800 text-sm font-bold px-6 py-3 tracking-widest uppercase">
+                    {locale === 'en' ? 'Out of Stock' : 'Uitverkocht'}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {media.length > 1 && (
+              <div
+                role="group"
+                aria-label={t('product.mediaGroup')}
+                className="flex gap-2 sm:gap-3 mt-3 overflow-x-auto pb-1"
+              >
+                {media.map((item, i) => (
+                  <button
+                    key={`${item.src}-${i}`}
+                    type="button"
+                    onClick={() => setMediaIndex(i)}
+                    aria-label={item.type === 'video'
+                      ? `${t('product.videoLabel')} ${mediaNumbers[i]}: ${productName}`
+                      : `${t('product.photoLabel')} ${mediaNumbers[i]}: ${productName}`}
+                    aria-current={i === mediaIndex}
+                    className={`relative w-16 sm:w-20 aspect-[3/4] flex-shrink-0 overflow-hidden border transition-all ${
+                      i === mediaIndex
+                        ? 'border-brand ring-1 ring-brand'
+                        : 'border-stone-200 opacity-80 hover:opacity-100 hover:border-stone-400'
+                    }`}
+                  >
+                    {item.type === 'video' ? (
+                      <>
+                        <video src={`${item.src}#t=0.1`} preload="metadata" muted playsInline className="w-full h-full object-contain bg-stone-100" />
+                        <span className="absolute inset-0 flex items-center justify-center bg-stone-900/30" aria-hidden="true">
+                          <Play size={16} className="text-white" />
+                        </span>
+                      </>
+                    ) : (
+                      <img src={item.src} alt="" width={80} height={107} loading="lazy" className="w-full h-full object-contain bg-stone-100" />
+                    )}
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -444,7 +505,7 @@ export default function ProductDetailPage() {
                   className="group bg-white overflow-hidden transition-all duration-300"
                 >
                   <div className="aspect-[3/4] bg-stone-100 overflow-hidden">
-                    <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={r.image} alt={productAlt(r, locale)} loading="lazy" width={600} height={800} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-3">
                     <p className="text-xs font-medium text-stone-700 truncate">{locale === 'en' && r.nameEn ? r.nameEn : r.name}</p>
