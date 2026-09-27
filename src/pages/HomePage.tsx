@@ -67,24 +67,29 @@ export default function HomePage() {
   };
 
   // Tiles link to the indexable category pages (/en/shop/djellaba, ...)
-  const categories = [
+  // objectPosition shifts the 600x400 center-crop window down from the
+  // face so the frame starts at the neck (was cutting heads/necks off).
+  const categories: { slug: string; name: string; description: string; image: string; objectPosition: string }[] = [
     {
       slug: 'djellaba',
       name: 'Djellaba',
       description: t('home.catDjellabaDesc'),
       image: '/images/djellaba1.jpg',
+      objectPosition: '50% 15%',
     },
     {
       slug: 'caftan',
       name: 'Caftan',
       description: t('home.catCaftanDesc'),
-      image: '/images/takchita1.jpg',
+      image: '/images/brides1.jpeg',
+      objectPosition: '50% 22%',
     },
     {
       slug: 'gandoura',
       name: 'Gandoura',
       description: t('home.catGandouraDesc'),
-      image: '/images/gandoura1.jpg',
+      image: '/images/gandoura-bleu-majorelle.jpeg',
+      objectPosition: '50% 12%',
     },
   ];
 
@@ -244,7 +249,8 @@ export default function HomePage() {
                   loading="lazy"
                   width={600}
                   height={400}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover object-[50%_20%]"
+                  style={{ objectPosition: cat.objectPosition }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/50 to-stone-900/30 group-hover:from-stone-950/90 transition-all duration-300" />
                 <div className="relative z-10">
