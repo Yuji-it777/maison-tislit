@@ -3,6 +3,12 @@ import { useLocation } from 'react-router-dom';
 import { useTranslation, stripLocale, localizePath } from '../context/LanguageContext';
 import { SITE_URL } from '../config';
 
+// Admin routes live outside the locale tree; keep them out of locale-aware
+// canonical/hreflang derivation (localizePath already special-cases /admin).
+function isNonLocalizable(pathname: string): boolean {
+  return pathname === '/admin' || pathname.startsWith('/admin/');
+}
+
 interface SEOProps {
   title?: string;
   description?: string;
@@ -22,19 +28,31 @@ export default function SEO({
   productPrice,
   noindex = false,
 }: SEOProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { pathname } = useLocation();
   const siteName = 'Maison Tislit';
-  const fullTitle = title ? `${title} | ${siteName}` : t('seo.homeTitle');
+  // Brand-first titles: "Maison Tislit | Page". If the supplied title already
+  // starts with the brand (e.g. seo.homeTitle), use it verbatim to avoid
+  // "Maison Tislit | Maison Tislit …".
+  const fullTitle = title
+    ? title.startsWith(siteName)
+      ? title
+      : `${siteName} | ${title}`
+    : t('seo.homeTitle');
   const metaDescription = description || t('seo.homeDescription');
   const toAbsoluteUrl = (path: string) =>
     /^https?:\/\//i.test(path) ? path : `${SITE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
   const metaImage = toAbsoluteUrl(image || '/images/hero-bg.webp');
 
+  // Self-referencing canonical, absolute URL. Explicit `url` prop wins (product
+  // pages); otherwise derive from the current location, normalized to the
+  // canonical (slashed, locale-prefixed) form — query strings are dropped so
+  // /en/shop?ref=x and /en/shop share one canonical, matching prerender.mjs.
   const canonical =
-    url || (typeof window !== 'undefined'
-      ? `${SITE_URL}${window.location.pathname}${window.location.search}`
-      : SITE_URL);
+    url ||
+    (isNonLocalizable(pathname)
+      ? `${SITE_URL}${pathname}`
+      : `${SITE_URL}${localizePath(stripLocale(pathname), locale)}`);
 
   const basePath = stripLocale(pathname);
   const alternateHref = (l: 'en' | 'nl') => `${SITE_URL}${localizePath(basePath, l)}`;
@@ -46,7 +64,7 @@ export default function SEO({
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       <link rel="canonical" href={canonical} />
 
-      {/* hreflang alternates (indexable pages only) — array, not fragment: react-helmet-async drops fragments */}
+      {/* hreflang alternates (indexable pages only; noindex pages excluded) — array, not fragment: react-helmet-async drops fragments */}
       {!noindex && [
         <link key="alt-en" rel="alternate" hrefLang="en" href={alternateHref('en')} />,
         <link key="alt-nl" rel="alternate" hrefLang="nl" href={alternateHref('nl')} />,

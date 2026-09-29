@@ -289,8 +289,8 @@ const en = {
   'badge.collectionSpeciale': 'Special Collection',
 
   // SEO
-  'seo.homeTitle': 'Maison Tislit – Moroccan Feminine Fashion',
-  'seo.homeDescription': 'Maison Tislit celebrates the heritage of Moroccan feminine clothing — artisanal djellabas, caftans, and gandouras. Discover our 2027 collection.',
+  'seo.homeTitle': 'Maison Tislit | Moroccan Kaftans, Takchitas, Gandouras & Djellabas',
+  'seo.homeDescription': 'Maison Tislit — luxury Moroccan women\u2019s fashion. Handmade kaftans, takchitas, gandouras and djellabas, crafted by artisans. Worldwide shipping from the Netherlands.',
   'seo.shopTitle': 'Shop Our Collection',
   'seo.shopDescription': 'Discover our curated collection of authentic Moroccan djellabas, caftans, and gandouras — handmade by expert artisans.',
   // Category pages (/shop/djellaba etc.) — unique per-category copy

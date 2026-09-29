@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
-import { useApp, MAD_PER_EUR } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
 import { productAlt, productName, productDescription } from '../utils/productAlt';
 import { productMedia, mediaKindIndexes } from '../utils/productMedia';
 import { Play } from 'lucide-react';
 import SizeGuide from './SizeGuide';
 import StarRating from './StarRating';
-import SEO from './SEO';
 
 interface Props {
   product: Product;
@@ -76,15 +75,10 @@ export default function ProductModal({ product, onClose }: Props) {
 
   const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
+  // NOTE: no <SEO> here — this is a quick-view overlay on /shop, not a page.
+  // Rendering one would overwrite the shop page's title/canonical while open.
   return createPortal(
     <>
-      <SEO
-        title={productName(product, locale)}
-        description={productDescription(product, locale)}
-        image={product.image}
-        type="product"
-        productPrice={(product.price / MAD_PER_EUR).toFixed(2)}
-      />
       <div
         className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm overflow-y-auto"
         onClick={e => { if (e.target === e.currentTarget) onClose(); }}

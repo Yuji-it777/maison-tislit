@@ -1,4 +1,17 @@
 User-agent: *
 Allow: /
 
+# Private / no-index areas (also noindexed via meta robots on those pages)
+Disallow: /admin
+
+# Cart & checkout flow - no unique content, noindexed via meta robots.
+# NOTE: robots.txt matches by prefix, so locale-prefixed routes are listed
+# explicitly (unprefixed forms are redirects to these).
+Disallow: /cart
+Disallow: /checkout
+Disallow: /en/cart
+Disallow: /en/checkout
+Disallow: /nl/cart
+Disallow: /nl/checkout
+
 Sitemap: https://maisontislit.com/sitemap.xml
