@@ -2,7 +2,12 @@
 # https://developers.cloudflare.com/pages/configuration/
 
 [build]
-  command = "npx playwright install chromium --with-deps && npm run build:seo"
+  # NOTE: Cloudflare Pages does not read this file — enter these values in the
+  # dashboard (Settings → Build & deployments). They live here as documentation.
+  # --with-deps was removed: it runs apt-get with sudo, which the Cloudflare build
+  # image does not allow. The image already ships the system libraries Chromium
+  # needs, so installing the browser alone is enough.
+  command = "npm run build:cf"
   destination = "dist"
 
 [build.environment]

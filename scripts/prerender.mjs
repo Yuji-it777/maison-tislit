@@ -176,7 +176,10 @@ async function waitForServer(timeoutMs = 30000) {
   fail('vite preview did not start in time');
 }
 
-const browser = await chromium.launch();
+// CI-safe launch flags: the Cloudflare Pages build image runs builds without root
+// (no sudo for --with-deps) and may expose a small /dev/shm. --no-sandbox and
+// --disable-dev-shm-usage are standard for containers; harmless locally.
+const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 let exitCode = 0;
 
 try {
