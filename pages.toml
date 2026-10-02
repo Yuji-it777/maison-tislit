@@ -1,0 +1,17 @@
+# Cloudflare Pages build configuration
+# https://developers.cloudflare.com/pages/configuration/
+
+[build]
+  command = "npx playwright install chromium --with-deps && npm run build:seo"
+  destination = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # All VITE_ env vars must be set in Cloudflare Pages dashboard:
+  # Settings → Environment Variables → Production
+  # Required:
+  #   VITE_SUPABASE_URL
+  #   VITE_SUPABASE_ANON_KEY
+  #   VITE_TURNSTILE_SITE_KEY
+  #   VITE_SITE_URL = https://maisontislit.com
+  #   VITE_WHATSAPP_NUMBER = 31620813588

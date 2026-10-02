@@ -1,0 +1,45 @@
+# Maison Tislit — Cloudflare Pages redirects
+# Mirrors netlify.toml redirect rules.
+# Format: /from  /to  status
+
+# --- 301s: unprefixed URLs -> default locale ---
+/  /en/  301
+/shop  /en/shop/  301
+/product/:slug  /en/product/:slug/  301
+/about  /en/about/  301
+/contact  /en/contact/  301
+/cart  /en/cart/  301
+/login  /en/login/  301
+/checkout  /en/checkout/  301
+/confirmation  /en/confirmation/  301
+/account  /en/account/  301
+/shipping  /en/shipping/  301
+/returns  /en/returns/  301
+
+# --- 301s: removed "-2" duplicate product pages -> real counterparts ---
+/:locale/product/emerald-royal-djellaba-2  /:locale/product/emerald-royal-djellaba/  301
+/:locale/product/blue-safira-djellaba-2  /:locale/product/blue-safira-djellaba/  301
+/:locale/product/nour-al-qamar-takchita-2  /:locale/product/nour-al-qamar-caftan/  301
+/:locale/product/enchanted-rosa-takchita-2  /:locale/product/enchanted-rosa-caftan/  301
+/:locale/product/bordeaux-sultana-gandoura-2  /:locale/product/royal-sand-gandoura/  301
+/:locale/product/white-jasmine-gandoura-2  /:locale/product/terracotta-satin-gandoura/  301
+/:locale/product/embroidered-royal-caftan-2  /:locale/product/embroidered-royal-caftan/  301
+/:locale/product/fassi-takchita-2  /:locale/product/fassi-caftan/  301
+/:locale/product/silk-jabador-2  /:locale/product/majorelle-blue-gandoura/  301
+/:locale/product/golden-belt-2  /:locale/product/golden-belt/  301
+
+# --- 301s: removed category collections -> surviving ones ---
+/:locale/shop/takchita  /:locale/shop/caftan/  301
+/:locale/shop/jabador  /:locale/shop/djellaba/  301
+
+# --- 301s: renamed product slugs (all eras) ---
+/:locale/product/nour-al-qamar-takchita  /:locale/product/nour-al-qamar-caftan/  301
+/:locale/product/enchanted-rosa-takchita  /:locale/product/enchanted-rosa-caftan/  301
+/:locale/product/fassi-takchita  /:locale/product/fassi-caftan/  301
+/:locale/product/silk-jabador  /:locale/product/majorelle-blue-gandoura/  301
+/:locale/product/bordeaux-sultana-gandoura  /:locale/product/royal-sand-gandoura/  301
+/:locale/product/white-jasmine-gandoura  /:locale/product/terracotta-satin-gandoura/  301
+/:locale/product/silk-gandoura  /:locale/product/majorelle-blue-gandoura/  301
+
+# --- SPA fallback (must be last) ---
+/*  /index.html  200

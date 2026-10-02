@@ -29,6 +29,9 @@ export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoBlocked, setVideoBlocked] = useState(false);
+  // Defer video src injection until after React hydration so STRATO doesn't
+  // stream the MP4 on every initial page load (reduces bandwidth / 503 risk).
+  const [videoReady, setVideoReady] = useState(false);
 
   // Preload hero poster image for fastest LCP (only on this page)
   useEffect(() => {
@@ -41,10 +44,18 @@ export default function HomePage() {
     return () => link.remove();
   }, []);
 
+  // Inject video src only after mount to avoid STRATO streaming the MP4
+  // on every initial page load (reduces bandwidth and 503 risk).
+  useEffect(() => {
+    // Small delay so poster image paints first (LCP), then we load video.
+    const timer = setTimeout(() => setVideoReady(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Handle video autoplay and muting (React bug workaround).
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !videoReady) return;
 
     // React bug workaround: explicitly set muted before playing
     video.defaultMuted = true;
@@ -57,7 +68,7 @@ export default function HomePage() {
         setVideoBlocked(true);
       });
     }
-  }, []);
+  }, [videoReady]);
 
   const playVideo = () => {
     const video = videoRef.current;
@@ -111,17 +122,19 @@ export default function HomePage() {
           height={1080}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Video plays automatically */}
+        {/* Video — src injected after mount so STRATO doesn't stream it on every
+             initial request. Poster image covers the gap while video loads. */}
         <video
           ref={videoRef}
           muted
           loop
           playsInline
           autoPlay
+          preload="none"
           poster="/images/hero-bg.webp"
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/images/HERO.mp4" type="video/mp4" />
+          {videoReady && <source src="/images/HERO.mp4" type="video/mp4" />}
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-stone-900/50 to-transparent"         />
 
