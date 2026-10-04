@@ -293,8 +293,8 @@ const nl = {
   'badge.collectionSpeciale': 'Speciale Collectie',
 
   // SEO
-  'seo.homeTitle': 'Maison Tislit | Marokkaanse Kaftans, Takchita\u2019s, Gandoura\u2019s & Djellaba\u2019s',
-  'seo.homeDescription': 'Maison Tislit — luxueuze Marokkaanse damesmode. Handgemaakte kaftans, takchita\u2019s, gandoura\u2019s en djellaba\u2019s, vervaardigd door ambachtslieden. Wereldwijde verzending vanuit Nederland.',
+  'seo.homeTitle': 'Maison Tislit | Marokkaanse Kaftans, Gandoura\u2019s & Djellaba\u2019s',
+  'seo.homeDescription': 'Maison Tislit — luxueuze Marokkaanse damesmode. Handgemaakte kaftans, gandoura\u2019s en djellaba\u2019s, vervaardigd door ambachtslieden. Wereldwijde verzending vanuit Nederland.',
   'seo.shopTitle': 'Onze Collectie',
   'seo.shopDescription': 'Ontdek onze gecureerde collectie authentieke Marokkaanse djellaba\u2019s, kaftans en gandoura\u2019s — met de hand gemaakt door deskundige ambachtslieden.',
   // Categoriepagina's (/shop/djellaba enz.) — unieke teksten per categorie
