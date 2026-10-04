@@ -34,21 +34,22 @@
         https://www.google-analytics.com;
       media-src 'self' https://*.supabase.co https://res.cloudinary.com;
     ">
-    <!-- Google Analytics 4. Loads only on the production host so local dev,
-         previews, and the prerender crawler (localhost) send no hits. -->
+    <!-- Google Consent Mode v2 defaults: everything denied until the visitor
+         accepts in the cookie banner. The GA library itself is only injected
+         after Accept (see src/utils/analytics.ts), so no Google request fires
+         before consent. This stub never touches the network. -->
     <script>
-      (function () {
-        if (!/(^|\.)maisontislit\.com$/.test(window.location.hostname)) return;
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { window.dataLayer.push(arguments); }
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', 'G-K1GHXHZCEX');
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-K1GHXHZCEX';
-        document.head.appendChild(s);
-      })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted'
+      });
     </script>
     <!-- Favicons: shown in browser tabs, bookmarks, and Google Search results -->
     <!-- favicon.ico: universally requested by browsers, crawlers, and Search Console -->

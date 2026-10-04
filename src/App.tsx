@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect, useReducer, useRef } from 'react';
 import { Routes, Route, Navigate, useLocation, useParams, Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AppProvider } from './context/AppContext';
@@ -7,6 +7,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import Toast from './components/Toast';
+import CookieConsent from './components/CookieConsent';
+import { isGaLoaded, onGaLoaded } from './utils/analytics';
 // HomePage is always the landing page — keep it eager to avoid an extra lazy-load waterfall
 import HomePage from './pages/HomePage';
 
@@ -40,19 +42,21 @@ declare global {
   }
 }
 
-/** Sends a GA4 page_view on every client-side navigation. The initial page
- *  load is already reported by the gtag config in index.html, so the first
- *  render is skipped to avoid double counting. No-op where GA never loaded
- *  (local dev, prerender, or non-production hosts). */
+/** Sends a GA4 page_view on every client-side navigation, but only after the
+ *  GA library has loaded (i.e. after cookie Accept). The gtag config call on
+ *  load already reports the current page, so the first event after load is
+ *  skipped to avoid double counting. */
 function PageViewTracker() {
   const { pathname, search } = useLocation();
-  const firstRender = useRef(true);
+  const [, force] = useReducer(x => x + 1, 0);
+  const firstAfterLoad = useRef(true);
+  useEffect(() => onGaLoaded(force), []);
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
+    if (!isGaLoaded() || typeof window.gtag !== 'function') return;
+    if (firstAfterLoad.current) {
+      firstAfterLoad.current = false;
       return;
     }
-    if (typeof window.gtag !== 'function') return;
     window.gtag('event', 'page_view', {
       page_path: pathname + search,
       page_location: window.location.href,
@@ -153,6 +157,7 @@ function AppContent() {
       </main>
       {showNavFooter && <Footer />}
       <Toast />
+      <CookieConsent />
     </div>
   );
 }

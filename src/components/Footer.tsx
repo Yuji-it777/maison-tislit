@@ -151,7 +151,14 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-stone-800 pt-6 text-center text-xs text-stone-600">
-          {t('footer.copyright')}
+          <div>{t('footer.copyright')}</div>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event('mt:cookie-reset'))}
+            className="mt-2 underline hover:text-brand transition-colors"
+          >
+            {t('footer.cookies')}
+          </button>
         </div>
       </div>
     </footer>
