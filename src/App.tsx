@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useLocation, useParams, Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AppProvider } from './context/AppContext';
@@ -30,6 +30,34 @@ import { AdminGuard } from './components/AdminGuard';
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+/** Sends a GA4 page_view on every client-side navigation. The initial page
+ *  load is already reported by the gtag config in index.html, so the first
+ *  render is skipped to avoid double counting. No-op where GA never loaded
+ *  (local dev, prerender, or non-production hosts). */
+function PageViewTracker() {
+  const { pathname, search } = useLocation();
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', 'page_view', {
+      page_path: pathname + search,
+      page_location: window.location.href,
+    });
+  }, [pathname, search]);
   return null;
 }
 
@@ -71,6 +99,7 @@ function AppContent() {
   return (
     <div className="font-sans antialiased" style={{ fontFamily: "'Raleway', sans-serif" }}>
       <ScrollToTop />
+      <PageViewTracker />
       {showNavFooter && <Navbar />}
       <main>
         {/* key={location.key} remounts the wrapper on every navigation, replaying the animation */}
