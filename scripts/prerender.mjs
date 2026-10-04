@@ -2,7 +2,7 @@ import { chromium } from '@playwright/test';
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:net';
 import { readFileSync, existsSync } from 'node:fs';
-import { mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdir, writeFile, rm, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -222,8 +222,12 @@ try {
     const canonicalCount = await page.locator('link[rel="canonical"]').count();
     const hreflangCount = await page.locator('link[rel="alternate"][hreflang]').count();
     const title = await page.title();
-    if (canonicalCount !== 1 || hreflangCount !== 3 || !canonical || !title) {
-      fail(`route ${route}: expected 1 canonical + 3 hreflang + title, got ${canonicalCount} canonical / ${hreflangCount} hreflang / "${title}"`);
+    // The shell carries no static <title> or meta description, so each snapshot
+    // must contain exactly one of each (doubled head tags fail the build).
+    const titleCount = await page.locator('title').count();
+    const descCount = await page.locator('meta[name="description"]').count();
+    if (canonicalCount !== 1 || hreflangCount !== 3 || titleCount !== 1 || descCount !== 1 || !canonical || !title) {
+      fail(`route ${route}: expected 1 canonical + 3 hreflang + 1 title + 1 description, got ${canonicalCount} canonical / ${hreflangCount} hreflang / ${titleCount} title / ${descCount} description / "${title}"`);
     }
     const html = await page.evaluate(() => '<!DOCTYPE html>' + document.documentElement.outerHTML);
     const outFile = path.join(DIST, ...route.split('/').filter(Boolean), 'index.html');
@@ -235,6 +239,26 @@ try {
 
   if (ok !== routes.length) {
     fail(`only ${ok}/${routes.length} routes prerendered — refusing to produce an incomplete build`);
+  }
+
+  // dist/index.html (root) is the SPA fallback shell: `/` itself 301s at the
+  // CDN so its body is never served, but the raw file must still carry a
+  // <title>. Snapshots above are separate files and keep their single Helmet
+  // title untouched.
+  const rootFile = path.join(DIST, 'index.html');
+  const rootHtml = await readFile(rootFile, 'utf8').catch(() => null);
+  // NOTE: match the closing tag — the shell comment above mentions `<title>`
+  // in prose, which must not count as a real title element.
+  if (rootHtml && !/<\/title\s*>/i.test(rootHtml)) {
+    await writeFile(
+      rootFile,
+      rootHtml.replace(
+        /<\/head\s*>/i,
+        '    <title>Maison Tislit | Moroccan Kaftans, Gandouras & Djellabas</title>\n  </head>'
+      ),
+      'utf8'
+    );
+    log('restored fallback <title> on dist/index.html (root shell only)');
   }
 
   await writeFile(path.join(DIST, 'sitemap.xml'), buildSitemap(slugs), 'utf8');

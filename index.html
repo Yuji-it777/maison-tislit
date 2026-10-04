@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maison Tislit | Moroccan Kaftans, Gandouras &amp; Djellabas</title>
-    <meta name="description" content="Maison Tislit — luxury Moroccan women's fashion. Handmade kaftans, gandouras and djellabas crafted by artisans. Worldwide shipping from the Netherlands." />
+    <!-- NOTE: no static <title> or meta description here on purpose. Every route
+         renders exactly one of each via the SEO component (react-helmet-async);
+         a static copy would be served alongside it (doubled head tags). The
+         prerender script restores a fallback title on the root dist/index.html
+         only, and fails the build if any snapshot has != 1 title/description. -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' 'unsafe-inline'
