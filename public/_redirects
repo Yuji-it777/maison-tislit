@@ -41,5 +41,10 @@
 /:locale/product/white-jasmine-gandoura  /:locale/product/terracotta-satin-gandoura/  301
 /:locale/product/silk-gandoura  /:locale/product/majorelle-blue-gandoura/  301
 
+# --- 200 rewrite: /en/shop (slashless) serves snapshot directly, no redirect ---
+# Bypasses Pages native 308 directory normalization for this route only.
+# Applies to all UAs including Googlebot. Must precede the SPA fallback.
+/en/shop  /en/shop/  200
+
 # --- SPA fallback (must be last) ---
 /*  /index.html  200

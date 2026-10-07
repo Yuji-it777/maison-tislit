@@ -14,6 +14,13 @@ RewriteCond %{HTTPS} off [NC]
 RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+# --- 200 rewrite: /en/shop (slashless) serves snapshot directly, no redirect ---
+# Scoped to this route only. Placed before 301s so it wins for this exact path.
+# NOTE: on STRATO mod_dir may still 301 slashless dirs before .htaccess runs;
+# the Cloudflare Pages (_redirects) + Netlify rules above are the effective fix
+# on the live host. Applies to all UAs including Googlebot.
+RewriteRule ^en/shop$ /en/shop/index.html [L]
+
 # --- 301s: unprefixed URLs -> default locale (server-side, passes link equity) ---
 RewriteRule ^$ /en/ [R=301,L]
 RewriteRule ^shop$ /en/shop/ [R=301,L]

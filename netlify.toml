@@ -182,6 +182,15 @@
   status = 200
   force = true
 
+# Rewrite: /en/shop (slashless) serves snapshot directly with 200, no redirect.
+# Mirrors public/_redirects for Cloudflare Pages. Applies to all UAs including
+# Googlebot. Scoped to this route only — other routes unchanged.
+[[redirects]]
+  from = "/en/shop"
+  to = "/en/shop/"
+  status = 200
+  force = true
+
 # SPA fallback: only reached when no static file exists at the path
 # (static files take precedence over non-forced redirects)
 [[redirects]]
