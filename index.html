@@ -3,10 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- SPA fallback shell: noindexed so Google doesn't treat it as a duplicate
-         of /en/. All real content is served from prerendered /en/... snapshots. -->
-    <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href="https://maisontislit.com/en/" />
     <!-- NOTE: no static <title> or meta description here on purpose. Every route
          renders exactly one of each via the SEO component (react-helmet-async);
          a static copy would be served alongside it (doubled head tags). The
