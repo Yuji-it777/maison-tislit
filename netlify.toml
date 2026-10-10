@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:cf"
+  command = "npm run build:seo"
   publish = "dist"
 
 [build.environment]
