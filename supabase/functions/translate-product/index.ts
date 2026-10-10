@@ -1,6 +1,7 @@
 // Supabase Edge Function — translate-product
 // Translates a product's French name + description to English and Dutch.
-// Called by the admin dashboard on every product save (auto-translate).
+// Called by the admin dashboard when the French name/description changed
+// (auto-translate). Price/stock-only saves skip it entirely.
 // Deploy: supabase functions deploy translate-product
 //
 // Body:   { "name": "...", "description": "..." }
@@ -22,28 +23,29 @@ const MAX_LENGTHS = {
   description: 5000,
 } as const;
 
-const ALLOWED_ORIGINS = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://maisontislit.com',
-  'https://www.maisontislit.com',
-];
-
+// Auth is a public anon key sent in headers (no cookies), so reflecting the
+// request origin does not widen any trust boundary — and it keeps the admin
+// working from preview/staging deployments, not just the listed origins.
 function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('origin') || '';
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
-    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   };
 }
 
 /** Translate one text into `target` (auto-detects the source language). */
-async function translate(text: string, target: 'en' | 'nl'): Promise<string> {
+async function translate(text: string, target: 'en' | 'nl', label: string): Promise<string> {
   if (!text.trim()) return '';
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`translate.googleapis.com ${res.status}`);
+  let res: Response;
+  try {
+    // Bound the upstream call: without this a throttled Google endpoint hangs
+    // the admin save until the platform kills the function with no message.
+    res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  } catch (err) {
+    throw new Error(`${label} (${target}): upstream unreachable — ${err instanceof Error ? err.message : err}`);
+  }
+  if (!res.ok) throw new Error(`${label} (${target}): translate.googleapis.com ${res.status}`);
   const data = await res.json();
   // Response shape: [[["segment", "original", ...], ...], ...]
   const segments = Array.isArray(data?.[0]) ? data[0] : [];
@@ -68,10 +70,10 @@ Deno.serve(async (req) => {
     }
 
     const [name_en, name_nl, description_en, description_nl] = await Promise.all([
-      translate(name, 'en'),
-      translate(name, 'nl'),
-      translate(description, 'en'),
-      translate(description, 'nl'),
+      translate(name, 'en', 'name'),
+      translate(name, 'nl', 'name'),
+      translate(description, 'en', 'description'),
+      translate(description, 'nl', 'description'),
     ]);
 
     return new Response(

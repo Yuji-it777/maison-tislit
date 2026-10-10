@@ -424,9 +424,9 @@ function StockSection() {
   const EMPTY_TRANSLATIONS: Translations = { name_en: '', name_nl: '', description_en: '', description_nl: '' };
 
   // FR -> EN + NL machine translation via the translate-product Edge Function.
-  // The admin has no translation fields: every save overwrites name_en/nl and
-  // description_en/nl from the French text (deployment: supabase functions
-  // deploy translate-product).
+  // The admin has no translation fields: when the French name/description
+  // changed, the save re-translates them (deployment: supabase functions
+  // deploy translate-product). Price/stock/media-only edits skip it entirely.
   const translateProduct = async (name: string, description: string): Promise<Translations> => {
     const { data, error } = await supabase.functions.invoke('translate-product', {
       body: { name, description },
@@ -441,20 +441,38 @@ function StockSection() {
     };
   };
 
+  // Empty translation results must never blank out stored EN/NL text
+  // (e.g. the function returns '' for a field, or the FR text is empty).
+  const stripEmptyTranslations = (t: Translations): Partial<Translations> =>
+    Object.fromEntries(
+      Object.entries(t).filter((entry): entry is [keyof Translations, string] => entry[1] !== '')
+    );
+
   const saveProduct = async () => {
     if (!form.name.trim()) return alert('Nom requis');
     setSaving(true);
     try {
-      let translations: Translations;
-      try {
-        translations = await translateProduct(form.name.trim(), form.description);
-      } catch (trErr: any) {
-        if (!confirm(`Translation failed: ${trErr?.message || trErr}\n\nSave anyway? EN and NL stay empty and the site falls back to the French text.`)) return;
-        translations = EMPTY_TRANSLATIONS;
+      const isNew = editId === null;
+      const existing = isNew ? undefined : products.find(p => p.id === editId);
+      // Translate only when the French source text changed: price, stock,
+      // badge, media and sizes/colors edits save without calling the
+      // Edge Function at all.
+      const needsTranslate = isNew
+        || form.name.trim() !== (existing?.name ?? '')
+        || (form.description ?? '') !== (existing?.description ?? '');
+      let translations: Partial<Translations> = {};
+      if (needsTranslate) {
+        try {
+          translations = stripEmptyTranslations(await translateProduct(form.name.trim(), form.description));
+        } catch (trErr: any) {
+          if (!confirm(`Translation failed: ${trErr?.message || trErr}\n\nSave anyway? Stored EN and NL texts are kept; the site falls back to the French text where a translation is missing.`)) return;
+          // New rows require name_en (NOT NULL): fall back to empty strings
+          // only for the insert. Updates keep the stored translations.
+          translations = isNew ? { ...EMPTY_TRANSLATIONS } : {};
+        }
       }
       const data = { ...form, ...translations, price: Number(form.price), stock: Number(form.stock), sizes: form.sizes.split(',').map(s => s.trim()).filter(Boolean), colors: form.colors.split(',').map(s => s.trim()).filter(Boolean), badge: form.badge || null, gallery: form.gallery.map(s => s.trim()).filter(Boolean), videos: form.videos.map(s => s.trim()).filter(Boolean) };
       if (editId !== null) {
-        const existing = products.find(p => p.id === editId);
         const nameChanged = existing && form.name !== existing.name;
         const dataWithSlug = { ...data, slug: nameChanged || !existing?.slug ? buildUniqueSlug(form.name, products.filter(p => p.id !== editId)) : existing.slug };
         await updateProduct(editId, dataWithSlug);
@@ -490,9 +508,11 @@ function StockSection() {
     let done = 0;
     try {
       for (const p of products) {
-        const translations = await translateProduct(p.name, p.description);
-        await updateProduct(p.id, translations);
-        setProducts(prev => prev.map(x => x.id === p.id ? { ...x, ...translations } : x));
+        const translations = stripEmptyTranslations(await translateProduct(p.name, p.description));
+        if (Object.keys(translations).length > 0) {
+          await updateProduct(p.id, translations);
+          setProducts(prev => prev.map(x => x.id === p.id ? { ...x, ...translations } : x));
+        }
         done += 1;
       }
       alert(`Translated ${done} products to EN + NL.`);
@@ -574,7 +594,7 @@ function StockSection() {
               <button onClick={() => setShowModal(false)} className="hover:opacity-70" style={{ color: '#999' }}><I d={icons.x} size={18} /></button>
             </div>
             <div className="mb-3">
-              <label className="text-xs" style={{ color: '#999' }}>Name * — auto-translated to EN + NL on save</label><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} />
+              <label className="text-xs" style={{ color: '#999' }}>Name * — re-translated to EN + NL only when the French text changes</label><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} />
             </div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Category</label>
@@ -674,14 +694,14 @@ function StockSection() {
               </div>
               <p className="mt-1.5 text-[10px]" style={{ color: '#bbb' }}>Keep clips short (10-20s, under 20 MB). They play in the big frame with a play badge on the thumbnail.</p>
             </div>
-            <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Description (FR) — auto-translated to EN + NL on save</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none resize-y" style={{ border: '1px solid #e5e5e5' }} /></div>
+            <div className="mb-3"><label className="text-xs" style={{ color: '#999' }}>Description (FR) — re-translated to EN + NL only when this text changes</label><textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none resize-y" style={{ border: '1px solid #e5e5e5' }} /></div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs" style={{ color: '#999' }}>Sizes (comma separated)</label><input value={form.sizes} onChange={e => setForm({ ...form, sizes: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
               <div><label className="text-xs" style={{ color: '#999' }}>Colors (comma separated)</label><input value={form.colors} onChange={e => setForm({ ...form, colors: e.target.value })} className="w-full px-3 py-2 text-sm rounded-lg mt-1 focus:outline-none" style={{ border: '1px solid #e5e5e5' }} /></div>
             </div>
             <div className="flex gap-2 justify-end mt-4 pt-4" style={{ borderTop: '1px solid #f0f0f0' }}>
               <button onClick={() => setShowModal(false)} className="px-4 py-2 text-xs rounded-lg" style={{ border: '1px solid #e5e5e5', color: '#666' }}>Cancel</button>
-              <button onClick={saveProduct} disabled={saving} className="px-4 py-2 text-xs rounded-lg disabled:opacity-60" style={{ background: DARK, color: GOLD, border: 'none' }}>{saving ? 'Translating…' : (editId !== null ? 'Update' : 'Save')}</button>
+              <button onClick={saveProduct} disabled={saving} className="px-4 py-2 text-xs rounded-lg disabled:opacity-60" style={{ background: DARK, color: GOLD, border: 'none' }}>{saving ? 'Saving…' : (editId !== null ? 'Update' : 'Save')}</button>
             </div>
           </div>
         </div>
