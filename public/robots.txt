@@ -1,17 +1,37 @@
 User-agent: *
 Allow: /
 
-# Private / no-index areas (also noindexed via meta robots on those pages)
+# --- Disallow unprefixed redirect-shell URLs ---
+# These paths are 301-redirected to /en/... by .htaccess.
+# Disallowing them stops Google from counting them as "pages with redirects"
+# in Search Console and ensures link equity flows to the canonical /en/ URLs.
+Disallow: /shop$
+Disallow: /about$
+Disallow: /contact$
+Disallow: /login$
+Disallow: /confirmation$
+Disallow: /account$
+Disallow: /favorites$
+Disallow: /shipping$
+Disallow: /returns$
+
+# --- Private / admin area ---
 Disallow: /admin
 
-# Cart & checkout flow - no unique content, noindexed via meta robots.
-# NOTE: robots.txt matches by prefix, so locale-prefixed routes are listed
-# explicitly (unprefixed forms are redirects to these).
+# --- Cart & checkout (no unique content, also noindexed via meta robots) ---
 Disallow: /cart
 Disallow: /checkout
 Disallow: /en/cart
 Disallow: /en/checkout
 Disallow: /nl/cart
 Disallow: /nl/checkout
+Disallow: /en/login
+Disallow: /nl/login
+Disallow: /en/confirmation
+Disallow: /nl/confirmation
+Disallow: /en/account
+Disallow: /nl/account
+Disallow: /en/favorites
+Disallow: /nl/favorites
 
 Sitemap: https://maisontislit.com/sitemap.xml

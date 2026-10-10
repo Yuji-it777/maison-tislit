@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Home -->
+  <url>
+    <loc>https://maisontislit.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Shop -->
+  <url>
+    <loc>https://maisontislit.com/en/shop/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/shop/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Category: Djellaba -->
+  <url>
+    <loc>https://maisontislit.com/en/shop/djellaba/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/djellaba/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/djellaba/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/djellaba/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/shop/djellaba/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/djellaba/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/djellaba/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/djellaba/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Category: Caftan -->
+  <url>
+    <loc>https://maisontislit.com/en/shop/caftan/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/caftan/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/caftan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/caftan/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/shop/caftan/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/caftan/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/caftan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/caftan/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Category: Gandoura -->
+  <url>
+    <loc>https://maisontislit.com/en/shop/gandoura/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/gandoura/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/gandoura/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/gandoura/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/shop/gandoura/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shop/gandoura/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shop/gandoura/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shop/gandoura/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- About -->
+  <url>
+    <loc>https://maisontislit.com/en/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/about/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/about/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://maisontislit.com/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/contact/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/contact/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Shipping -->
+  <url>
+    <loc>https://maisontislit.com/en/shipping/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shipping/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shipping/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shipping/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/shipping/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/shipping/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/shipping/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/shipping/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Returns -->
+  <url>
+    <loc>https://maisontislit.com/en/returns/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/returns/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/returns/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/returns/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://maisontislit.com/nl/returns/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://maisontislit.com/en/returns/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://maisontislit.com/nl/returns/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://maisontislit.com/en/returns/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- NOTE: Product pages (/en/product/<slug>/) are added dynamically by
+       scripts/prerender.mjs at build time. This static file is used as a
+       fallback until the next production build runs. -->
+
+</urlset>
+
