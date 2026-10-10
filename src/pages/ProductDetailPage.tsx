@@ -12,7 +12,7 @@ import StarRating from '../components/StarRating';
 import { SITE_URL } from '../config';
 import { categoryByDbValue } from '../config/categories';
 import { productMaterial } from '../utils/productMaterial';
-import { productAlt, productName as localizeProductName, productDescription } from '../utils/productAlt';
+import { productAlt, productName as localizeProductName, productDescription, colorName } from '../utils/productAlt';
 import { productPhotos, absolutePhotoUrl } from '../utils/productPhotos';
 import { productMedia, mediaKindIndexes } from '../utils/productMedia';
 import { Play } from 'lucide-react';
@@ -310,7 +310,7 @@ export default function ProductDetailPage() {
 
             <div className="mb-5">
               <label className="text-xs font-semibold text-stone-700 tracking-widest uppercase block mb-2">
-                {t('modal.color')} <span className="text-brand font-normal normal-case">{selectedColor}</span>
+                {t('modal.color')} <span className="text-brand font-normal normal-case">{colorName(selectedColor, locale)}</span>
               </label>
               <div className="flex flex-wrap gap-2">
                 {product.colors.map(c => (
@@ -323,7 +323,7 @@ export default function ProductDetailPage() {
                         : 'border-stone-300 text-stone-600 hover:border-stone-500'
                     }`}
                   >
-                    {c}
+                    {colorName(c, locale)}
                   </button>
                 ))}
               </div>

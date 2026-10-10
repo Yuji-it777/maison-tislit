@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
 import { useApp } from '../context/AppContext';
 import { useTranslation, localizePath } from '../context/LanguageContext';
-import { productAlt, productName, productDescription } from '../utils/productAlt';
+import { productAlt, productName, productDescription, colorName } from '../utils/productAlt';
 import { productMedia, mediaKindIndexes } from '../utils/productMedia';
 import { Play } from 'lucide-react';
 import SizeGuide from './SizeGuide';
@@ -175,7 +175,7 @@ export default function ProductModal({ product, onClose }: Props) {
 
               <div className="mb-5">
                 <label className="text-xs font-semibold text-stone-700 tracking-widest uppercase block mb-2">
-                  {t('modal.color')} <span className="text-brand font-normal normal-case">{selectedColor}</span>
+                  {t('modal.color')} <span className="text-brand font-normal normal-case">{colorName(selectedColor, locale)}</span>
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {product.colors.map(c => (
@@ -188,7 +188,7 @@ export default function ProductModal({ product, onClose }: Props) {
                           : 'border-stone-300 text-stone-600 hover:border-stone-500'
                       }`}
                     >
-                      {c}
+                      {colorName(c, locale)}
                     </button>
                   ))}
                 </div>

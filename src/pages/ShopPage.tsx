@@ -10,7 +10,7 @@ import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
 import { ShoppingBag, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
-import { productAlt, productName, productDescription } from '../utils/productAlt';
+import { productAlt, productName, productDescription, colorName } from '../utils/productAlt';
 import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
@@ -294,7 +294,7 @@ function ProductCard({ product, onOpen, t, locale }: { product: Product; onOpen:
 
         <div className="flex items-center gap-1 mb-3">
           {product.colors.slice(0, 3).map(c => (
-            <span key={c} className="text-xs text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">{c}</span>
+            <span key={c} className="text-xs text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">{colorName(c, locale)}</span>
           ))}
         </div>
 

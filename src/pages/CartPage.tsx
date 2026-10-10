@@ -1,6 +1,6 @@
 import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
-import { productAlt, productName } from '../utils/productAlt';
+import { productAlt, productName, colorName } from '../utils/productAlt';
 import SEO from '../components/SEO';
 
 export default function CartPage() {
@@ -71,7 +71,7 @@ export default function CartPage() {
                   </div>
                   <div className="flex flex-wrap gap-2 mt-2">
                     <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">{t('cart.size')} {item.selectedSize}</span>
-                    <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">{t('cart.color')} {item.selectedColor}</span>
+                    <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">{t('cart.color')} {colorName(item.selectedColor, locale)}</span>
                   </div>
                   {item.customMeasurements && (
                     <div className="mt-2 text-[10px] text-stone-500 bg-stone-50 p-2 rounded border border-stone-100">
