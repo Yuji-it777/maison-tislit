@@ -47,13 +47,16 @@ export default function ShopPage() {
     [products, dbCategory]
   );
 
-  // Chips link only to collections that have products; empty ones (e.g.
-  // djellaba while it has no product) stay unlinked until a product exists.
-  // While products load, show every chip to avoid a layout shift.
+  // Djellaba stays linked even with 0 products (it renders a "coming soon"
+  // page); other chips still need at least one product. Order follows
+  // CATEGORY_PAGES. While products load, show every chip to avoid a shift.
   const visibleChips = useMemo(() => {
-    const cats = loadingProducts && products.length === 0
+    const available = loadingProducts && products.length === 0
       ? CATEGORY_PAGES
       : availableCategories(products);
+    const cats = CATEGORY_PAGES.filter(c =>
+      c.slug === 'djellaba' || available.some(a => a.slug === c.slug)
+    );
     return [ALL_CHIP, ...cats.map(c => ({ slug: c.slug, label: c.name }))];
   }, [products, loadingProducts]);
 
@@ -61,6 +64,11 @@ export default function ShopPage() {
   // entry) renders the empty state with noindex so Google drops the thin
   // page; it flips back to indexable automatically once a product exists.
   const isEmptyCategory = !!category && !loadingProducts && filtered.length === 0;
+
+  // Djellaba with 0 products renders a friendly "coming soon" page instead
+  // of an empty grid. It stays noindexed via isEmptyCategory until a
+  // djellaba product exists, then flips back to the normal grid automatically.
+  const isDjellabaComingSoon = category?.slug === 'djellaba' && isEmptyCategory;
 
   // Guard AFTER all hooks: unknown category slugs never render a soft-404 page
   if (categorySlug && !category) {
@@ -146,17 +154,49 @@ export default function ShopPage() {
 
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <p className="text-stone-500 text-sm mb-8">{filtered.length} {t('shop.itemsFound')}</p>
-        <div key={categorySlug ?? 'all'} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
-          {filtered.map(product => (
-            <ProductCard key={product.id} product={product} onOpen={() => setSelectedProduct(product)} t={t} locale={locale} />
-          ))}
-        </div>
-        {filtered.length === 0 && (
-          <div className="text-center py-20 text-stone-400">
-            <div className="text-6xl mb-4">/</div>
-            <p className="text-xl" style={{ fontFamily: "'Playfair Display', serif" }}>{t('shop.noItems')}</p>
+        {isDjellabaComingSoon ? (
+          <div className="text-center py-20 max-w-2xl mx-auto" data-testid="djellaba-coming-soon">
+            <p className="text-3xl text-stone-800 font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>{t('shop.djellabaSoonTitle')}</p>
+            <p className="text-stone-600 text-lg mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{t('shop.djellabaSoonBody')}</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link
+                to={localizePath('/shop/caftan', locale)}
+                className="px-5 py-2 text-xs font-medium tracking-wider uppercase rounded-full bg-stone-800 text-white hover:bg-brand transition-colors"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                Caftan
+              </Link>
+              <Link
+                to={localizePath('/shop/gandoura', locale)}
+                className="px-5 py-2 text-xs font-medium tracking-wider uppercase rounded-full bg-stone-800 text-white hover:bg-brand transition-colors"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                Gandoura
+              </Link>
+              <Link
+                to={localizePath('/contact', locale)}
+                className="px-5 py-2 text-xs font-medium tracking-wider uppercase rounded-full border border-stone-300 text-stone-600 hover:bg-stone-100 transition-colors"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                {t('nav.contact')}
+              </Link>
+            </div>
           </div>
+        ) : (
+          <>
+            <p className="text-stone-500 text-sm mb-8">{filtered.length} {t('shop.itemsFound')}</p>
+            <div key={categorySlug ?? 'all'} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" ref={gridRef}>
+              {filtered.map(product => (
+                <ProductCard key={product.id} product={product} onOpen={() => setSelectedProduct(product)} t={t} locale={locale} />
+              ))}
+            </div>
+            {filtered.length === 0 && (
+              <div className="text-center py-20 text-stone-400">
+                <div className="text-6xl mb-4">/</div>
+                <p className="text-xl" style={{ fontFamily: "'Playfair Display', serif" }}>{t('shop.noItems')}</p>
+              </div>
+            )}
+          </>
         )}
       </div>
 

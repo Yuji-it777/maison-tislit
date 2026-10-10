@@ -76,6 +76,8 @@ const nl = {
   'shop.catAll': 'Alles bekijken',
   'shop.itemsFound': 'artikel(en) gevonden',
   'shop.noItems': 'Geen artikelen in deze categorie',
+  'shop.djellabaSoonTitle': 'Nieuwe djellaba\u2019s binnenkort beschikbaar',
+  'shop.djellabaSoonBody': 'Onze eerste djellaba\u2019s zijn onderweg. Ontdek hieronder alvast onze andere collecties — of neem contact met ons op voor een bestelling op maat.',
   // Categoriepagina-headers (/shop/djellaba enz.) — sleutelachtervoegsel volgt CategoryPage.name
   'shop.catDjellabaH1': 'Marokkaanse Djellaba\u2019s',
   'shop.catDjellabaIntro': 'Onze djellaba-collectie combineert tijdloze Marokkaanse silhouetten met met de hand afgewerkte borduringen — soepele snitten in zijde, velours en ademend katoen, geschikt voor elke dag én feestelijke gelegenheden.',

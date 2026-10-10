@@ -76,6 +76,8 @@ const en = {
   'shop.catAll': 'View All',
   'shop.itemsFound': 'item(s) found',
   'shop.noItems': 'No items in this category',
+  'shop.djellabaSoonTitle': 'New djellabas coming soon',
+  'shop.djellabaSoonBody': "Our first djellabas are on the way. Meanwhile, explore our other collections below — or get in touch for custom orders.",
   // Category page headers (/shop/djellaba etc.) — key suffix matches CategoryPage.name
   'shop.catDjellabaH1': 'Moroccan Djellabas',
   'shop.catDjellabaIntro': 'Our djellaba collection pairs timeless Moroccan silhouettes with hand-finished embroidery — fluid cuts in silk, velvet and breathable cotton, made for daily elegance and celebrations alike.',

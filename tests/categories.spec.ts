@@ -49,18 +49,25 @@ test.describe('Category pages', () => {
     await expect(page).toHaveURL(/\/en\/shop\/$/);
   });
 
-  test('empty collection stays routable but unlinked and noindexed', async ({ page }) => {
-    // djellaba has no products: no chip on /shop, no tile on home,
-    // and the direct URL renders a noindexed empty state.
+  test('empty djellaba stays linked but noindexed with a coming-soon page', async ({ page }) => {
+    // djellaba has no products: its chip (on /shop) and tile (on home) stay
+    // visible, but the page is noindexed, out of the sitemap, and renders a
+    // "coming soon" message with links instead of an empty grid.
     await page.goto('/en/shop/');
     await expect(page.locator('main .grid > div').first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Djellaba', exact: true })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Djellaba', exact: true })).toBeVisible();
 
     await page.goto('/en/');
-    await expect(page.getByRole('link', { name: /Gandoura/i }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /Djellaba/i })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: /Djellaba/i }).first()).toBeVisible();
 
     await page.goto('/en/shop/djellaba/');
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    const soon = page.getByTestId('djellaba-coming-soon');
+    await expect(soon.getByText(/coming soon/i)).toBeVisible();
+    await expect(soon.getByRole('link', { name: 'Caftan', exact: true })).toBeVisible();
+    await expect(soon.getByRole('link', { name: 'Gandoura', exact: true })).toBeVisible();
+    await expect(soon.getByRole('link', { name: 'Contact', exact: true })).toBeVisible();
+    // no product grid on the coming-soon page
+    await expect(soon.locator('.grid')).toHaveCount(0);
   });
 });

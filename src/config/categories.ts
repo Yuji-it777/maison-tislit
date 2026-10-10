@@ -25,10 +25,12 @@ export function categoryByDbValue(dbValue: string): CategoryPage | undefined {
   return CATEGORY_PAGES.find(c => c.dbValue === dbValue);
 }
 
-// Categories that currently have at least one product. Empty collections
-// (e.g. djellaba while no djellaba product exists) are hidden from the shop
-// chips, home tiles and sitemap until a product is added — the route itself
-// stays valid and renders a noindexed empty state for direct visits.
+// Categories that currently have at least one product. This drives the
+// sitemap + prerender snapshots and the noindex empty-state guard: empty
+// collections (e.g. djellaba while no djellaba product exists) stay out of
+// the sitemap and render noindexed until a product is added. Visibility in
+// the UI (home tiles, shop chips) is decided per-page — djellaba stays
+// linked with a "coming soon" page even while empty.
 export function availableCategories(products: Array<{ category: string }>): CategoryPage[] {
   return CATEGORY_PAGES.filter(c => products.some(p => p.category === c.dbValue));
 }

@@ -107,10 +107,12 @@ export default function HomePage() {
       objectPosition: '50% 12%',
     },
   ];
+  // Djellaba stays visible (its tile links to a "coming soon" page) even
+  // with 0 products; other tiles still need at least one product.
   const categories = loadingProducts && products.length === 0
     ? allCategories
     : allCategories.filter(tile =>
-        availableCategories(products).some(c => c.slug === tile.slug)
+        tile.slug === 'djellaba' || availableCategories(products).some(c => c.slug === tile.slug)
       );
 
   const featured = products.filter(p => p.badge);
@@ -256,8 +258,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          {/* 2 tiles: same card width as the 3-col layout (2x410px + gap), centered */}
-          <div className={`grid grid-cols-1 gap-6 ${categories.length === 2 ? 'md:grid-cols-2 md:max-w-[845px] md:mx-auto' : 'md:grid-cols-3'}`} ref={categoriesRef}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" ref={categoriesRef}>
             {categories.map(cat => (
               <Link
                 key={cat.slug}
