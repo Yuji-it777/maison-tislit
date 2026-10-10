@@ -256,7 +256,8 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" ref={categoriesRef}>
+          {/* 2 tiles: same card width as the 3-col layout (2x410px + gap), centered */}
+          <div className={`grid grid-cols-1 gap-6 ${categories.length === 2 ? 'md:grid-cols-2 md:max-w-[845px] md:mx-auto' : 'md:grid-cols-3'}`} ref={categoriesRef}>
             {categories.map(cat => (
               <Link
                 key={cat.slug}
