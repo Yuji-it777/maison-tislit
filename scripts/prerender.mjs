@@ -20,8 +20,10 @@ const PAGE_META = {
   shipping:{ priority: 0.4, changefreq: 'yearly' },
   returns: { priority: 0.4, changefreq: 'yearly' },
 };
-// Indexable category collections (/:locale/shop/:slug). Keep in sync with
+// Candidate category collections (/:locale/shop/:slug). Keep in sync with
 // src/config/categories.ts (CATEGORY_PAGES) — same slugs, lowercase.
+// Only categories with >= 1 product in the DB are prerendered + sitemapped
+// (see fetchProducts); empty ones are skipped until a product exists.
 const CATEGORY_PAGES = ['djellaba', 'gandoura', 'caftan'];
 const CATEGORY_META = { priority: 0.7, changefreq: 'weekly' };
 
@@ -64,19 +66,32 @@ function getFreePort() {
   });
 }
 
-async function fetchSlugs() {
+async function fetchProducts() {
   const url = env.VITE_SUPABASE_URL;
   const key = env.VITE_SUPABASE_ANON_KEY;
-  if (!url || !key) fail('VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY required to fetch product slugs');
-  const res = await fetch(`${url}/rest/v1/products?select=slug&order=id.asc`, {
+  if (!url || !key) fail('VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY required to fetch products');
+  const res = await fetch(`${url}/rest/v1/products?select=slug,category&order=id.asc`, {
     headers: { apikey: key, Authorization: `Bearer ${key}` },
   });
-  if (!res.ok) fail(`slug fetch failed: ${res.status} ${await res.text()}`);
+  if (!res.ok) fail(`product fetch failed: ${res.status} ${await res.text()}`);
   const rows = await res.json();
   const slugs = rows.map(r => r.slug).filter(Boolean);
   if (!slugs.length) fail('no product slugs found');
-  log(`fetched ${slugs.length} product slugs`);
-  return slugs;
+  // Only categories with at least one product get a snapshot + sitemap entry.
+  // Empty collections stay routable (client renders a noindexed empty state)
+  // but unlinked until a product exists. DB values must match
+  // src/config/categories.ts CATEGORY_PAGES dbValues.
+  const activeCategories = CATEGORY_PAGES.filter(cat =>
+    rows.some(r => r.category === catDbValue(cat))
+  );
+  log(`fetched ${slugs.length} product slugs; active categories: ${activeCategories.join(', ') || '(none)'}`);
+  return { slugs, activeCategories };
+}
+
+// CATEGORY_PAGES dbValues live in src/config/categories.ts (TS, not imported
+// here to keep this script dependency-free). Mirrors that table.
+function catDbValue(slug) {
+  return slug === 'caftan' ? 'Caftan' : slug;
 }
 
 function escapeXml(s) {
@@ -91,7 +106,7 @@ function canonicalRoute(route) {
   return route.endsWith('/') ? route : `${route}/`;
 }
 
-function buildSitemap(slugs) {
+function buildSitemap(slugs, activeCategories) {
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
@@ -119,7 +134,7 @@ function buildSitemap(slugs) {
   for (const p of PAGES) {
     addUrl(p, PAGE_META[p]);
   }
-  for (const cat of CATEGORY_PAGES) {
+  for (const cat of activeCategories) {
     addUrl(`shop/${cat}`, CATEGORY_META);
   }
   for (const slug of slugs) {
@@ -186,7 +201,7 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   log(`preview on ${BASE} (pid ${preview.pid})`);
   await waitForServer();
-  const slugs = await fetchSlugs();
+  const { slugs, activeCategories } = await fetchProducts();
 
   // Remove any stale prerender snapshots so re-runs are idempotent. Leftover
   // dist/<locale> snapshots already contain 3 hreflang tags in <head>; serving
@@ -199,7 +214,7 @@ try {
   const routes = [];
   for (const locale of LOCALES) {
     for (const p of PAGES) routes.push(p ? `/${locale}/${p}` : `/${locale}/`);
-    for (const cat of CATEGORY_PAGES) routes.push(`/${locale}/shop/${cat}`);
+    for (const cat of activeCategories) routes.push(`/${locale}/shop/${cat}`);
     for (const slug of slugs) routes.push(`/${locale}/product/${slug}`);
   }
 
@@ -261,7 +276,7 @@ try {
     log('restored fallback <title> on dist/index.html (root shell only)');
   }
 
-  await writeFile(path.join(DIST, 'sitemap.xml'), buildSitemap(slugs), 'utf8');
+  await writeFile(path.join(DIST, 'sitemap.xml'), buildSitemap(slugs, activeCategories), 'utf8');
   log('wrote dist/sitemap.xml with hreflang alternates');
 
   log(`done: ${ok}/${routes.length} routes prerendered`);

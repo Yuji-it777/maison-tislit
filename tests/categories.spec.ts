@@ -28,9 +28,9 @@ test.describe('Category pages', () => {
 
   test('homepage category tile links to its indexable URL', async ({ page }) => {
     await page.goto('/en');
-    await page.getByRole('link', { name: /Djellaba/i }).first().click();
-    await expect(page).toHaveURL(/\/en\/shop\/djellaba\/$/);
-    await expect(page.locator('h1')).toContainText(/Djellaba/i);
+    await page.getByRole('link', { name: /Gandoura/i }).first().click();
+    await expect(page).toHaveURL(/\/en\/shop\/gandoura\/$/);
+    await expect(page.locator('h1')).toContainText(/Gandoura/i);
   });
 
   test('unknown category slug redirects to the all-products view', async ({ page }) => {
@@ -44,8 +44,23 @@ test.describe('Category pages', () => {
   });
 
   test('category chips navigate between collection URLs', async ({ page }) => {
-    await page.goto('/en/shop/djellaba');
+    await page.goto('/en/shop/gandoura');
     await page.getByRole('link', { name: 'View All' }).click();
     await expect(page).toHaveURL(/\/en\/shop\/$/);
+  });
+
+  test('empty collection stays routable but unlinked and noindexed', async ({ page }) => {
+    // djellaba has no products: no chip on /shop, no tile on home,
+    // and the direct URL renders a noindexed empty state.
+    await page.goto('/en/shop/');
+    await expect(page.locator('main .grid > div').first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Djellaba', exact: true })).toHaveCount(0);
+
+    await page.goto('/en/');
+    await expect(page.getByRole('link', { name: /Gandoura/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /Djellaba/i })).toHaveCount(0);
+
+    await page.goto('/en/shop/djellaba/');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   });
 });

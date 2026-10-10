@@ -21,20 +21,20 @@ async function getProductLd(page: import('@playwright/test').Page) {
 
 test.describe('Product JSON-LD', () => {
   test('emits color, material and countryOfOrigin when fabric is stated', async ({ page }) => {
-    await page.goto('/en/product/blue-safira-djellaba/');
+    await page.goto('/en/product/majorelle-blue-gandoura/');
     const ld = await getProductLd(page);
     expect(ld).not.toBeNull();
     expect(ld.countryOfOrigin).toBe('MA');
-    expect(ld.color).toEqual(expect.arrayContaining(['Bleu Royal']));
+    expect(ld.color).toEqual(expect.arrayContaining(['Bleu Majorelle']));
     expect(ld.material).toBe('Silk');
   });
 
-  test('omits material when copy names no fabric, keeps color + origin', async ({ page }) => {
-    await page.goto('/en/product/emerald-royal-djellaba/');
+  test('extracts velvet material from product copy, keeps color + origin', async ({ page }) => {
+    await page.goto('/en/product/royal-sand-gandoura/');
     const ld = await getProductLd(page);
     expect(ld).not.toBeNull();
-    expect(ld.material).toBeUndefined();
+    expect(ld.material).toBe('Velvet');
     expect(ld.countryOfOrigin).toBe('MA');
-    expect(ld.color).toContain('Émeraude');
+    expect(ld.color).toContain('Sable');
   });
 });

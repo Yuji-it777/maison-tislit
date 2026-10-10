@@ -5,7 +5,7 @@ import { useApp } from '../context/AppContext';
 import { useTranslation } from '../context/LanguageContext';
 import { localizePath, type Locale } from '../context/LanguageContext';
 import { SITE_URL } from '../config';
-import { CATEGORY_PAGES, categoryBySlug } from '../config/categories';
+import { CATEGORY_PAGES, availableCategories, categoryBySlug } from '../config/categories';
 import { Product } from '../types';
 import ProductModal from '../components/ProductModal';
 import { ShoppingBag, Heart } from 'lucide-react';
@@ -15,11 +15,9 @@ import { useStaggerReveal } from '../utils/animations';
 import SEO from '../components/SEO';
 import { buildBreadcrumbJsonLd } from '../utils/breadcrumbJsonLd';
 
-// Category chips: "all" (the /shop view) + one link per indexable category page
-const CATEGORY_CHIPS: Array<{ slug: string; label: string }> = [
-  { slug: 'all', label: 'shop.catAll' },
-  ...CATEGORY_PAGES.map(c => ({ slug: c.slug, label: c.name })),
-];
+// "all" (the /shop view) + one chip per category; the per-category chips are
+// built at render time so empty collections stay unlinked (see visibleChips).
+const ALL_CHIP = { slug: 'all', label: 'shop.catAll' };
 
 const badgeKey = (badge: string): string => {
   const map: Record<string, string> = {
@@ -32,7 +30,7 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function ShopPage() {
-  const { products } = useApp();
+  const { products, loadingProducts } = useApp();
   const { t, locale } = useTranslation();
   const { categorySlug } = useParams();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -48,6 +46,21 @@ export default function ShopPage() {
     () => products.filter(p => dbCategory === 'all' || p.category === dbCategory),
     [products, dbCategory]
   );
+
+  // Chips link only to collections that have products; empty ones (e.g.
+  // djellaba while it has no product) stay unlinked until a product exists.
+  // While products load, show every chip to avoid a layout shift.
+  const visibleChips = useMemo(() => {
+    const cats = loadingProducts && products.length === 0
+      ? CATEGORY_PAGES
+      : availableCategories(products);
+    return [ALL_CHIP, ...cats.map(c => ({ slug: c.slug, label: c.name }))];
+  }, [products, loadingProducts]);
+
+  // An empty but valid collection (direct visit / bookmark / old Google index
+  // entry) renders the empty state with noindex so Google drops the thin
+  // page; it flips back to indexable automatically once a product exists.
+  const isEmptyCategory = !!category && !loadingProducts && filtered.length === 0;
 
   // Guard AFTER all hooks: unknown category slugs never render a soft-404 page
   if (categorySlug && !category) {
@@ -77,7 +90,7 @@ export default function ShopPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-stone-50">
-      <SEO title={pageTitle} description={pageDescription} />
+      <SEO title={pageTitle} description={pageDescription} noindex={isEmptyCategory} />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(itemListJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
@@ -108,7 +121,7 @@ export default function ShopPage() {
       <div className="bg-white border-b border-stone-200 sticky top-20 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-wrap gap-2">
-            {CATEGORY_CHIPS.map(chip => {
+            {visibleChips.map(chip => {
               const active = chip.slug === 'all' ? !category : category?.slug === chip.slug;
               const to = localizePath(chip.slug === 'all' ? '/shop' : `/shop/${chip.slug}`, locale);
               return (

@@ -7,6 +7,7 @@ import { Scissors, Leaf, Package, Gem, Heart } from 'lucide-react';
 import flyHeartToCart from '../utils/flyHeartToCart';
 import { productAlt, productName } from '../utils/productAlt';
 import { useScrollReveal, useStaggerReveal } from '../utils/animations';
+import { availableCategories } from '../config/categories';
 import SEO from '../components/SEO';
 
 const badgeKey = (badge: string): string => {
@@ -20,7 +21,7 @@ const badgeKey = (badge: string): string => {
 };
 
 export default function HomePage() {
-  const { setCurrentPage, products, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
+  const { setCurrentPage, products, loadingProducts, isInWishlist, toggleWishlist, showToast, formatPrice } = useApp();
   const { t, locale } = useTranslation();
   const storyRef = useScrollReveal<HTMLDivElement>();
   const categoriesRef = useStaggerReveal<HTMLDivElement>(0.15);
@@ -77,10 +78,13 @@ export default function HomePage() {
     setVideoBlocked(false);
   };
 
-  // Tiles link to the indexable category pages (/en/shop/djellaba, ...)
+  // Tiles link to the indexable category pages (/en/shop/gandoura, ...)
   // objectPosition shifts the 600x400 center-crop window down from the
   // face so the frame starts at the neck (was cutting heads/necks off).
-  const categories: { slug: string; name: string; description: string; image: string; objectPosition: string }[] = [
+  // Tiles render only for collections that have products — an empty
+  // collection stays unlinked (but routable) until a product exists. While
+  // products load, all tiles show to avoid a layout shift.
+  const allCategories: { slug: string; name: string; description: string; image: string; objectPosition: string }[] = [
     {
       slug: 'djellaba',
       name: 'Djellaba',
@@ -103,6 +107,11 @@ export default function HomePage() {
       objectPosition: '50% 12%',
     },
   ];
+  const categories = loadingProducts && products.length === 0
+    ? allCategories
+    : allCategories.filter(tile =>
+        availableCategories(products).some(c => c.slug === tile.slug)
+      );
 
   const featured = products.filter(p => p.badge);
 
