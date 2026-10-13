@@ -78,6 +78,7 @@ export default function ShopPage() {
   // SEO copy: unique per-category title/description/H1, generic on /shop
   // Use slug (stable) for i18n keys, not name (human-readable, may change)
   const catKey = category?.slug ?? '';
+  const capKey = catKey.charAt(0).toUpperCase() + catKey.slice(1);
   const pageTitle = category ? t(`seo.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}Title`) : t('seo.shopTitle');
   const pageDescription = category ? t(`seo.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}Description`) : t('seo.shopDescription');
   const heading = category ? t(`shop.cat${catKey.charAt(0).toUpperCase() + catKey.slice(1)}H1`) : t('shop.ourBoutique');
@@ -199,6 +200,34 @@ export default function ShopPage() {
           </>
         )}
       </div>
+
+      {/* Bottom SEO content block: keyword-rich copy + internal links for
+          indexable category hubs. Renders only when the collection has
+          products (empty collections stay noindexed without this block, so
+          the djellaba coming-soon page is unaffected until products land). */}
+      {(category?.slug === 'gandoura' || category?.slug === 'caftan' || category?.slug === 'djellaba') && filtered.length > 0 && (
+        <section className="border-t border-stone-200 bg-white">
+          <div className="max-w-4xl mx-auto px-6 py-12">
+            <h2 className="text-2xl font-bold text-stone-800 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+              {t(`shop.cat${capKey}SeoTitle`)}
+            </h2>
+            <p className="text-stone-600 leading-relaxed" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.05rem' }}>
+              {t(`shop.cat${capKey}SeoText1`)}{' '}
+              <Link
+                to={localizePath(category.slug === 'caftan' ? '/shop/gandoura' : '/shop/caftan', locale)}
+                className="text-brand hover:underline"
+              >
+                {t(`shop.cat${capKey}SeoSibling`)}
+              </Link>
+              {t(`shop.cat${capKey}SeoText2`)}{' '}
+              <Link to={localizePath('/contact', locale)} className="text-brand hover:underline">
+                {t('shop.catSeoContactLink')}
+              </Link>
+              {t(`shop.cat${capKey}SeoText3`)}
+            </p>
+          </div>
+        </section>
+      )}
 
       {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />

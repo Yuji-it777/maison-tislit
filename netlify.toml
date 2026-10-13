@@ -82,22 +82,22 @@
 
 [[redirects]]
   from = "/:locale/product/nour-al-qamar-takchita-2"
-  to = "/:locale/product/nour-al-qamar-takchita/"
+  to = "/:locale/product/nour-al-qamar-caftan/"
   status = 301
 
 [[redirects]]
   from = "/:locale/product/enchanted-rosa-takchita-2"
-  to = "/:locale/product/enchanted-rosa-takchita/"
+  to = "/:locale/product/enchanted-rosa-caftan/"
   status = 301
 
 [[redirects]]
   from = "/:locale/product/bordeaux-sultana-gandoura-2"
-  to = "/:locale/product/bordeaux-sultana-gandoura/"
+  to = "/:locale/product/royal-sand-gandoura/"
   status = 301
 
 [[redirects]]
   from = "/:locale/product/white-jasmine-gandoura-2"
-  to = "/:locale/product/white-jasmine-gandoura/"
+  to = "/:locale/product/terracotta-satin-gandoura/"
   status = 301
 
 [[redirects]]
@@ -107,12 +107,12 @@
 
 [[redirects]]
   from = "/:locale/product/fassi-takchita-2"
-  to = "/:locale/product/fassi-takchita/"
+  to = "/:locale/product/fassi-caftan/"
   status = 301
 
 [[redirects]]
   from = "/:locale/product/silk-jabador-2"
-  to = "/:locale/product/silk-jabador/"
+  to = "/:locale/product/majorelle-blue-gandoura/"
   status = 301
 
 [[redirects]]
@@ -129,7 +129,7 @@
 
 [[redirects]]
   from = "/:locale/shop/jabador"
-  to = "/:locale/shop/djellaba/"
+  to = "/:locale/shop/gandoura/"
   status = 301
 
 # Renamed product slugs (migration 00026 + dashboard renames): old product

@@ -1,5 +1,5 @@
-# Maison Tislit — Cloudflare Pages redirects
-# Mirrors netlify.toml redirect rules.
+# Maison Tislit — Cloudflare Pages redirects (SOURCE OF TRUTH for redirects;
+# netlify.toml and .htaccess mirror these rules for repo consistency only).
 # Format: /from  /to  status
 
 # --- 301s: unprefixed URLs -> default locale ---
@@ -30,7 +30,7 @@
 
 # --- 301s: removed category collections -> surviving ones ---
 /:locale/shop/takchita  /:locale/shop/caftan/  301
-/:locale/shop/jabador  /:locale/shop/djellaba/  301
+/:locale/shop/jabador  /:locale/shop/gandoura/  301
 
 # --- 301s: renamed product slugs (all eras) ---
 /:locale/product/nour-al-qamar-takchita  /:locale/product/nour-al-qamar-caftan/  301
@@ -41,10 +41,12 @@
 /:locale/product/white-jasmine-gandoura  /:locale/product/terracotta-satin-gandoura/  301
 /:locale/product/silk-gandoura  /:locale/product/majorelle-blue-gandoura/  301
 
-# --- 200 rewrite: /en/shop (slashless) serves snapshot directly, no redirect ---
-# Bypasses Pages native 308 directory normalization for this route only.
-# Applies to all UAs including Googlebot. Must precede the SPA fallback.
+# --- 200 rewrites: slashless locale roots serve snapshots directly, no redirect ---
+# Same bypass as /en/shop above: avoids Pages native 308 normalization so
+# Googlebot gets the snapshot in one hop. Must precede the SPA fallback.
 /en/shop  /en/shop/  200
+/en  /en/  200
+/nl  /nl/  200
 
 # --- SPA fallback (must be last) ---
 /*  /index.html  200
