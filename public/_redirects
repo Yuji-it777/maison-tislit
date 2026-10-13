@@ -41,6 +41,36 @@
 /:locale/product/white-jasmine-gandoura  /:locale/product/terracotta-satin-gandoura/  301
 /:locale/product/silk-gandoura  /:locale/product/majorelle-blue-gandoura/  301
 
+# --- 301s: trailing-slash variants of the legacy rules above ---
+# Canonical URLs carry a trailing slash (sitemap + <link rel=canonical>), so
+# Googlebot requests the slashed form — but _redirects matches exact paths,
+# and the rules above are slashless. Without these variants the slashed
+# legacy URLs miss every rule and fall through to the SPA fallback (200 with
+# an empty shell / soft-404 view) instead of 301ing. Same destinations,
+# still single-hop.
+# -2 duplicates (slashed):
+/:locale/product/emerald-royal-djellaba-2/  /:locale/product/emerald-royal-djellaba/  301
+/:locale/product/blue-safira-djellaba-2/  /:locale/product/blue-safira-djellaba/  301
+/:locale/product/nour-al-qamar-takchita-2/  /:locale/product/nour-al-qamar-caftan/  301
+/:locale/product/enchanted-rosa-takchita-2/  /:locale/product/enchanted-rosa-caftan/  301
+/:locale/product/bordeaux-sultana-gandoura-2/  /:locale/product/royal-sand-gandoura/  301
+/:locale/product/white-jasmine-gandoura-2/  /:locale/product/terracotta-satin-gandoura/  301
+/:locale/product/embroidered-royal-caftan-2/  /:locale/product/embroidered-royal-caftan/  301
+/:locale/product/fassi-takchita-2/  /:locale/product/fassi-caftan/  301
+/:locale/product/silk-jabador-2/  /:locale/product/majorelle-blue-gandoura/  301
+/:locale/product/golden-belt-2/  /:locale/product/golden-belt/  301
+# Renamed slugs (slashed):
+/:locale/product/nour-al-qamar-takchita/  /:locale/product/nour-al-qamar-caftan/  301
+/:locale/product/enchanted-rosa-takchita/  /:locale/product/enchanted-rosa-caftan/  301
+/:locale/product/fassi-takchita/  /:locale/product/fassi-caftan/  301
+/:locale/product/silk-jabador/  /:locale/product/majorelle-blue-gandoura/  301
+/:locale/product/bordeaux-sultana-gandoura/  /:locale/product/royal-sand-gandoura/  301
+/:locale/product/white-jasmine-gandoura/  /:locale/product/terracotta-satin-gandoura/  301
+/:locale/product/silk-gandoura/  /:locale/product/majorelle-blue-gandoura/  301
+# Removed collections (slashed):
+/:locale/shop/takchita/  /:locale/shop/caftan/  301
+/:locale/shop/jabador/  /:locale/shop/gandoura/  301
+
 # --- 200 rewrites: slashless locale roots serve snapshots directly, no redirect ---
 # Same bypass as /en/shop above: avoids Pages native 308 normalization so
 # Googlebot gets the snapshot in one hop. Must precede the SPA fallback.
