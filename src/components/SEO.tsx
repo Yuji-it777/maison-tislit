@@ -9,6 +9,53 @@ function isNonLocalizable(pathname: string): boolean {
   return pathname === '/admin' || pathname.startsWith('/admin/');
 }
 
+// Truncate without cutting mid-word so the rendered string never exceeds `max` chars.
+export function truncateWords(s: string, max: number): string {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return lastSpace > 0 ? cut.slice(0, lastSpace) : cut;
+}
+
+// Build a product meta description: "{productName} by Maison Tislit — {productDesc}".
+// If it exceeds `max`, cut at the last sentence end (". ") that fits; otherwise cut
+// at the last whole word (leaving room for "…") and append "…". Never end on a
+// connector word (of, and, or, a).
+export function truncateProductMeta(s: string, max = 155): string {
+  if (s.length <= max) return s;
+  const connectors = new Set(['of', 'and', 'or', 'a']);
+
+  // 1. End at a sentence boundary (". ") whose period fits within max.
+  let boundaryEnd = -1;
+  let pos = 0;
+  while ((pos = s.indexOf('. ', pos)) !== -1) {
+    if (pos + 1 <= max) boundaryEnd = pos + 1; // include the period
+    pos += 2;
+  }
+  if (boundaryEnd > 0) {
+    const out = stripTrailingConnector(s.slice(0, boundaryEnd), connectors);
+    if (out) return out;
+  }
+
+  // 2. Fall back to the last whole word within max - 1 (room for "…").
+  const budget = max - 1;
+  const cut = s.slice(0, budget);
+  const ls = cut.lastIndexOf(' ');
+  let out = ls > 0 ? cut.slice(0, ls) : cut;
+  out = stripTrailingConnector(out, connectors) || out;
+  return out + '…';
+}
+
+function stripTrailingConnector(s: string, connectors: Set<string>): string {
+  let t = s.replace(/[.]+$/, '').trimEnd();
+  const words = t.split(/\s+/);
+  while (words.length > 0 && connectors.has(words[words.length - 1].toLowerCase())) {
+    words.pop();
+  }
+  if (words.length === 0) return '';
+  return words.join(' ') + '.';
+}
+
 interface SEOProps {
   title?: string;
   description?: string;
@@ -24,21 +71,25 @@ export default function SEO({
   description,
   image,
   url,
-  type = 'website',
+  type,
   productPrice,
   noindex = false,
 }: SEOProps) {
   const { t, locale } = useTranslation();
   const { pathname } = useLocation();
   const siteName = 'Maison Tislit';
+  const MAX_TITLE = 60;
+  const truncateTitle = (s: string): string => truncateWords(s, MAX_TITLE);
   // Brand-first titles: "Maison Tislit | Page". If the supplied title already
   // starts with the brand (e.g. seo.homeTitle), use it verbatim to avoid
   // "Maison Tislit | Maison Tislit …".
-  const fullTitle = title
-    ? title.startsWith(siteName)
-      ? title
-      : `${siteName} | ${title}`
-    : t('seo.homeTitle');
+  const fullTitle = truncateTitle(
+    title
+      ? title.startsWith(siteName)
+        ? title
+        : `${siteName} | ${title}`
+      : t('seo.homeTitle')
+  );
   const metaDescription = description || t('seo.homeDescription');
   const toAbsoluteUrl = (path: string) =>
     /^https?:\/\//i.test(path) ? path : `${SITE_URL}${path.startsWith('/') ? '' : '/'}${path}`;

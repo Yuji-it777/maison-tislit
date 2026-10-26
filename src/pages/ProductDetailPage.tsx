@@ -6,7 +6,7 @@ import { useTranslation, localizePath } from '../context/LanguageContext';
 import { getProductBySlug } from '../supabase/queries';
 import type { ProductRow } from '../supabase/types';
 import { Product } from '../types';
-import SEO from '../components/SEO';
+import SEO, { truncateProductMeta } from '../components/SEO';
 import SizeGuide from '../components/SizeGuide';
 import StarRating from '../components/StarRating';
 import { SITE_URL } from '../config';
@@ -135,6 +135,9 @@ export default function ProductDetailPage() {
 
   const productName = localizeProductName(product, locale);
   const productDesc = productDescription(product, locale);
+  const productMetaDescription = truncateProductMeta(
+    `${productName} by Maison Tislit — ${productDesc}`
+  );
   const productPath = localizePath(`/product/${product.slug}`, locale);
   const canonical = `${SITE_URL}${productPath}`;
   const category = categoryByDbValue(product.category);
@@ -197,7 +200,7 @@ export default function ProductDetailPage() {
     <div className="pt-20 min-h-screen bg-stone-50">
       <SEO
         title={productName}
-        description={productDesc}
+        description={productMetaDescription}
         image={product.image}
         url={canonical}
         type="product"
