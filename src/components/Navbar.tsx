@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { useTranslation } from '../context/LanguageContext';
+import { useTranslation, stripLocale, localizePath } from '../context/LanguageContext';
 
 export default function Navbar() {
   const { currentPage, setCurrentPage, user, isAdmin, logout, cartCount, wishlist, currency, setCurrency } = useApp();
   const { t, locale, setLocale } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const navLink = (label: string, page: Parameters<typeof setCurrentPage>[0]) => (
-    <button
-      onClick={() => { setCurrentPage(page); setMenuOpen(false); }}
+  const { pathname } = useLocation();
+  const basePath = stripLocale(pathname);
+  const otherLocale = locale === 'nl' ? 'en' : 'nl';
+
+  const navLink = (label: string, page: Parameters<typeof setCurrentPage>[0], href: string) => (
+    <a
+      href={href}
+      onClick={(e) => { e.preventDefault(); setCurrentPage(page); setMenuOpen(false); }}
       className={`relative font-medium text-sm tracking-widest uppercase transition-all duration-200 pb-1 hover:text-brand
         ${currentPage === page ? 'text-brand after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-brand' : 'text-stone-700'}`}
     >
       {label}
-    </button>
+    </a>
   );
 
   return (
@@ -24,8 +30,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <motion.button
-            onClick={() => setCurrentPage('home')}
+          <motion.a
+            href={localizePath('/', locale)}
+            onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}
             className="flex items-center"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -41,14 +48,15 @@ export default function Navbar() {
               className="h-[140px] w-auto object-contain drop-shadow-sm transition-all duration-300"
             />
             <span className="sr-only">Maison Tislit</span>
-          </motion.button>
+          </motion.a>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLink(t('nav.home'), 'home')}
-            {navLink(t('nav.shop'), 'shop')}
-            {navLink(t('nav.about'), 'about')}
-            {navLink(t('nav.contact'), 'contact')}
+            {navLink(t('nav.home'), 'home', localizePath('/', locale))}
+            {navLink(t('nav.shop'), 'shop', localizePath('/shop', locale))}
+            {navLink(t('nav.about'), 'about', localizePath('/about', locale))}
+            {navLink(t('nav.contact'), 'contact', localizePath('/contact', locale))}
+            {navLink(t('footer.shipping'), 'shipping', localizePath('/shipping', locale))}
             {isAdmin && (
               <button onClick={() => setCurrentPage('admin')}
                 className="text-[10px] tracking-widest uppercase text-brand hover:text-brand transition-colors font-medium">
@@ -60,13 +68,14 @@ export default function Navbar() {
           {/* Right Icons */}
           <div className="flex items-center gap-4">
             {/* Language Toggle */}
-            <button
-              onClick={() => setLocale(locale === 'nl' ? 'en' : 'nl')}
+            <a
+              href={localizePath(basePath, otherLocale)}
+              onClick={(e) => { e.preventDefault(); setLocale(otherLocale); }}
               className="text-xs font-bold tracking-wider uppercase px-2 py-1 border border-stone-300 rounded text-stone-600 hover:border-brand hover:text-brand transition-colors"
-              aria-label="Toggle language"
+              aria-label="Switch language"
             >
               {locale === 'nl' ? 'EN' : 'NL'}
-            </button>
+            </a>
 
             {/* Currency Toggle */}
             <select
@@ -157,13 +166,14 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+            {/* Mobile Menu */}
           {menuOpen && (
             <div className="md:hidden border-t border-stone-200 py-4 flex flex-col gap-4 px-2">
-              {navLink(t('nav.home'), 'home')}
-            {navLink(t('nav.shop'), 'shop')}
-            {navLink(t('nav.about'), 'about')}
-            {navLink(t('nav.contact'), 'contact')}
+              {navLink(t('nav.home'), 'home', localizePath('/', locale))}
+            {navLink(t('nav.shop'), 'shop', localizePath('/shop', locale))}
+            {navLink(t('nav.about'), 'about', localizePath('/about', locale))}
+            {navLink(t('nav.contact'), 'contact', localizePath('/contact', locale))}
+            {navLink(t('footer.shipping'), 'shipping', localizePath('/shipping', locale))}
             {isAdmin && (
               <button onClick={() => { setCurrentPage('admin'); setMenuOpen(false); }} className="text-left text-xs tracking-widest uppercase text-brand font-medium">
                 Admin
@@ -171,7 +181,7 @@ export default function Navbar() {
             )}
             {user ? (
               <>
-                {navLink(t('nav.myAccount'), 'account')}
+                {navLink(t('nav.myAccount'), 'account', localizePath('/account', locale))}
                 <button onClick={() => { logout(); setMenuOpen(false); }} className="text-left text-sm text-red-600">
                   {t('nav.logout')}
                 </button>
