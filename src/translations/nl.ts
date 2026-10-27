@@ -80,7 +80,7 @@ const nl = {
   'shop.djellabaSoonBody': 'Onze eerste djellaba\u2019s zijn onderweg. Ontdek hieronder alvast onze andere collecties — of neem contact met ons op voor een bestelling op maat.',
   // Categoriepagina-headers (/shop/djellaba enz.) — sleutelachtervoegsel volgt CategoryPage.name
   'shop.catDjellabaH1': 'Marokkaanse Djellaba\u2019s',
-  'shop.catDjellabaIntro': 'Onze djellaba-collectie combineert tijdloze Marokkaanse silhouetten met met de hand afgewerkte borduringen — soepele snitten in zijde, velours en ademend katoen, geschikt voor elke dag én feestelijke gelegenheden.',
+  'shop.catDjellabaIntro': 'Onze djellaba-collectie combineert tijdloze Marokkaanse silhouetten met met de hand afgewerkte borduringen — soepele snitten, geschikt voor elke dag én feestelijke gelegenheden.',
   'shop.catGandouraH1': 'Marokkaanse Gandoura\u2019s',
   'shop.catGandouraIntro': 'Soepel, vloeiend en stilletjes luxueus: de gandoura is Marokkaanse elegantie voor elke dag. Onze met de hand afgewerkte stukken in ademend katoen en rijk velours passen bij zomers én winters.',
   'shop.catCaftanH1': 'Marokkaanse Kaftans & Takchita’s',
@@ -97,7 +97,7 @@ const nl = {
   'shop.catCaftanSeoText2': '. Voor maatwerk kunt u',
   'shop.catCaftanSeoText3': ' voor een bestelling op maat.',
   'shop.catDjellabaSeoTitle': 'Handgemaakte djellaba’s uit Fez',
-  'shop.catDjellabaSeoText1': 'Onze djellaba-collectie combineert tijdloze Marokkaanse silhouetten met met de hand afgewerkte borduringen — soepele snitten in zijde, velours en ademend katoen, voor elke dag én feestelijke gelegenheden. Voor feestelijke avonden, ontdek onze',
+  'shop.catDjellabaSeoText1': 'Onze djellaba-collectie combineert tijdloze Marokkaanse silhouetten met met de hand afgewerkte borduringen — soepele snitten, voor elke dag én feestelijke gelegenheden. Voor feestelijke avonden, ontdek onze',
   'shop.catDjellabaSeoSibling': 'handgeborduurde kaftans',
   'shop.catDjellabaSeoText2': '. Voor maatwerk kunt u',
   'shop.catDjellabaSeoText3': '.',
@@ -318,7 +318,7 @@ const nl = {
   'seo.shopDescription': 'Shop Marokkaanse jurken, kaftans en djellabas voor dames. Handgemaakt in Fez. Levering in Marokko en Europa.',
   // Categoriepagina's (/shop/djellaba enz.) — unieke teksten per categorie
   'seo.catDjellabaTitle': 'Maison Tislit | Djellaba Dames Kopen - Marokkaanse Djellaba',
-  'seo.catDjellabaDescription': 'Djellaba voor dames kopen? Marokkaanse djellaba in velours, zijde & katoen. Handgemaakt in Fez. Levering in Marokko en Europa.',
+  'seo.catDjellabaDescription': 'Maison Tislit djellaba\u2019s voor dames: Marokkaanse geborduurde djellaba\u2019s, gemaakt in Fez. Levering in heel Marokko en Europa. Ontdek de collectie.',
   'seo.catGandouraTitle': 'Maison Tislit | Gandoura Dames Kopen - Marokkaanse Gandoura',
   'seo.catGandouraDescription': 'Marokkaanse gandoura voor dames kopen? Luchtige handgemaakte jurken in katoen & linnen uit Fez. Levering in Marokko en Europa.',
   'seo.catCaftanTitle': 'Maison Tislit | Marokkaanse Kaftan & Takchita Kopen',
@@ -372,7 +372,7 @@ const nl = {
   'about.materialDyesTitle': 'Natuurlijke Kleurstoffen',
   'about.materialDyesDesc': 'Wij gebruiken plantaardige pigmenten afkomstig van granaatappelschillen, indigobladeren en saffraankrokus, waardoor een levendig palet ontstaat dat prachtig veroudert met de tijd.',
   'about.materialFabricTitle': 'Handgeweven Stof',
-  'about.materialFabricDesc': 'Onze zijde- en katoenmengsels worden geweven op traditionele grondweefgetouwen, waardoor een textuur en val behouden blijven die industriële machines simpelweg niet kunnen nabootsen.',
+  'about.materialFabricDesc': 'Onze handgeweven stoffen worden geweven op traditionele grondweefgetouwen, waardoor een textuur en val behouden blijven die industriële machines simpelweg niet kunnen nabootsen.',
   'about.ctaTitle': 'De collectie wacht op uw ontdekking.',
   'about.ctaButton': 'Ontdek de Collectie',
 

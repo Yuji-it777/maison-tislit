@@ -80,7 +80,7 @@ const en = {
   'shop.djellabaSoonBody': "Our first djellabas are on the way. Meanwhile, explore our other collections below — or get in touch for custom orders.",
   // Category page headers (/shop/djellaba etc.) — key suffix matches CategoryPage.name
   'shop.catDjellabaH1': 'Moroccan Djellabas',
-  'shop.catDjellabaIntro': 'Our djellaba collection pairs timeless Moroccan silhouettes with hand-finished embroidery — fluid cuts in silk, velvet and breathable cotton, made for daily elegance and celebrations alike.',
+  'shop.catDjellabaIntro': 'Our djellaba collection pairs timeless Moroccan silhouettes with hand-finished embroidery — fluid cuts for daily elegance and celebrations alike.',
   'shop.catGandouraH1': 'Moroccan Gandouras',
   'shop.catGandouraIntro': 'Easy, flowing and quietly luxurious, the gandoura is everyday Moroccan elegance. Our hand-finished pieces in breathable cotton and rich velvet suit warm summers and cosy winters alike.',
   'shop.catCaftanH1': 'Moroccan Caftans & Takchitas',
@@ -97,7 +97,7 @@ const en = {
   'shop.catCaftanSeoText2': '. For a custom size,',
   'shop.catCaftanSeoText3': ' for made-to-measure orders.',
   'shop.catDjellabaSeoTitle': 'Handmade djellabas from Fez',
-  'shop.catDjellabaSeoText1': 'Our djellaba collection pairs timeless Moroccan silhouettes with hand-finished embroidery — fluid cuts in silk, velvet and breathable cotton, made for daily elegance and celebrations alike. For ceremonial evenings, discover our',
+  'shop.catDjellabaSeoText1': 'Our djellaba collection pairs timeless Moroccan silhouettes with hand-finished embroidery — fluid cuts for daily elegance and celebrations alike. For ceremonial evenings, discover our',
   'shop.catDjellabaSeoSibling': 'hand-embroidered caftans',
   'shop.catDjellabaSeoText2': '. For made-to-measure,',
   'shop.catDjellabaSeoText3': ' — every piece is handmade in Morocco.',
@@ -319,7 +319,7 @@ const en = {
   'seo.shopDescription': 'Shop handmade Moroccan kaftans, djellabas & gandouras. Luxury womenswear from Fez. Delivery in Morocco and Europe.',
   // Category pages (/shop/djellaba etc.) — unique per-category copy
   'seo.catDjellabaTitle': 'Maison Tislit | Shop Moroccan Djellabas for Women',
-  'seo.catDjellabaDescription': 'Shop Moroccan djellabas for women in velvet, silk & cotton. Hand-embroidered by Fez artisans. Delivery in Morocco and Europe.',
+  'seo.catDjellabaDescription': 'Maison Tislit djellabas for women: hand-embroidered Moroccan robes crafted by Fez artisans. Delivery across Morocco and Europe. Shop the collection.',
   'seo.catGandouraTitle': 'Maison Tislit | Shop Moroccan Gandoura Dresses for Women',
   'seo.catGandouraDescription': 'Shop Moroccan gandoura dresses for women in cotton & linen. Relaxed handmade pieces from Fez. Delivery in Morocco and Europe.',
   'seo.catCaftanTitle': 'Maison Tislit | Moroccan Kaftan, Caftan & Takchita Shop',
@@ -373,7 +373,7 @@ const en = {
   'about.materialDyesTitle': 'Natural Dyes',
   'about.materialDyesDesc': 'We utilize botanical pigments derived from pomegranate skins, indigo leaves, and saffron crocus, creating a living palette that ages beautifully with time.',
   'about.materialFabricTitle': 'Handwoven Fabric',
-  'about.materialFabricDesc': 'Our silk and cotton blends are woven on traditional pit looms, preserving a texture and drape that industrial machines simply cannot replicate.',
+  'about.materialFabricDesc': 'Our handwoven fabrics are woven on traditional pit looms, preserving a texture and drape that industrial machines simply cannot replicate.',
   'about.ctaTitle': 'The collection awaits your discovery.',
   'about.ctaButton': 'Discover the Collection',
 

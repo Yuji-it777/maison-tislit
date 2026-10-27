@@ -3,7 +3,6 @@ import { Product } from '../types';
 // Extracts a schema.org `material` value from product copy (EN + FR terms).
 // Returns null when no fabric is stated — structured data must never guess.
 const FABRIC_TERMS: Array<[RegExp, string]> = [
-  [/silk|soie/i, 'Silk'],
   [/velvet|velours/i, 'Velvet'],
   [/cr[eê]pe/i, 'Crepe'],
   [/cotton|coton/i, 'Cotton'],
