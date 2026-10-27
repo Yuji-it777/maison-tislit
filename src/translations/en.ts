@@ -38,7 +38,7 @@ const en = {
   'why.artisanat.title': 'Authentic Craftsmanship',
   'why.artisanat.desc': 'Each piece is hand-stitched by expert Moroccan artisans',
   'why.matieres.title': 'Noble Materials',
-  'why.matieres.desc': 'Silk, velvet, and crepe, sourced and worked by hand',
+  'why.matieres.desc': 'Velvet and crepe, sourced and worked by hand',
   'why.livraison.title': 'Delivery Morocco',
   'why.livraison.desc': 'Fast delivery worldwide, with complimentary luxury packaging',
   'why.surMesure.title': 'Made to Measure',

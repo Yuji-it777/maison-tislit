@@ -1,13 +1,13 @@
 import { MapPin, Phone, Mail, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { useTranslation } from '../context/LanguageContext';
+import { useTranslation, localizePath } from '../context/LanguageContext';
 import { WHATSAPP_LINK } from '../config';
 
 import { useState, useRef, useEffect } from 'react';
 
 export default function Footer() {
   const { setCurrentPage, subscribeToNewsletter } = useApp();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -74,18 +74,18 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.navigation')}</h3>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => setCurrentPage('home')} className="hover:text-brand transition-colors">{t('footer.home')}</button></li>
-              <li><button onClick={() => setCurrentPage('shop')} className="hover:text-brand transition-colors">{t('footer.shop')}</button></li>
-              <li><button onClick={() => setCurrentPage('about')} className="hover:text-brand transition-colors">{t('footer.about')}</button></li>
+              <li><a href={localizePath('/', locale)} onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }} className="hover:text-brand transition-colors">{t('footer.home')}</a></li>
+              <li><a href={localizePath('/shop', locale)} onClick={(e) => { e.preventDefault(); setCurrentPage('shop'); }} className="hover:text-brand transition-colors">{t('footer.shop')}</a></li>
+              <li><a href={localizePath('/about', locale)} onClick={(e) => { e.preventDefault(); setCurrentPage('about'); }} className="hover:text-brand transition-colors">{t('footer.about')}</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-4 text-sm tracking-widest uppercase">{t('footer.serviceClient')}</h3>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => setCurrentPage('shipping')} className="hover:text-brand transition-colors">{t('footer.shipping')}</button></li>
-              <li><button onClick={() => setCurrentPage('returns')} className="hover:text-brand transition-colors">{t('footer.returns')}</button></li>
-              <li><button onClick={() => setCurrentPage('contact')} className="hover:text-brand transition-colors">{t('nav.contact')}</button></li>
+              <li><a href={localizePath('/shipping', locale)} onClick={(e) => { e.preventDefault(); setCurrentPage('shipping'); }} className="hover:text-brand transition-colors">{t('footer.shipping')}</a></li>
+              <li><a href={localizePath('/returns', locale)} onClick={(e) => { e.preventDefault(); setCurrentPage('returns'); }} className="hover:text-brand transition-colors">{t('footer.returns')}</a></li>
+              <li><a href={localizePath('/contact', locale)} onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }} className="hover:text-brand transition-colors">{t('nav.contact')}</a></li>
             </ul>
           </div>
 

@@ -38,7 +38,7 @@ const nl = {
   'why.artisanat.title': 'Authentiek Vakmanschap',
   'why.artisanat.desc': 'Elk stuk wordt met de hand genaaid door deskundige Marokkaanse ambachtsvrouwen',
   'why.matieres.title': 'Edele Materialen',
-  'why.matieres.desc': 'Zijde, fluweel en crêpe, met de hand ingekocht en bewerkt',
+  'why.matieres.desc': 'Fluweel en crêpe, met de hand ingekocht en bewerkt',
   'why.livraison.title': 'Bezorging Marokko',
   'why.livraison.desc': 'Snelle wereldwijde bezorging, met luxe verpakking inbegrepen',
   'why.surMesure.title': 'Op Maat',
